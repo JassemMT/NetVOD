@@ -1,9 +1,11 @@
 <?php
-declare(strict_types= 1);
-namespace netvod\action;
 
-interface Action
-{
-    public static function execute(): string;
+
+namespace iutnc\deefy\action;
+
+Interface Action{
+
+
+     public function execute(): string;
 
 }
