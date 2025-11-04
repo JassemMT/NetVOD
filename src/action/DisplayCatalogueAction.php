@@ -6,7 +6,7 @@ namespace netvod\action;
 use netvod\action\Action;
 
 class DisplayCatalogueAction implements Action {
-    function execute(): string {
+    public static function execute(): string {
         print("Affichage du catalogue <br>");
 
         $rep = RepositoryDeefy::GetInstance();

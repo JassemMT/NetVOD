@@ -5,7 +5,7 @@ namespace netvod\action;
 use netvod\action\Action;
 
 class DisplayListeProgrammeAction implements Action {
-    function execute(): string {
+    public static function execute(): string {
         print("Affichage de la liste demandée <br>");
 
 
