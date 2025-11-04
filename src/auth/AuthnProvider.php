@@ -24,13 +24,7 @@ class AuthnProvider {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-        $_SESSION['user'] = [
-            'id'    => (int)$user['id'],
-            'email' => $user['email'],
-            'role'  => isset($user['role']) ? (int)$user['role'] : 1
-        ];
-
-        $_SESSION['playlist'] = -1;
+        $_SESSION['user_id'] = $
         
     }
 
@@ -38,7 +32,7 @@ class AuthnProvider {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-        if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
+        if (!isset($_SESSION['user_id']) {
             throw new AuthnException('Aucun utilisateur authentifié', AuthnException::USER_NOT_FOUND);
         }
         return $_SESSION['user'];
@@ -48,7 +42,7 @@ class AuthnProvider {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-        return isset($_SESSION['user']) && isset($_SESSION['user']['id']);
+        return isset($_SESSION['user_id']);
     }
 
     public static function requireLogin(): void {
