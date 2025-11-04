@@ -4,7 +4,12 @@ namespace netvod\renderer;
 
 class UserRenderer implements Renderer {
     public function render(array $params = []): string {
-        return "<div>User Renderer Output</div>"; //temporaire
+        $user = $params["user"];
+        return <<<FIN
+        <div class="user">
+            <p>{$user->email}</p>
+        </div>
+        FIN;
     }
 
 }

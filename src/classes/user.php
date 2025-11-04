@@ -6,14 +6,13 @@ namespace NetVOD\Classes;
 class User
 {
     protected string $email;
-    protected string $mdp_hash;
-  
+
+    protected string $id;
     protected array $listes = [];
 
-    public function __construct(string $email, string $mdp_hash)
+    public function __construct(string $email, string $id)
     {
         $this->email = $email;
-        $this->mdp_hash = $mdp_hash;
         $this->id_user = $id;
     }
 

@@ -5,8 +5,8 @@ namespace netvod\renderer;
 use netvod\classes\Episode;
 use netvod\renderer\EpisodeRenderer;
 
-class SerieRenderer implements Renderer {
-    public function render(array $params = []): string {
+class SerieRenderer extends ProgrammeRenderer implements Renderer {
+    public static function render(array $params = []): string {
         $serie = $params["serie"];
         $episodes = "";
         foreach ($serie->episodes as $episode) {
@@ -14,10 +14,12 @@ class SerieRenderer implements Renderer {
         }
         return <<<FIN
         <div class="serie">
-            <h2>{$serie->title}</h2>
-            <p>{$serie->description}</p>
-            <p>{$serie->annee}</p>
-            <img src="{$serie->image}" alt="{$serie->title}"/>
+            <a href="?action=display-serie&id={$serie->id}">
+                <h2>{$serie->title}</h2>
+                <p>{$serie->description}</p>
+                <p>{$serie->annee}</p>
+                <img src="{$serie->image}" alt="{$serie->title}"/>
+            </a>
             <div class="episodes">
                 $episodes
             </div>

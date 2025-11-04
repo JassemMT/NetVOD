@@ -15,7 +15,6 @@ class Dispatcher
 
     public function run(): void
     {
-        session_start();
 
         // Liste des actions nécessitant d'être connecté
         $privateActions = [
@@ -87,21 +86,21 @@ class Dispatcher
         }
 
         echo <<<HTML
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <title>{$title}</title>
-  <style>
-    body { font-family:Arial, sans-serif; margin:18px; }
-    nav a { margin-right:12px; }
-  </style>
-</head>
-<body>
-  <header><h1>{$title}</h1>{$menu}<hr></header>
-  <main>{$html}</main>
-</body>
-</html>
-HTML;
+        <!doctype html>
+        <html lang="fr">
+        <head>
+        <meta charset="utf-8">
+        <title>{$title}</title>
+        <style>
+            body { font-family:Arial, sans-serif; margin:18px; }
+            nav a { margin-right:12px; }
+        </style>
+        </head>
+        <body>
+        <header><h1>{$title}</h1>{$menu}<hr></header>
+        <main>{$html}</main>
+        </body>
+        </html>
+        HTML;
     }
 }
