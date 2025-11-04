@@ -10,7 +10,7 @@ class Commentaire
     protected string $contenu;
     protected \DateTime $date;
 
-    public function __construct(int $id, int $note, string $contenu, string $date = null)
+    public function __construct(int $id, int $note, string $contenu, ?string $date = null)
     {
         $this->note = $note;
         $this->contenu = $contenu;
