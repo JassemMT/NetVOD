@@ -2,8 +2,13 @@
 declare(strict_types= 1);
 namespace netvod\renderer;
 
-class SerireRenderer implements Renderer {
-    public function render(array $params = []): string {
-        return "<div>Serie Renderer Output</div>"; //temporaire
+use netvod\classes\Serie;
+
+class SerieRenderer implements Renderer {
+    public function render(array $params): string {
+        serie = (Serie)$params["serie"];
+        foreach ($serie->episodes as $episode) {
+            // Render each episode (implementation not shown)
+        }
     }
 }
