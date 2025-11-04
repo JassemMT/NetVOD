@@ -5,7 +5,7 @@ namespace netvod\classes;
 
 class Episode
 {
-    protected int id;
+    protected int $id;
     protected int $numero;
     protected string $titre;
     protected string $description;
