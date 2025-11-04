@@ -1,7 +1,7 @@
 <?php
 
 
-namespace NetVOD\action;
+namespace netvod\action;
 
 abstract class Action
 {

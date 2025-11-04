@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace NetVOD\action;
+namespace netvod\action;
 
 
-use NetVOD\action\Action;
+use netvod\action\Action;
 
 class DisplayCatalogueAction extends Action {
     function execute() {

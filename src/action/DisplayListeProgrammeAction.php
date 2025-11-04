@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace NetVOD\action;
-use NetVOD\action\Action;
+namespace netvod\action;
+use netvod\action\Action;
 
 class DisplayListeProgrammeAction extends Action {
     function execute() {
