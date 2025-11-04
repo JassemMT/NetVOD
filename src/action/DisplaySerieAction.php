@@ -4,8 +4,8 @@ namespace netvod\action;
 
 use netvod\renderer\SerieRenderer;
 
-class DisplaySerieAction extends Action {
-    public function execute() {
+class DisplaySerieAction implements Action {
+    public function execute(): string {
         print("Affichage de la série : <br>");
 
         $rep = RepositoryDeefy::GetInstance();

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace netvod\action;
 use netvod\action\Action;
 
-class DisplayListeProgrammeAction extends Action {
-    function execute() {
+class DisplayListeProgrammeAction implements Action {
+    function execute(): string {
         print("Affichage de la liste demandée <br>");
 
 
