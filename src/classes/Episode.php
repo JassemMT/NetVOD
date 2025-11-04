@@ -13,7 +13,7 @@ class Episode
     protected string $source; // url ou chemin
     protected string $image;
 
-    public function __construct(in id, int $numero , string $titre, string $description, int $duree, string $source, string $image)
+    public function __construct(int $id, int $numero , string $titre, string $description, int $duree, string $source, string $image)
     {
         $this->id = $id;
         $this->numero = $numero;
