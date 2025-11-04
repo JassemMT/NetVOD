@@ -61,7 +61,7 @@ Fonctionnalités étendues (si le temps le permet, donnent un bonus)
 - Protection contre XSS : échapper toute sortie (HTML encode).
 
 ## Tech stack 
-- Backend : PHP 8.x 
+- Backend : PHP 
 - Base de données : MySQL 
 - Frontend : HTML5, CSS3
 - Authentification : sessions + tokens (pour activation / reset)
