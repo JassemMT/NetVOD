@@ -45,7 +45,7 @@ class Dispatcher
                     $obj = new act\DisplayEpisodeAction();
                     break;
                 case 'add-serie':
-                    $obj = new act\AddSerieAction();
+                    $obj = new act\AjouterSerieAction();
                     break;
                 case 'notation':
                     $obj = new act\NotationAction();
@@ -53,11 +53,11 @@ class Dispatcher
                 case 'display-user':
                     $obj = new act\DisplayUserAction();
                     break;
-                case 'display-list':
+                case 'display-liste':
                     $obj = new act\DisplayListeProgrammeAction();
                     break;
                 case 'logout':
-                    $obj = new act\LogoutAction();
+                    $obj = new act\LogOutAction();
                     break;
                 default:
                     $obj = new act\DefaultAction();
