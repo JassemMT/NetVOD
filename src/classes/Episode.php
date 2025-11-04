@@ -5,7 +5,6 @@ namespace netvod\classes;
 
 class Episode
 {
-    protected ?int $id_episode = null;
     protected int $numero;
     protected string $titre;
     protected string $description;
@@ -13,7 +12,7 @@ class Episode
     protected string $source; // url ou chemin
     protected string $image;
 
-    public function __construct(int $numero, string $titre, string $description, int $duree, string $source, string $image)
+    public function __construct(string $titre, string $description, int $duree, string $source, string $image)
     {
         $this->numero = $numero;
         $this->titre = $titre;
