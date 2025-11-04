@@ -4,11 +4,11 @@ SAE : Développement Web — Sujet : NetVOD
 
 # Membres du groupe
 
-CHEBBAH Yanis
-ARDHUIN Louis
-GOFFIN Thomas Charles
-TAMOURGH Jassem
-GILBERT Ambroise
+-CHEBBAH Yanis
+-ARDHUIN Louis
+-GOFFIN Thomas Charles
+-TAMOURGH Jassem
+-GILBERT Ambroise
 
 ## Contexte
 NetVOD est une application de vidéo à la demande. Cette SAE vise à développer une version réduite de la plateforme en appliquant les bonnes pratiques de développement web et de sécurité vues en cours (programmation web, bases de données, cryptographie, contrôles d'accès, protection contre les injections, etc.).
