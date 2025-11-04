@@ -8,7 +8,6 @@ use netvod\classes\Episode;
 
 class Serie implements Programme {
 
-    private int $id_serie;
     private string $titre;
     private string $description;
     private int $annee;
