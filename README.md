@@ -64,10 +64,8 @@ Fonctionnalités étendues (si le temps le permet, donnent un bonus)
 - Backend : PHP 
 - Base de données : MySQL 
 - Frontend : HTML5, CSS3
-- Authentification : sessions + tokens (pour activation / reset)
 - Déploiement : serveur webetu (instructions de déploiement à fournir dans la documentation)
 
-> Remarque : adaptez la stack selon les compétences de l’équipe, mais documentez clairement le choix et les étapes d'installation.
 
 ## Sécurité — points obligatoires à traiter
 - Hashage et vérification sécurisés des mots de passe.
