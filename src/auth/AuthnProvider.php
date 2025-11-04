@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace iutnc\deefy\auth;
 
-use iutnc\deefy\exception\AuthnException;
-use iutnc\deefy\repository\DeefyRepository;
+use netvod\exception\AuthnException;
+use netvod\repository\DeefyRepository;
 
 class AuthnProvider {
 
