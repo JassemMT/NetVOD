@@ -2,10 +2,11 @@
 IUT Nancy-Charlemagne — BUT Informatique S3  
 SAE : Développement Web — Sujet : NetVOD
 
-#Membres du groupe
+# Membres du groupe
 
 CHEBBAH Yanis
 ARDHUIN Louis
+GOFFIN Thomas Charles
 TAMOURGH Jassem
 GILBERT Ambroise
 
