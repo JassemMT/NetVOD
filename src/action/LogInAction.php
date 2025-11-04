@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace iutnc\deefy\action;
+namespace netvod\action;
 
 use netvod\auth\AuthnProvider;
 use netvod\exception\MissingArgumentException;
