@@ -5,7 +5,7 @@ use PDO;
 
 class Database {
     private \PDO $pdo;
-    private static ?DeefyRepository $instance = null;
+    private static ?Database $instance = null;
     private static array $config = [];
 
     private function __construct( array $conf ){
@@ -15,7 +15,7 @@ class Database {
 
     public static function getInstance(){
         if (is_null(self::$instance)){
-            self::$instance = new DeefyRepository(self::$config);
+            self::$instance = new Database(self::$config);
         }
         return self::$instance;
     }
@@ -24,14 +24,14 @@ class Database {
         $conf = parse_ini_file( $file );
 
         if($conf===false){
-            throw new \Exception("Fichier de configuration introuvable");
+            throw new \PDOException("Fichier de configuration introuvable");
         }
 
         $driver = $conf['driver'] ?? 'mysql';
         $host   = $conf['host'] ?? 'localhost';
         $dbname = $conf['database'] ?? '';
         if (!$dbname) {
-            throw new \RuntimeException("Le fichier de configuration doit contenir 'database'.");
+            throw new \PDOException("Le fichier de configuration doit contenir 'database'.");
         }
 
         $dsn = "$driver:host=$host;dbname=$dbname";
