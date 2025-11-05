@@ -1,4 +1,4 @@
-/*
+<!-- /*
 //liste des méthodes à programmer
 
 // Authentification
@@ -15,7 +15,7 @@ removeSerieFromList(int $id_user, int $id_serie, string $listName): bool
 getFavoriteSeries(int $id_user): array (objet Series)
 getInProgressSeries(int $id_user): array (objet Series)
 
-*/
+*/ -->
 
 
 
@@ -27,6 +27,9 @@ namespace netvod\repository;
 use netvod\core\Database;
 use netvod\model\User;
 use netvod\exception\AuthnException;
+
+use netvod\action\LogInAction;
+
 use PDO;
 use PDOException;
 use Exception;
@@ -100,7 +103,7 @@ class UserRepository
             $id = (int)$this->pdo->lastInsertId();
             return new User($id, $email);
         } catch (PDOException $e) {
-            throw new Exception('Erreur lors de la création de l’utilisateur.');
+            throw new Exception('Erreur lors de la création de l\'utilisateur.');
         }
     }
 
