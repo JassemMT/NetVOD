@@ -71,7 +71,7 @@ class Dispatcher
 
     private function renderPage(string $html): void
     {
-        $title = 'Deefy App';
+        $title = 'NetVOD App';
 
         $menu = '<nav><a href="?action=default">Accueil</a> | ';
 
