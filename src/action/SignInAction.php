@@ -29,7 +29,7 @@ class SignInAction implements Action {
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password">Mot de passe</label>
+                                    <label for="password">Confirmation</label>
                                     <input type="password" id="password2" placeholder="••••••••" name="password2" required>
                                 </div>
 

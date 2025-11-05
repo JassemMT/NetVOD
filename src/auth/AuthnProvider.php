@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace netvod\auth;
 
 use netvod\exception\AuthnException;
-use netvod\repository\DeefyRepository;
+use netvod\core\Database;
 
 class AuthnProvider {
 
     public static function signin(string $email, string $password): void {
-        $repo = DeefyRepository::getInstance();
+        $repo = Database::getInstance();
 
         $user = $repo->findUserByEmail($email); // user tab ou objet ?
         if (!$user) {
