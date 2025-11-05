@@ -16,7 +16,6 @@ class DisplayUserAction implements Action {
         if ($user === -1){
             echo " Pas d'utilisateur connecté";
         }
-        else {return $user;}
         var_dump($user);
 
         return UserRenderer::render(["user" => $user]);
