@@ -1,4 +1,19 @@
-<!-- /*
+<?php
+declare(strict_types=1);
+
+namespace netvod\repository;
+
+use netvod\core\Database;
+use netvod\model\User;
+use netvod\exception\AuthnException;
+
+use netvod\action\LogInAction;
+
+use PDO;
+use PDOException;
+use Exception;
+
+/*
 //liste des méthodes à programmer
 
 // Authentification
@@ -15,24 +30,7 @@ removeSerieFromList(int $id_user, int $id_serie, string $listName): bool
 getFavoriteSeries(int $id_user): array (objet Series)
 getInProgressSeries(int $id_user): array (objet Series)
 
-*/ -->
-
-
-
-<?php
-declare(strict_types=1);
-
-namespace netvod\repository;
-
-use netvod\core\Database;
-use netvod\model\User;
-use netvod\exception\AuthnException;
-
-use netvod\action\LogInAction;
-
-use PDO;
-use PDOException;
-use Exception;
+*/
 
 class UserRepository
 {

@@ -45,4 +45,9 @@ class Database {
             'pass' => $conf['password'] ?? $conf['pass'] ?? ''
         ];
     }
+
+    //Creer une getter magique pour accéder à pdo
+    public function __get($name){
+        return $this->pdo->$name;
+    }
 }

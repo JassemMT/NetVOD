@@ -1,3 +1,14 @@
+<?php
+declare(strict_types=1);
+namespace netvod\repository;
+
+use netvod\core\Database;
+use netvod\classes\Serie;
+use netvod\classes\Episode;
+use netvod\classes\ListeProgramme;
+use PDO;
+use Exception;
+
 /*
 findAllProgrammes() : SerieListe (avec toutes les series)
 
@@ -13,18 +24,6 @@ fetchSeriesList(string $table, int $id_user): ListeProgramme //Est utilisé par 
 
 */
 
-
-<?php
-declare(strict_types=1);
-
-namespace netvod\repository;
-
-use netvod\core\Database;
-use netvod\classes\Serie;
-use netvod\classes\Episode;
-use netvod\classes\ListeProgramme;
-use PDO;
-use Exception;
 
 class ListeProgrammeRepository
 {
