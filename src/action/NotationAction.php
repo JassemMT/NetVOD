@@ -13,9 +13,9 @@ class NotationAction implements Action {
     public function execute(): string { // action distincte ??? notation sur une page à part ??? 
 
         // on récupère l'id de la série en session ou via le SerieRepository ??? quelle série en session ?
-        // $Sid = (int)$_SESSION['idSerie'];     
+        // $Sid = (int)$_SESSION['idSerie'];
         $Srender = SerieRenderer();
-        $Srep = SerieRepository::GetInstance(); 
+        $Srep = SerieRepository::GetInstance();
 
         if (isset($_GET['id'])) $id = $_GET['id'];
         else throw new MissingArgumentException('id');
