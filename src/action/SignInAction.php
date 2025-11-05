@@ -9,7 +9,7 @@ use netvod\exception\InvalidArgumentException;
 
 class SignInAction implements Action {
 
-    public static function execute() : string {
+    public function execute() : string {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             return <<<FIN
                     <div class="auth-container">

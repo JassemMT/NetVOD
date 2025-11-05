@@ -5,7 +5,7 @@ use netvod\auth\AuthnProvider;
 
 class LogOutAction implements Action
 {
-    public static  function execute(): string
+    public function execute(): string
     {
         AuthnProvider::requireLogin();
         // Properly destroy the session for logout
