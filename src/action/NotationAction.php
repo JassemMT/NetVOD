@@ -10,7 +10,7 @@ use netvod\classes\Commentaire;
 
 class NotationAction implements Action {
 
-    public static function execute(): string { // action distincte ??? notation sur une page à part ??? 
+    public function execute(): string { // action distincte ??? notation sur une page à part ??? 
 
         // on récupère l'id de la série en session ou via le SerieRepository ??? quelle série en session ?
         // $Sid = (int)$_SESSION['idSerie'];

@@ -12,7 +12,10 @@ class DisplayUserAction implements Action {
 
         $rep = UserRepository::GetInstance();
 
-        $user = $rep->afficherUser();
+        $user = $_GET['user'] ?? -1;
+        if ($user === -1){
+            echo " Pas d'utilisateur connecté";
+        }
         var_dump($user);
 
         return UserRenderer::render(["user" => $user]);
