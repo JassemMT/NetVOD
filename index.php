@@ -8,7 +8,7 @@ use netvod\dispatch\Dispatcher;
 use netvod\core\Database;
 
 
-Database::setConfig( __DIR__ . '/config/config.db.ini');
+Database::setConfig( __DIR__ . '/config/configdb.ini');
 
 $dispatcher = new Dispatcher($_GET['action'] ?? '');
 $dispatcher->run();
