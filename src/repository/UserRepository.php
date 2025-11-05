@@ -82,6 +82,7 @@ class UserRepository
 
         return (string)$hash;
     }
+/* Inutile à cause de AuthnProvider::login
 
     public function verifyCredentials(string $email, string $password): ?User
     {
@@ -91,6 +92,7 @@ class UserRepository
         }
         return null;
     }
+*/
 
     public function createUser(string $email, string $passwordHash): User
     {
@@ -141,12 +143,7 @@ class UserRepository
         return $stmt->execute(['id_user' => $id_user, 'id_serie' => $id_serie]);
     }
 
-    public function getFavoriteSeries(int $id_user): array
-  {}//A implementer
 
-    public function getInProgressSeries(int $id_user): array
-  {//A implementer
-  }
 
 
 
