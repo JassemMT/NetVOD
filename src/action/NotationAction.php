@@ -2,144 +2,58 @@
 declare(strict_types=1);
 namespace netvod\action;
 
+use netvod\exception\BadRequestMethodArgumentException;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
+
+use netvod\classes\Commentaire;
 
 class NotationAction implements Action {
 
     public static function execute(){
 
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return <<<FIN
-                    <h1>Notation</h1>
-                    <form action="?action=notation" method="post" class="note-form">
-                        <label for="mail">Adresse mail</label>
-                        <input type="email" id="mail" placeholder="exemple@mail.com" name="mail" required>
-
-                        <label for="password">Mot de passe</label>
-                        <input type="password" id="password" placeholder="••••••••" name="password" required>
-
-                        <button type="submit" class="btn-primary">Se connecter</button>
-                    </form>
-                    FIN;
-        } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['mail'])) {
-                if (filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL) !== null) {
-                    $mail = $_POST['mail'];
-                    AuthnProvider::signin($mail, $_POST['password']);
-                    return "";
-                } else throw new InvalidArgumentException("email");
-            } else throw new MissingArgumentException("email");
-        } else throw new BadRequestMethodException();
-    
         // on récupère l'id de la série en session ou via le SerieRepository
         // $Sid = (int)$_SESSION['idSerie'];     
-
-        // $Srep = SerieRepository::GetInstance  
+        $Srender = SerieRenderer();
+        $Srep = SerieRepository::GetInstance(); 
         // on récupère la série avec l'id correspondant 
-        $Serie = $Srep->findById($Sid);
-        
-        
-        // on récupère les pistes de la playlist via son id
-        $ListeSerie = $Srep->findAll();
+        $Serie = $Srep->findById($_GET['idSerie']) ?? -1;
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            if ($Serie === -1){
+                $Srender->render($Srep->findAll());
 
-        $optionsSerie = '';
+                echo <<<FIN
+                    <h1>Noter</h1>
+                        <form action="?action=noter" method="post" class="note-form">
+                            <label for="titre">Titre de  la série</label>
+                            <input type="text" id="titre" placeholder="Nom Série" name="titre" required>
 
-        // on affiche chaque titre de la playlist en utilisant la méthod htmlspecialchars pour éviter les injections et autres tentatives
-        // d'exécution de code dans le programme
-        foreach ($ListeSerie as $s) {
-            $DescriptionAnnee = $s['description'] ? ' - '.htmlspecialchars($s['annee']) : '';
-            $optionsSerie .= "<li><strong>".htmlspecialchars($s['titre'])."</strong>{$artist} (".gmdate('i:s',(int)$s['duree']).")</li>";
-        }
+                            <label for="commentaire">commentaire</label>
+                            <input type="text" id="commentaire" placeholder="commentaire" name="commentaire" required>
 
-        // on affiche ensuite la playlist avec les pistes qu'elle contient
-        echo <<<FIN
-            <!DOCTYPE html>
-            <html><head><meta charset="utf-8"><title>{$pl->nom}</title></head><body>
-            <h1>{$pl->nom}</h1>
-            <a href="index.php">Accueil</a> | <a href="playlists.php">Playlists</a> | <a href="logout.php">Déconnexion</a>
-            <hr>
-            <ul>{$trackList}</ul>
-            <a href="add_track.php">Ajouter une piste</a> | <a href="playlists.php">Retour</a>
-            </body></html>
-        FIN;
+                            <label for="note">Note pour la série</label>
+                            <input type="int" min="1" max="5" step="1" id="note" placeholder="Note" name="note" required>
 
-        <?php
-// choix_option.php
+                            <button type="submit" class="btn-primary">Envoyer</button>
+                        </form>
+                FIN;
+            }
+        } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['titre'])) {
+                if (filter_var($_POST['titre'], FILTER_SANITIZE_SPECIAL_CHARS) !== null) {
+                    $titre = $_POST['titre'];
+                    $note = filter_var($_POST['note'],FILTER_VALIDATE_INT);
+                    $avis = filter_var($_POST['commentaire'], FILTER_SANITIZE_SPECIAL_CHARS);
+                    $idS = $Srep->findByTitle($titre);
 
-$options = [
-    'episode' => 'Afficher un épisode',
-    'liste'   => 'Afficher la liste des épisodes',
-    'profil'  => 'Voir mon profil',
-    'deconnexion' => 'Se déconnecter'
-];
+                    $com = new Commentaire($idS,$note,$avis);
+                    $comRep = CommentaireRepository::GetInstance();
+                    $comRep->upload($com);
 
-$message = '';
-
-// Traitement du formulaire
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $choix = $_POST['action'] ?? '';
-
-    switch ($choix) {
-        case 'episode':
-            $message = "Vous avez choisi : Afficher un épisode";
-            break;
-        case 'liste':
-            $message = "Vous avez choisi : Afficher la liste des épisodes";
-            break;
-        case 'profil':
-            $message = "Vous avez choisi : Voir mon profil";
-            break;
-        case 'deconnexion':
-            $message = "Vous avez choisi : Se déconnecter";
-            break;
-        default:
-            $message = "Option invalide.";
-    }
-}
-?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Choix d'option</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; }
-        .form-group { margin: 15px 0; }
-        select, button { padding: 8px; font-size: 16px; }
-        button { background: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        .result { margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 5px; }
-    </style>
-</head>
-<body>
-
-<h1>Choisissez une action</h1>
-
-<form method="POST">
-    <div class="form-group">
-        <label for="action"><strong>Option :</strong></label><br>
-        <select name="action" id="action" required>
-            <option value="">-- Choisissez --</option>
-            <?php foreach ($options as $value => $label): ?>
-                <option value="<?= $value ?>"><?= htmlspecialchars($label) ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-
-    <button type="submit">Valider</button>
-</form>
-
-<?php if ($message): ?>
-    <div class="result">
-        <strong><?= $message ?></strong>
-    </div>
-<?php endif; ?>
-
-</body>
-</html>
-
-
-    }    
+                    return "";
+                } else throw new InvalidArgumentException("titre");
+            } else throw new MissingArgumentException("titre");
+        } else throw new BadRequestMethodException();
+    }   
+    
 }

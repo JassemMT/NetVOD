@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NetVOD\Classes;
+namespace netvod\classes;
 
 class Commentaire
 {
@@ -10,8 +10,10 @@ class Commentaire
     protected string $contenu;
     protected \DateTime $date;
 
-    public function __construct(int $id, int $note, string $contenu, ?string $date = null)
+    public function __construct(int $idSerie,int $userId, int $note, string $contenu, ?string $date = null)
     {
+        $this->idSerie = $idSerie;
+        $this->userId = $userId;
         $this->note = $note;
         $this->contenu = $contenu;
         $this->date = $date ?? new \DateTime();
