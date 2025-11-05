@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace netvod\renderer;
 
 class UserRenderer implements Renderer {
-    public function render(array $params = []): string {
+    public static function render(array $params = []): string {
         $user = $params["user"];
         return <<<FIN
         <div class="user">
