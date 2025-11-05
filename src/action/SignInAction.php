@@ -25,7 +25,12 @@ class SignInAction implements Action {
 
                                 <div class="form-group">
                                     <label for="password">Mot de passe</label>
-                                    <input type="password" id="password" placeholder="••••••••" name="password" required>
+                                    <input type="password" id="password1" placeholder="••••••••" name="password1" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password">Mot de passe</label>
+                                    <input type="password" id="password2" placeholder="••••••••" name="password2" required>
                                 </div>
 
                                 <button type="submit" class="btn-primary">Créer mon compte</button>
@@ -40,12 +45,15 @@ class SignInAction implements Action {
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['mail'])) {
                 if (filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL) !== null) {
-                    if (isset($_POST['password'])){
-                        if (!empty($_POST['password'])) {
+                    if (isset($_POST['password1']) && isset($_POST['password2'])){
+                        if (!empty($_POST['password1'] && !empty($_POST['password2']))) {
                             $mail = $_POST['mail'];
-                            $pswd = $_POST['password'];
-                            AuthnProvider::register($mail, $pswd);
-                            return '';
+                            $pswd1 = $_POST['password1'];
+                            $pswd2 = $_POST['password2'];
+                            if ($pswd1 === $pswd2) {
+                                AuthnProvider::register($mail, $pswd1);
+                                return '';
+                            } else throw new InvalidArgumentException("password");
                         } else throw new InvalidArgumentException("password");
                     } else throw new MissingArgumentException("password");
                 } else throw new InvalidArgumentException("email");
