@@ -1,6 +1,11 @@
+
+//liste des méthodes à programmer
+
 // Authentification
-findByEmail(string $email): ?User
+findUserByEmail(string $email): ?User  //Throws Exception
 verifyCredentials(string $email, string $password): ?User
+getHash(string $email) : string //Throws Exception 
+
 createUser(string $email, string $passwordHash): User
 
 // Gestion des listes / préférences
@@ -9,3 +14,4 @@ addSerieToList(int $id_user, int $id_serie, string $listName): bool
 removeSerieFromList(int $id_user, int $id_serie, string $listName): bool
 getFavoriteSeries(int $id_user): array
 getInProgressSeries(int $id_user): array
+
