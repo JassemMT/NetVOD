@@ -12,12 +12,13 @@ class AuthnProvider {
 
 
 
-    public static function signin(string $email, string $password): void {
+    public static function login(string $email, string $password): void {
         $repo = UserRepository::getInstance();
 
         try {
             // Vérifie que l'utilisateur existe
             $user = $repo->findUserByEmail($email);
+
             if (!$user) {
                 throw new AuthnException('Email ou mot de passe incorrect');
             }
@@ -113,3 +114,4 @@ class AuthnProvider {
     }
 
 }
+
