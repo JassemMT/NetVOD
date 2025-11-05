@@ -6,7 +6,7 @@ use netvod\renderer\SerieRenderer;
 use netvod\exception\BadRequestMethodException;
 
 class DisplaySerieAction implements Action {
-    public static function execute(): string {
+    public function execute(): string {
         print("Affichage de la série : <br>");
 
         if ($_SERVER['REQUEST_METHOD']==='GET') {

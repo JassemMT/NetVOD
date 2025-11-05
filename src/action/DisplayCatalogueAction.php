@@ -5,7 +5,7 @@ namespace netvod\action;
 use netvod\renderer\ListeProgrammeRenderer;
 
 class DisplayCatalogueAction implements Action {
-    public static function execute(): string {
+    public function execute(): string {
         $rep = CatalogueRepository::GetInstance();
         $catalogue = $rep->findAll();
         var_dump($catalogue);

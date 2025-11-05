@@ -7,7 +7,7 @@ use netvod\exception\InvalidArgumentException;
 use netvod\exception\MissingArgumentException;
 
 class AddSerieAction implements Action {
-    public static function execute(): string {
+    public function execute(): string {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') { // pas de GET pour cette action (clique droit avec js ou autre mais pas de formulaire)
             if (isset($_POST['id'])) {
                 $id = $_POST['id'];
