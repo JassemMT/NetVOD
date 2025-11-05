@@ -9,7 +9,7 @@ use netvod\exception\BadRequestMethodException;
 
 class LogInAction implements Action {
 
-    public static function execute() : string {
+    public function execute() : string {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             return <<<FIN
                     <h1>Connexion</h1>

@@ -7,7 +7,7 @@ use netvod\exception\BadRequestMethodException;
 use netvod\renderer\ListeProgrammeRenderer;
 
 class DisplayListeProgrammeAction implements Action {
-    public static function execute(): string {
+    public function execute(): string {
         if ($_SERVER['REQUEST_METHOD']==='GET') {
             $idListe = $_GET['idListe'] ?? -1;
             if ($idListe === -1){
