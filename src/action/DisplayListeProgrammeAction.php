@@ -2,15 +2,12 @@
 declare(strict_types=1);
 
 namespace netvod\action;
-use netvod\action\Action;
+
 use netvod\exception\BadRequestMethodException;
 use netvod\renderer\ListeProgrammeRenderer;
 
 class DisplayListeProgrammeAction implements Action {
     public static function execute(): string {
-        print("Affichage de la liste demandée <br>");
-
-
         if ($_SERVER['REQUEST_METHOD']==='GET') {
             $idListe = $_GET['idListe'] ?? -1;
             if ($idListe === -1){
@@ -18,11 +15,9 @@ class DisplayListeProgrammeAction implements Action {
             }
             else{
                 $rep = ListeProgrammeRepository::GetInstance();
-                $pl = $rep->getProgrammes($idListe);
-                var_dump($pl);
-                
-                $lr = new ListeProgrammeRenderer();
-                $lr->render($pl);
+                $programmes = $rep->getProgrammes($idListe); // lst de series dans les faits
+                var_dump($programmes);
+                return ListeProgrammeRenderer::render(['lst' => $programmes]);
             }
         }
         else throw new BadRequestMethodException();

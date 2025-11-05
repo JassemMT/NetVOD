@@ -1,7 +1,7 @@
 <?php
 
 
-namespace iutnc\deefy\action;
+namespace netvod\action;
 
 Interface Action{
 

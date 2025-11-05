@@ -59,5 +59,5 @@ class SignInAction implements Action {
                 } else throw new InvalidArgumentException("email");
             } else throw new MissingArgumentException("email");
         } else throw new BadRequestMethodException();
-    }    
+    }
 }

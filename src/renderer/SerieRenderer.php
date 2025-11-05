@@ -8,6 +8,7 @@ use netvod\renderer\EpisodeRenderer;
 class SerieRenderer extends ProgrammeRenderer implements Renderer {
     public static function render(array $params = []): string {
         $serie = $params["serie"];
+        if (!$serie instanceof Serie) throw new \Exception("Le paramètre 'serie' doit être une instance de Serie.");
         $episodes = "";
         foreach ($serie->episodes as $episode) {
             $episodes .= EpisodeRenderer::render(["episode" => $episode]);
