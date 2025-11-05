@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace netvod\action;
 
-use netvod\exception\BadRequestMethodArgumentException;
+use netvod\exception\BadRequestMethodException;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
 
@@ -10,7 +10,7 @@ use netvod\classes\Commentaire;
 
 class NotationAction implements Action {
 
-    public static function execute(){
+    public static function execute(): string { // action distincte ??? notation sur une page à part ??? 
 
         // on récupère l'id de la série en session ou via le SerieRepository ??? quelle série en session ?
         // $Sid = (int)$_SESSION['idSerie'];     
@@ -40,20 +40,23 @@ class NotationAction implements Action {
                     </form>
             FIN;
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['titre'])) {
-                if (filter_var($_POST['titre'], FILTER_SANITIZE_SPECIAL_CHARS) !== null) {
-                    
-                    $titre = $_POST['titre'];
-                    $note = filter_var($_POST['note'],FILTER_VALIDATE_INT);
-                    $avis = filter_var($_POST['commentaire'], FILTER_SANITIZE_SPECIAL_CHARS);
-                    $idS = $Srep->findByTitle($titre);
+            if (isset($_POST['titre'])) { // check si le titre est bien défini dans la BD
+                if (isset($_POST['note'])) {
+                    if (is_numeric($_POST['note'])) {
+                        if (isset($_POST['commentaire'])) {
+                            $titre = filter_var($_POST['titre'], FILTER_SANITIZE_SPECIAL_CHARS);
+                            $note = $_POST['note'];
+                            $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_SPECIAL_CHARS);
+                            $idS = $Srep->findByTitle($titre);
 
-                    $com = new Commentaire($idS,$note,$avis);
-                    $comRep = CommentaireRepository::GetInstance();
-                    $comRep->upload($com);
+                            $com = new Commentaire($idS,$note,$commentaire);
+                            $comRep = CommentaireRepository::GetInstance();
+                            $comRep->upload($com);
 
-                    return "";
-                } else throw new InvalidArgumentException("titre");
+                            return "";
+                        } else throw new MissingArgumentException("commentaire");
+                    } else throw new InvalidArgumentException("note");
+                } else throw new MissingArgumentException("titre");
             } else throw new MissingArgumentException("titre");
         } else throw new BadRequestMethodException();
     }   
