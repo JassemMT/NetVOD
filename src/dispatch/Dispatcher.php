@@ -81,8 +81,8 @@ class Dispatcher
                       <a href="?action=display-user">Mon profil</a> |
                       <a href="?action=logout">Déconnexion</a></nav>';
         } else {
-            $menu .= '<a href="?action=signin">Connexion</a> |
-                      <a href="?action=login">Créer un compte</a></nav>';
+            $menu .= '<a href="?action=signin">Créer un compte</a> |
+                      <a href="?action=login">Connexion</a></nav>';
         }
 
         echo <<<HTML
