@@ -9,13 +9,10 @@ use netvod\exception\BadRequestMethodException;
 use netvod\renderer\UserRenderer;
 
 class DisplayUserAction implements Action {
-    public static function execute(): string {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_GET['user'])) {
-                $user = $_GET['user'];
+    public function execute(): string {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $renderer = new UserRenderer(AuthnProvider::getSignedInUser());
                 return $renderer->render();
-            } else throw new MissingArgumentException('user');
         } else throw new BadRequestMethodException();
     }
 }

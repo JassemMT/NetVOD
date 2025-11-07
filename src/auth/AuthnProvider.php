@@ -13,25 +13,18 @@ class AuthnProvider {
 
 
     public static function login(string $email, string $password): void {
-        $repo = UserRepository::getInstance();
-
         try {
             // Vérifie que l'utilisateur existe
-            $user = $repo->findUserByEmail($email);
+            $user = UserRepository::findUserByEmail($email);
 
             if (!$user) {
                 throw new AuthnException('Email ou mot de passe incorrect');
             }
 
             // Récupère le hash du mot de passe depuis la base
-            $hash = $repo->getHash($email);
+            $hash = UserRepository::getHash($email);
             if (!is_string($hash) || $hash === '' || !password_verify($password, $hash)) {
                 throw new AuthnException('Email ou mot de passe incorrect');
-            }
-
-            // Initialise la session si nécessaire
-            if (session_status() !== PHP_SESSION_ACTIVE) {
-                session_start();
             }
 
             $_SESSION['user'] = $user;
@@ -47,11 +40,10 @@ class AuthnProvider {
         throw new AuthnException('Aucun utilisateur authentifié');
     }
 
-    $repo = UserRepository::getInstance();
     $user = $_SESSION['user'];
 
     // Vérifie que l'utilisateur existe encore
-    $check = $repo->findUserByEmail($user->email);
+    $check = UserRepository::findUserByEmail($user->email);
     if (!$check) {
         session_destroy();
         throw new AuthnException('Utilisateur introuvable');
@@ -82,8 +74,7 @@ class AuthnProvider {
             throw new AuthnException('Mot de passe trop court (min 10 caractères)');
         }
 
-        $repo = UserRepository::getInstance();
-        $existing = $repo->findUserByEmail($email);
+        $existing = UserRepository::findUserByEmail($email);
         if ($existing) {
             throw new AuthnException('Un compte existe déjà pour cet email');
         }
@@ -94,7 +85,7 @@ class AuthnProvider {
         }
 
         // createUser retourne maintenant un User
-        $user = $repo->createUser($email, $hash);
+        $user = UserRepository::createUser($email, $hash);
         if (!$user instanceof User) {
             throw new AuthnException('Erreur création utilisateur');
         }
