@@ -23,32 +23,20 @@ class LogInAction implements Action {
             $mail = trim((string)$_POST['mail']);
             $password = (string)$_POST['password'];
 
+            $mail = filter_var($mail, FILTER_SANITIZE_EMAIL);
+            $password = filter_var($password, FILTER_SANITIZE_STRING);
+
             if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
                 throw new InvalidArgumentException("email");
             }
 
-            // Utilise le UserRepository pour vérifier les identifiants
-            $repo = UserRepository::getInstance();
+            // Utilise AuthnProvider::login pour vérifier et créer la session
             try {
-                $user = $repo->verifyCredentials($mail, $password);
-                if ($user === null) {
-                    // Identifiants invalides
-                    throw new AuthnException('Email ou mot de passe incorrect');
-                }
-
-                // Initialise la session si nécessaire et stocke l'utilisateur
-                if (session_status() !== PHP_SESSION_ACTIVE) {
-                    session_start();
-                }
-                $_SESSION['user'] = $user;
-
-                // Retour vide — la redirection est gérée ailleurs (Dispatcher)
-                return "";
+                AuthnProvider::login($mail, $password);
+                return "connection réussie";
             } catch (AuthnException $e) {
-                // Remonter comme InvalidArgument pour conserver la sémantique des actions
                 throw new InvalidArgumentException('credentials');
             } catch (\Exception $e) {
-                // Erreur serveur inattendue
                 throw new \RuntimeException('Erreur lors de l\'authentification');
             }
 

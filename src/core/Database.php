@@ -46,8 +46,16 @@ class Database {
         ];
     }
 
-    //Creer une getter magique pour accéder à pdo
+    // Getter pour accéder à l'objet PDO
     public function __get($name){
-        return $this->pdo->$name;
+        if ($name === 'pdo') {
+            return $this->pdo;
+        }
+        return null;
+    }
+
+    // Méthode explicite pour récupérer l'instance PDO (préférable à l'accès magique)
+    public function getPdo(): \PDO {
+        return $this->pdo;
     }
 }

@@ -32,8 +32,8 @@ class Dispatcher
                 case 'login':
                     $obj = new act\LoginAction();
                     break;
-                case 'signin':
-                    $obj = new act\SignInAction();
+                case 'register':
+                    $obj = new act\RegisterAction();
                     break;
                 case 'display-catalogue':
                     $obj = new act\DisplayCatalogueAction();
@@ -81,8 +81,8 @@ class Dispatcher
                       <a href="?action=display-user">Mon profil</a> |
                       <a href="?action=logout">Déconnexion</a></nav>';
         } else {
-            $menu .= '<a href="?action=signin">Créer un compte</a> |
-                      <a href="?action=login">Connexion</a></nav>';
+            $menu .= '<a href="?action=login">Connexion</a> |
+                      <a href="?action=register">Créer un compte</a></nav>';
         }
 
         echo <<<HTML
