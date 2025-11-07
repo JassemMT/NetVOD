@@ -43,9 +43,6 @@ class AuthnProvider {
 
 
    public static function getSignedInUser(): User {
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
     if (!isset($_SESSION['user'])) {
         throw new AuthnException('Aucun utilisateur authentifié');
     }
@@ -65,9 +62,6 @@ class AuthnProvider {
 
 
     public static function isLoggedIn(): bool {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
         return isset($_SESSION['user']);
     }
 

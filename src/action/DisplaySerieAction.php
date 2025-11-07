@@ -17,7 +17,7 @@ class DisplaySerieAction implements Action {
                     $idSerie = $_GET['id'];
                     $rep = SerieRepository::GetInstance();
                     $listeP = $rep->findById($idSerie);
-                    var_dump($listeP); // les episodes ne sont pas mis dans la série
+                    
                     $renderer = new SerieRenderer($listeP);
                     return $renderer->render();
                 } else throw new InvalidArgumentException('id');

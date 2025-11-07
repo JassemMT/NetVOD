@@ -19,20 +19,34 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
         if (!$serie instanceof Serie) throw new \Exception("Le paramètre 'serie' doit être une instance de Serie.");
         $episodes = "";
         foreach ($serie->episodes as $episode) {
-            $episodes .= EpisodeRenderer::render(["episode" => $episode]);
+            $renderer = new EpisodeRenderer($episode);
+            $episodes .= $renderer->render();
         }
-        var_dump($episodes); // pas d'episodes pour toutes les series
+
         return <<<FIN
         <div class="serie">
+            <h2>{$serie->title}</h2>
+            <p>{$serie->description}</p>
+            <p>{$serie->annee}</p>
+            <img src="{$serie->image}" alt="{$serie->title}"/>
+        </div>
+        <hr/>
+        <div class="episodes">
+            $episodes
+        </div>
+        FIN;
+    }
+
+    public function renderShort(): string {
+        $serie = $this->serie;
+        return <<<FIN
+        <div class="serie-short">
             <a href="?action=display-serie&id={$serie->id}", style="text-decoration: none; color: inherit;">
                 <h2>{$serie->title}</h2>
                 <p>{$serie->description}</p>
                 <p>{$serie->annee}</p>
                 <img src="{$serie->image}" alt="{$serie->title}"/>
             </a>
-            <div class="episodes">
-                $episodes
-            </div>
         FIN;
     }
 }

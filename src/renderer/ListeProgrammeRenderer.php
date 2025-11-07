@@ -16,15 +16,7 @@ class ListeProgrammeRenderer implements Renderer {
     public function render(): string {
         $html = '';
         foreach ($this->lstprogramme->getProgrammes() as $programme) {
-            $html .= <<<FIN
-            <div class="serie">
-                <a href="?action=display-serie&id={$programme->id}" style="text-decoration: none; color: black;">
-                    <h2>{$programme->titre}</h2>
-                    <p>{$programme->description}</p>
-                    <img src="{$programme->image}" alt="{$programme->titre}"/>
-                </a>
-            </div>
-            FIN;
+            $html .= (new SerieRenderer($programme))->renderShort(); // on part du principe que la liste de programme ne contient que des séries
         }
         return <<<FIN
         <h1>Catalogue des séries</h1>

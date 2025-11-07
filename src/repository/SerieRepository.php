@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace netvod\repository;
 
+use netvod\repository\EpisodeRepository;
 use netvod\classes\ListeProgramme;
 use netvod\classes\Serie;
 use netvod\core\Database;
@@ -54,35 +55,41 @@ class SerieRepository{
         return $listeProgramme;
     }
 
-    public function findById(string $id_serie):Serie {
-        $sql = " SELECT id_serie, titre, description, annee, image FROM serie WHERE id_serie=:id_serie  ORDER BY titre  ";
+    public function findById(string $id):Serie{
+        $sql = " SELECT id_serie, titre, description, annee, image FROM serie WHERE id_serie=:id";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['id_serie'=>$id_serie]);
-        $serie = $stmt->fetchAll();
+        $stmt->execute(['id'=>$id]);
+        $s = $stmt->fetch();
 
-        foreach ($serie as $s) {
-
-            // mettre la liste de serie en Session?
-            // car les series ne seront accèssible que dans
-            $seri = new Serie((int)$s['id_serie'],$s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+        // mettre la liste de serie en Session?
+        // car les series ne seront accèssible que dans 
+        $serie = new Serie((int)$s['id_serie'], $s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+        $episodes = EpisodeRepository::findBySerie((int)$s['id_serie']);
+        foreach ($episodes as $ep) {
+            $serie->ajouterEpisode($ep);
         }
-        return $seri;
+
+        return $serie;
     }
 
+    /*
     public function findByTitle(string $titre):Serie{
-        $sql = " SELECT titre, description, annee, image FROM serie WHERE titre=:titre";
-        $stmt = $this->pdo->prepare(['titre'=>$titre]);
-        $stmt->execute();
-        $serie = $stmt->fetchAll();
+        $sql = " SELECT id_serie, titre, description, annee, image FROM serie WHERE titre=:titre";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['titre'=>$titre]);
+        $s = $stmt->fetch();
 
-        foreach ($serie as $s) {
-
-            // mettre la liste de serie en Session?
-            // car les series ne seront accèssible que dans 
-            $seri = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+        // mettre la liste de serie en Session?
+        // car les series ne seront accèssible que dans 
+        $serie = new Serie($s['id_serie'], $s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+        $episodes = EpisodeRepository::findBySerie((int)$s['id_serie']);
+        foreach ($episodes as $ep) {
+            $serie->ajouterEpisode($ep);
         }
-        return $seri;
+
+        return $serie;
     }
+    */ // /!\ titre non unique, ne peut pas être utilisé pour identifier une série
 
     public function getAverageRating(int $id_serie):float{
         $sql = "

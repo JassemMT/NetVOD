@@ -10,7 +10,7 @@ class EpisodeRepository extends Database {
     public static function findById(int $id_episode): ?Episode {
         $pdo = Database::getInstance()->pdo;
 
-        $stmt = $pdo->prepare('SELECT * FROM episode WHERE id = :id_episode');
+        $stmt = $pdo->prepare('SELECT * FROM episode WHERE id_episode = :id_episode');
         $stmt->execute(['id_episode' => $id_episode]);
 
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -22,8 +22,8 @@ class EpisodeRepository extends Database {
                 $data['titre'],
                 'description', // pas présente dans la table episode
                 (int)$data['duree'],
-                (int)$data['source'],
-                (int)$data['src_image']
+                $data['source'],
+                $data['src_image']
             );
         } else {
             return null;
@@ -73,5 +73,3 @@ class EpisodeRepository extends Database {
     }
 
 }
-
-create(Episode $episode): Episode;
