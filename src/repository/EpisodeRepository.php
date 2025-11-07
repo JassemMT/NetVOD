@@ -73,3 +73,5 @@ class EpisodeRepository extends Database {
     }
 
 }
+
+create(Episode $episode): Episode;

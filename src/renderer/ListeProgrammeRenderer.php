@@ -2,24 +2,29 @@
 declare(strict_types= 1);
 namespace netvod\renderer;
 
+use NetVOD\Classes\ListeProgramme;
 use netvod\Classes\Serie;
 
 class ListeProgrammeRenderer implements Renderer {
-    public static function render(array $params = []): string {
-        $lstprogramme = $params["lst"];
-        $programmes = "";
-        foreach ($lstprogramme as $programme) {
-            try {
-                $programmes .= SerieRenderer::render(["serie" => $programme]);
-            } catch (\Exception $e) {
-                $programmes .= ProgrammeRenderer::render(["programme" => $programme]);
-            }
-            
+
+    private ListeProgramme $lstprogramme;
+
+    public function __construct(ListeProgramme $lstprogramme) {
+        $this->lstprogramme = $lstprogramme;
+    }
+
+    public function render(): string {
+
+        foreach ($this->lstprogramme->getProgrammes() as $programme) {
+            $html = '<div class="serie">'.
+                    '<h2>'.$programme->titre.'</h2>'.
+                    '<p>'.$programme->description.'</p>'.
+                    '<img src="'.$programme->image.'" alt="'.$programme->titre.'"/>'.
+                    '</div>';
         }
         return <<<FIN
-        <div class="liste-programme">
-            {$programmes}
-        </div>
+        <h1>Catalogue des séries</h1>
+        <div class="liste-programme"> $html </div>
         FIN;
 
     }

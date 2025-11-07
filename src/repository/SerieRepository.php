@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace netvod\repository;
 
+use netvod\classes\ListeProgramme;
+use netvod\classes\Serie;
 use netvod\core\Database;
 use netvod\model\User;
 use netvod\exception\AuthnException;
-
+use netvod\exception\InvalidArgumentException;
 use netvod\action\LogInAction;
 
 use PDO;
@@ -31,23 +33,26 @@ class SerieRepository{
         return self::$instance;
     }
 
-    public function findAll():array{
+    public function findAll():ListeProgramme{
         $sql = "SELECT titre, description, annee, image FROM serie ORDER BY titre";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
 
         // Récupérer toutes les lignes
+        $listeProgramme = new ListeProgramme("Catalogue des séries");
         $series = $stmt->fetchAll();
-        $lSerie = [];
+
+
         foreach ($series as $s) {
 
             // mettre la liste de serie en Session?
             // car les series ne seront accèssible que dans 
-            $seri = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
-            $lSerie.array_push($seri);
+            $serie = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+            $listeProgramme->ajouterProgramme($serie);
+
 
         }
-        return $lSerie;
+        return $listeProgramme;
     }
 
     public function findById(int $id_serie):Serie {
@@ -59,7 +64,7 @@ class SerieRepository{
         foreach ($serie as $s) {
 
             // mettre la liste de serie en Session?
-            // car les series ne seront accèssible que dans 
+            // car les series ne seront accèssible que dans
             $seri = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
         }
         return $seri;
@@ -91,7 +96,7 @@ class SerieRepository{
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id_serie'=>$id_serie]);
-        
+
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $moyenne = $result['moyenne_notes'] ? $result['moyenne_notes'] : null;
 
@@ -114,9 +119,9 @@ class SerieRepository{
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idSerie'=>$id_serie]);
-        
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+    }
 
     public function addComment(int $id_user, int $id_serie, int $note, string $contenu): bool {
         if ($note < 0 || $note > 5) {
@@ -127,17 +132,17 @@ class SerieRepository{
             throw new InvalidArgumentException("ID utilisateur et série requis.");
         }
         if (!empty(trim($contenu))) {
-            $sql = "INSERT INTO commentaire (id_user, id_serie, note, contenu) 
-                    VALUES (:id_user, :id_serie, :note, :contenu)";
+            $sql = 'INSERT INTO commentaire (id_user, id_serie, note, contenu) 
+                    VALUES (:id_user, :id_serie, :note, :contenu)';
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
-                ':id_user'   => $id_user,
-                ':id_serie'  => $id_serie,
-                ':note'      => $note,
-                ':contenu'   => $contenu
+                    ':id_user'   => $id_user,
+                    ':id_serie'  => $id_serie,
+                    ':note'      => $note,
+                    ':contenu'   => $contenu
             ]);
             return true;
-            
+
         } else throw new InvalidArgumentException("Impossible d'insérer un commentaire vide");
     }
 
@@ -168,14 +173,14 @@ class SerieRepository{
 
         // 3. Exécution
         $success = $stmt->execute([
-            ':note'      => $note,
-            ':contenu'   => $contenu,
-            ':id_user'   => $id_user,
-            ':id_serie'  => $id_serie
+                ':note'      => $note,
+                ':contenu'   => $contenu,
+                ':id_user'   => $id_user,
+                ':id_serie'  => $id_serie
         ]);
 
         if (!$success) {
-            return false; 
+            return false;
         } else{
             return true;
         }
@@ -183,12 +188,12 @@ class SerieRepository{
     }
 
     public function hasUserCommented(int $id_user, int $id_serie): bool {
-        // 1. Vérification de la présence d'un userID et sérieID
+        //Vérification de la présence d'un userID et sérieID
         if (empty($id_user) || empty($id_serie)) {
             throw new InvalidArgumentException("ID utilisateur et série requis.");
         }
 
-        // 2. Requête préparée : vérification de l'existence du commentaire récherché 
+        //Requête préparée : vérification de l'existence du commentaire récherché
         $sql = "SELECT 1 
                 FROM commentaire 
                 WHERE id_user = :id_user 
@@ -197,10 +202,10 @@ class SerieRepository{
 
         $stmt = $this->pdo->prepare($sql);
 
-        // 3. Exécution de la requête préparée
+        //Exécution de la requête préparée
         $success = $stmt->execute([
-            ':id_user'  => $id_user,
-            ':id_serie' => $id_serie
+                ':id_user'  => $id_user,
+                ':id_serie' => $id_serie
         ]);
 
         if (!$success) {
