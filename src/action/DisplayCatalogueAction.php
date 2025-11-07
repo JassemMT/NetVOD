@@ -10,10 +10,11 @@ class DisplayCatalogueAction implements Action {
     public function execute(): string {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $rep = SerieRepository::GetInstance();
-            $catalogue = $rep->findAll();
+            $catalogue = $rep->findAll(); //Objet de type ListeProgramme
             var_dump($catalogue);
-    
-            return ListeProgrammeRenderer::render(["lst" => $catalogue]);
+
+            $listeprogrammeRenderer = new ListeProgrammeRenderer($catalogue);
+            return $listeprogrammeRenderer->render();
         }else throw new BadRequestMethodException();
     }
 }
