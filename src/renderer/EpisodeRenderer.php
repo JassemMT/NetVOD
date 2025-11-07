@@ -2,9 +2,18 @@
 declare(strict_types=1);
 namespace netvod\renderer;
 
+use netvod\classes\Episode;
+use netvod\renderer\Renderer;
 class EpisodeRenderer implements Renderer {
-    public static function render(array $params = []): string {
-        $episode = $params["episode"];
+
+    protected Episode $episode;
+
+    public function __construct(Episode $episode) {
+        $this->episode = $episode;
+    }
+    
+    public function render(): string {
+        $episode = $this->episode;
         return <<<FIN
         <div class="episode">
             <h3>{$episode->titre}</h3>

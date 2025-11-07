@@ -12,7 +12,8 @@ class RegisterAction implements Action {
 
     public function execute() : string {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return RegisterFormRenderer::render();
+            $renderer = new RegisterFormRenderer();
+            return $renderer->render();
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Vérification des champs obligatoires
             if (!isset($_POST['mail'])) throw new MissingArgumentException("email");

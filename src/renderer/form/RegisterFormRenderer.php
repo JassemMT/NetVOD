@@ -5,7 +5,7 @@ namespace netvod\renderer\form;
 use netvod\renderer\Renderer;
 
 class RegisterFormRenderer implements Renderer {
-    public static function render(array $data = []): string {
+    public function render(): string {
         return <<<FIN
                 <div class="auth-container">
                     <div class="auth-card">

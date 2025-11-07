@@ -4,10 +4,18 @@ namespace netvod\renderer;
 
 use netvod\classes\Episode;
 use netvod\renderer\EpisodeRenderer;
+use netvod\classes\Serie;
 
 class SerieRenderer extends ProgrammeRenderer implements Renderer {
-    public static function render(array $params = []): string {
-        $serie = $params["serie"];
+
+    private Serie $serie;
+
+    public function __construct(Serie $serie) {
+        $this->serie = $serie;
+    }
+
+    public function render(): string {
+        $serie = $this->serie;
         if (!$serie instanceof Serie) throw new \Exception("Le paramètre 'serie' doit être une instance de Serie.");
         $episodes = "";
         foreach ($serie->episodes as $episode) {

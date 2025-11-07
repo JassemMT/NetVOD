@@ -14,7 +14,8 @@ class LogInAction implements Action {
 
     public function execute() : string {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return LoginFormRenderer::render();
+            $renderer = new LoginFormRenderer();
+            return $renderer->render();
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Vérification des champs
             if (!isset($_POST['mail'])) throw new MissingArgumentException("email");
