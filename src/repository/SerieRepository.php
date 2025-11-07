@@ -52,25 +52,22 @@ class SerieRepository{
 
     public function findById(int $id_serie):Serie {
         $sql = " SELECT titre, description, annee, image FROM serie WHERE id_serie=:idSerie  ORDER BY titre  ";
-        $stmt = $pdo->prepare(['idSerie'=>$id_serie]);
+        $stmt = $this->pdo->prepare(['idSerie'=>$id_serie]);
         $stmt->execute();
         $serie = $stmt->fetchAll();
 
-        $lSerie = [];
         foreach ($serie as $s) {
 
             // mettre la liste de serie en Session?
             // car les series ne seront accèssible que dans 
             $seri = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
-            $lSerie.array_push($seri);
-
         }
-        return $lSerie;
+        return $seri;
     }
 
     public function findByTitle(string $titre):Serie{
         $sql = " SELECT titre, description, annee, image FROM serie WHERE titre=:titre";
-        $stmt = $pdo->prepare(['titre'=>$titre]);
+        $stmt = $this->pdo->prepare(['titre'=>$titre]);
         $stmt->execute();
         $serie = $stmt->fetchAll();
 
@@ -92,7 +89,7 @@ class SerieRepository{
                 AND note IS NOT NULL
             ";
 
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id_serie'=>$id_serie]);
         
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -115,7 +112,7 @@ class SerieRepository{
                 ORDER BY c.date DESC
             ";
 
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idSerie'=>$id_serie]);
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
