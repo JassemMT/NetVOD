@@ -12,8 +12,7 @@ class DisplayUserAction implements Action {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_GET['user'])) {
                 $user = $_GET['user'];
-                var_dump($user);
-                $rep = UserRepository::GetInstance();
+                $renderer = new UserRenderer(UserRepository::findById($user));
                 return UserRenderer::render(["user" => $user]);
             } else throw new MissingArgumentException('user');
         } else throw new BadRequestMethodException();

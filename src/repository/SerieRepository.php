@@ -17,26 +17,11 @@ use PDOException;
 use Exception;
 
 class SerieRepository{
-    private static ?SerieRepository $instance = null;
-    private PDO $pdo;
 
-    private function __construct()
-    {
-        // Singleton géré par netvod/core/Database
-        $this->pdo = Database::getInstance()->pdo;
-    }
-
-    public static function getInstance(): SerieRepository
-    {
-        if (self::$instance === null) {
-            self::$instance = new SerieRepository();
-        }
-        return self::$instance;
-    }
-
-    public function findAll():ListeProgramme{
+    public static function findAll():ListeProgramme{
+        $pdo = Database::getInstance()->pdo;
         $sql = "SELECT id_serie, titre, description, annee, image FROM serie ORDER BY titre";
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         // Récupérer toutes les lignes
@@ -55,9 +40,10 @@ class SerieRepository{
         return $listeProgramme;
     }
 
-    public function findById(string $id):Serie{
+    public static function findById(string $id):Serie{
+        $pdo = Database::getInstance()->pdo;
         $sql = " SELECT id_serie, titre, description, annee, image FROM serie WHERE id_serie=:id";
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         $stmt->execute(['id'=>$id]);
         $s = $stmt->fetch();
 
@@ -92,6 +78,7 @@ class SerieRepository{
     */ // /!\ titre non unique, ne peut pas être utilisé pour identifier une série
 
     public function getAverageRating(int $id_serie):float{
+        $pdo = Database::getInstance()->pdo;
         $sql = "
                 SELECT 
                     AVG(note) AS moyenne_notes
@@ -100,7 +87,7 @@ class SerieRepository{
                 AND note IS NOT NULL
             ";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         $stmt->execute(['id_serie'=>$id_serie]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -111,6 +98,7 @@ class SerieRepository{
     }
 
     public function getComments(int $id_serie):array{
+        $pdo = Database::getInstance()->pdo;
         $sql = "
                 SELECT 
                     c.id_commentaire,
@@ -123,24 +111,25 @@ class SerieRepository{
                 ORDER BY c.date DESC
             ";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         $stmt->execute(['idSerie'=>$id_serie]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addComment(int $id_user, int $id_serie, int $note, string $contenu): bool {
+    public static function addComment(int $id_user, int $id_serie, int $note, string $contenu): bool {
         if ($note < 0 || $note > 5) {
-            throw new InvalidArgumentException("La note doit être entre 0 et 5.");
+            throw new InvalidArgumentException("La note doit être entre 0 et 5."); // doit être vérifié par un trigger mysql
         }
 
         if (empty($id_user) || empty($id_serie)) {
-            throw new InvalidArgumentException("ID utilisateur et série requis.");
+            throw new InvalidArgumentException("ID utilisateur et série requis."); // doit être vérifié par un trigger mysql
         }
         if (!empty(trim($contenu))) {
+            $pdo = Database::getInstance()->pdo;
             $sql = 'INSERT INTO commentaire (id_user, id_serie, note, contenu) 
                     VALUES (:id_user, :id_serie, :note, :contenu)';
-            $stmt = $this->pdo->prepare($sql);
+            $stmt = $pdo->prepare($sql);
             $stmt->execute([
                     ':id_user'   => $id_user,
                     ':id_serie'  => $id_serie,
@@ -152,21 +141,21 @@ class SerieRepository{
         } else throw new InvalidArgumentException("Impossible d'insérer un commentaire vide");
     }
 
-    public function updateComment(int $id_user, int $id_serie, int $note, string $contenu): bool {
+    public static function updateComment(int $id_user, int $id_serie, int $note, string $contenu): bool {
         // 1. Validation des données
         if ($note < 0 || $note > 5) {
-            throw new InvalidArgumentException("La note doit être entre 0 et 5.");
+            throw new InvalidArgumentException("La note doit être entre 0 et 5."); // doit être vérifié par un trigger mysql
         }
 
         if (empty($id_user) || empty($id_serie)) {
-            throw new InvalidArgumentException("ID utilisateur et série requis.");
+            throw new InvalidArgumentException("ID utilisateur et série requis.");// doit être vérifié par un trigger mysql
         }
 
         $contenu = trim($contenu);
         if (empty($contenu)) {
-            throw new InvalidArgumentException("Le commentaire ne peut pas être vide.");
+            throw new InvalidArgumentException("Le commentaire ne peut pas être vide.");// doit être vérifié par un trigger mysql
         }
-
+        $pdo = Database::getInstance()->pdo;
         // 2. Requête préparée : mise à jour
         $sql = "UPDATE commentaire 
                 SET note = :note, 
@@ -175,7 +164,7 @@ class SerieRepository{
                 WHERE id_user = :id_user 
                 AND id_serie = :id_serie";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
         // 3. Exécution
         $success = $stmt->execute([
@@ -193,12 +182,13 @@ class SerieRepository{
 
     }
 
-    public function hasUserCommented(int $id_user, int $id_serie): bool {
+    public static function hasUserCommented(int $id_user, int $id_serie): bool {
         //Vérification de la présence d'un userID et sérieID
         if (empty($id_user) || empty($id_serie)) {
-            throw new InvalidArgumentException("ID utilisateur et série requis.");
+            throw new InvalidArgumentException("ID utilisateur et série requis."); // doit être vérifié par un trigger mysql
         }
 
+        $pdo = Database::getInstance()->pdo;
         //Requête préparée : vérification de l'existence du commentaire récherché
         $sql = "SELECT 1 
                 FROM commentaire 
@@ -206,7 +196,7 @@ class SerieRepository{
                 AND id_serie = :id_serie 
                 LIMIT 1";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
         //Exécution de la requête préparée
         $success = $stmt->execute([

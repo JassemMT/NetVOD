@@ -33,31 +33,11 @@ getInProgressSeries(int $id_user): array (objet Series)
 */
 
 class UserRepository
-{
-    private static ?UserRepository $instance = null;
-    private PDO $pdo;
-
-    private function __construct()
+{ 
+    public static function findUserByEmail(string $email): ?User
     {
-        // Singleton géré par netvod/core/Database
-        $this->pdo = Database::getInstance()->pdo;
-    }
-
-    public static function getInstance(): UserRepository
-    {
-        if (self::$instance === null) {
-            self::$instance = new UserRepository();
-        }
-        return self::$instance;
-    }
-
-    /*
-       AUTHENTIFICATION
-    */
-  
-    public function findUserByEmail(string $email): ?User
-    {
-        $stmt = $this->pdo->prepare('SELECT * FROM user WHERE mail = :mail');
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('SELECT * FROM user WHERE mail = :mail');
         $stmt->execute(['mail' => $email]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -66,9 +46,10 @@ class UserRepository
         return new User( $data['mail'], (int)$data['id_user']);
     }
 
-    public function getHash(string $email): string
+    public static function getHash(string $email): string
     {
-        $stmt = $this->pdo->prepare('SELECT password FROM user WHERE mail = :mail');
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('SELECT password FROM user WHERE mail = :mail');
         $stmt->execute(['mail' => $email]);
         $hash = $stmt->fetchColumn();
 
@@ -90,48 +71,84 @@ class UserRepository
     }
 */
 
-    public function createUser(string $email, string $passwordHash): User
+    public static function createUser(string $email, string $passwordHash): User
     {
-        $stmt = $this->pdo->prepare('INSERT INTO user (mail, password) VALUES (:mail, :password)');
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('INSERT INTO user (mail, password) VALUES (:mail, :password)');
         $stmt->execute(['mail' => $email, 'password' => $passwordHash]);
 
-        $id = (int)$this->pdo->lastInsertId();
+        $id = (int)$pdo->lastInsertId();
         return new User($email,$id);
     }
 
-    /* 
-       GESTION DES LISTES
-     */
 
-    public function getUserLists(int $id_user): array
+    public static function getUserLists(int $id_user): array
     {
         return [
-            'favoris' => $this->getFavoriteSeries($id_user),
-            'en_cours' => $this->getInProgressSeries($id_user)
+            'favoris' => UserRepository::getFavoriteSeries($id_user),
+            'en_cours' => UserRepository::getInProgressSeries($id_user)
         ];
     }
 
-    public function addSerieToList(int $id_user, int $id_serie, string $listName): bool
+    public static function getFavoriteSeries(int $id_user): array
+    {
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('
+            SELECT s.*
+            FROM serie s
+            JOIN user2favori uf ON s.id_serie = uf.id_serie
+            WHERE uf.id_user = :id_user
+        ');
+        $stmt->execute(['id_user' => $id_user]);
+        $seriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $series = [];
+        foreach ($seriesData as $data) {
+            $series[] = SerieRepository::findById($data['id_serie']);
+        }
+        return $series;
+    }
+
+    public static function getInProgressSeries(int $id_user): array
+    {
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('
+            SELECT s.*
+            FROM serie s
+            JOIN user2encours ue ON s.id_serie = ue.id_serie
+            WHERE ue.id_user = :id_user
+        ');
+        $stmt->execute(['id_user' => $id_user]);
+        $seriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $series = [];
+        foreach ($seriesData as $data) {
+            $series[] = SerieRepository::findById($data['id_serie']);
+        }
+        return $series;
+    }
+
+    public static function addSerieToList(int $id_user, int $id_serie, string $listName): bool
     {
         $table = match ($listName) {
             'favoris' => 'User2favori',
             'en_cours' => 'User2encours',
-            default => throw new Exception('Liste inconnue'),
+            default => throw new \PDOException('Liste inconnue'),
         };
-
-        $stmt = $this->pdo->prepare("INSERT IGNORE INTO $table (id_user, id_serie) VALUES (:id_user, :id_serie)");
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare("INSERT IGNORE INTO $table (id_user, id_serie) VALUES (:id_user, :id_serie)");
         return $stmt->execute(['id_user' => $id_user, 'id_serie' => $id_serie]);
     }
 
-    public function removeSerieFromList(int $id_user, int $id_serie, string $listName): bool
+    public static function removeSerieFromList(int $id_user, int $id_serie, string $listName): bool
     {
         $table = match ($listName) {
             'favoris' => 'User2favori',
             'en_cours' => 'User2encours',
             default => throw new Exception('Liste inconnue'),
         };
-
-        $stmt = $this->pdo->prepare("DELETE FROM $table WHERE id_user = :id_user AND id_serie = :id_serie");
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare("DELETE FROM $table WHERE id_user = :id_user AND id_serie = :id_serie");
         return $stmt->execute(['id_user' => $id_user, 'id_serie' => $id_serie]);
     }
 

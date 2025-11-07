@@ -20,8 +20,7 @@ class EpisodeRenderer implements Renderer {
             <p>numéro: {$episode->numero}</p>
             <p>Durée: {$episode->duree} secondes</p>
             <p>{$episode->description}</p>
-            <p>Season: {$episode->season}, Episode: {$episode->number}</p>
-            <a href="{$episode->source}"><img src="{$episode->image}" alt="{$episode->title}"/></a>
+            <a href="?action=display-serie&id={$episode->id}"><img src="{$episode->image}" alt="{$episode->title}"/></a>
         </div>
         FIN;
     }
