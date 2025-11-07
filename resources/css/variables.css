@@ -1,0 +1,187 @@
+/**
+ * =============================================================================
+ * CRYSTAL GLASS LAYERS - VARIABLES
+ * =============================================================================
+ * 
+ * Système de design variables pour le style Glass Layers
+ * Toutes les constantes du projet sont centralisées ici
+ * 
+ * @author  ambroise-g
+ * @version 2.6
+ * @date    2025-11-05
+ */
+
+:root {
+    /* =========================================================================
+       COULEURS - Palette principale
+       ========================================================================= */
+    
+    /* Backgrounds */
+    --color-bg: #e8ebf3;
+    --color-bg-gradient: linear-gradient(135deg, #e8ebf3 0%, #d8dce8 100%);
+    
+    /* Glassmorphism */
+    --color-glass: rgba(255, 255, 255, 0.4);
+    --color-glass-strong: rgba(255, 255, 255, 0.5);
+    --color-glass-border: rgba(255, 255, 255, 0.8);
+    
+    /* Accent colors */
+    --color-accent: #6366f1;
+    --color-accent-light: #818cf8;
+    --color-accent-glow: rgba(99, 102, 241, 0.6);
+    
+    /* Text colors */
+    --color-text: #1a1a1a;
+    --color-text-muted: #64748b;
+    
+    
+    /* =========================================================================
+       OMBRES - Profondeur et élévation
+       ========================================================================= */
+    
+    --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.15);
+    --shadow-glass-strong: 0 12px 48px rgba(31, 38, 135, 0.2);
+    --shadow-hover: 0 20px 60px rgba(99, 102, 241, 0.25);
+    --shadow-focus: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    
+    
+    /* =========================================================================
+       TYPOGRAPHIE - Échelle et poids
+       ========================================================================= */
+    
+    /* Font families */
+    --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    
+    /* Font sizes - Échelle modulaire */
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 32px;
+    --font-size-4xl: 42px;
+    --font-size-5xl: 56px;
+    --font-size-6xl: 72px;
+    
+    /* Font weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-black: 900;
+    
+    /* Line heights */
+    --line-height-tight: 1.1;
+    --line-height-normal: 1.6;
+    --line-height-relaxed: 1.8;
+    
+    /* Letter spacing */
+    --letter-spacing-tight: -0.05em;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 0.05em;
+    
+    
+    /* =========================================================================
+       ESPACEMENTS - Système cohérent
+       ========================================================================= */
+    
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+    --spacing-4xl: 96px;
+    --spacing-5xl: 128px;
+    
+    
+    /* =========================================================================
+       BORDER RADIUS - Arrondis
+       ========================================================================= */
+    
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+    
+    
+    /* =========================================================================
+       TRANSITIONS - Animations fluides
+       ========================================================================= */
+    
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-smooth: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Easing curves personnalisées */
+    --ease-in-out-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    
+    
+    /* =========================================================================
+       BACKDROP FILTERS - Glassmorphism
+       ========================================================================= */
+    
+    --blur-sm: blur(20px);
+    --blur-md: blur(40px);
+    --blur-lg: blur(60px);
+    --blur-xl: blur(80px);
+    
+    --blur-glass-light: blur(60px) saturate(200%);
+    --blur-glass-strong: blur(80px) saturate(220%);
+    
+    
+    /* =========================================================================
+       Z-INDEX - Hiérarchie des couches
+       ========================================================================= */
+    
+    --z-background: 0;
+    --z-base: 1;
+    --z-dropdown: 10;
+    --z-sticky: 50;
+    --z-header: 100;
+    --z-modal: 1000;
+    --z-tooltip: 2000;
+    
+    
+    /* =========================================================================
+       BREAKPOINTS - Responsive design
+       ========================================================================= */
+    
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+    
+    
+    /* =========================================================================
+       LAYOUT - Conteneurs et grilles
+       ========================================================================= */
+    
+    --container-max-width: 1400px;
+    --container-padding: 32px;
+    
+    --grid-gap-sm: 24px;
+    --grid-gap-md: 32px;
+    --grid-gap-lg: 40px;
+}
+
+
+/**
+ * =============================================================================
+ * DARK MODE VARIABLES (optionnel - pour future implémentation)
+ * =============================================================================
+ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* À implémenter si besoin d'un mode sombre */
+    }
+}

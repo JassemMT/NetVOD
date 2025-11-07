@@ -4,9 +4,10 @@ namespace netvod\action;
 
 class DefaultAction implements Action {
     public function execute() : string {
-        return <<<FIN
+        var_dump($_SESSION);
+
+        return '
         <h1>Bienvenue sur NetVOD</h1>
-        <p>Votre plateforme de streaming préférée !</p>
-        FIN;
+        <p>Votre plateforme de streaming préférée !</p> ';
     }
 }

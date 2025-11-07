@@ -32,8 +32,8 @@ class Dispatcher
                 case 'login':
                     $obj = new act\LoginAction();
                     break;
-                case 'signin':
-                    $obj = new act\SignInAction();
+                case 'register':
+                    $obj = new act\RegisterAction();
                     break;
                 case 'display-catalogue':
                     $obj = new act\DisplayCatalogueAction();
@@ -45,7 +45,7 @@ class Dispatcher
                     $obj = new act\DisplayEpisodeAction();
                     break;
                 case 'add-serie':
-                    $obj = new act\AddSerieAction();
+                    $obj = new act\private\AddSerieAction();
                     break;
                 case 'notation':
                     $obj = new act\NotationAction();
@@ -81,8 +81,8 @@ class Dispatcher
                       <a href="?action=display-user">Mon profil</a> |
                       <a href="?action=logout">Déconnexion</a></nav>';
         } else {
-            $menu .= '<a href="?action=signin">Connexion</a> |
-                      <a href="?action=login">Créer un compte</a></nav>';
+            $menu .= '<a href="?action=login">Connexion</a> |
+                      <a href="?action=register">Créer un compte</a></nav>';
         }
 
         echo <<<HTML

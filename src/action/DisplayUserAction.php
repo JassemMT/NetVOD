@@ -2,22 +2,20 @@
 declare(strict_types=1);
 namespace netvod\action;
 
-use netvod\renderer\EpisodeRenderer;
+use netvod\exception\MissingArgumentException;
+use netvod\repository\UserRepository;
 use netvod\exception\BadRequestMethodException;
 use netvod\renderer\UserRenderer;
 
 class DisplayUserAction implements Action {
     public static function execute(): string {
-        print("Affichage du user : <br>");
-
-        $rep = UserRepository::GetInstance();
-
-        $user = $_GET['user'] ?? -1;
-        if ($user === -1){
-            echo " Pas d'utilisateur connecté";
-        }
-        var_dump($user);
-
-        return UserRenderer::render(["user" => $user]);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_GET['user'])) {
+                $user = $_GET['user'];
+                var_dump($user);
+                $rep = UserRepository::GetInstance();
+                return UserRenderer::render(["user" => $user]);
+            } else throw new MissingArgumentException('user');
+        } else throw new BadRequestMethodException();
     }
 }

@@ -12,12 +12,13 @@ class AuthnProvider {
 
 
 
-    public static function signin(string $email, string $password): void {
+    public static function login(string $email, string $password): void {
         $repo = UserRepository::getInstance();
 
         try {
             // Vérifie que l'utilisateur existe
             $user = $repo->findUserByEmail($email);
+
             if (!$user) {
                 throw new AuthnException('Email ou mot de passe incorrect');
             }
@@ -77,7 +78,7 @@ class AuthnProvider {
         }
     }
 
-    public static function register(string $email, string $password): User {
+    public static function register(string $email, string $password): void {
         $email = trim($email);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new AuthnException('Email invalide');
@@ -104,12 +105,9 @@ class AuthnProvider {
             throw new AuthnException('Erreur création utilisateur');
         }
 
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
         $_SESSION['user'] = $user;
-
-        return $user;
+        //pas besoin de retourner un utilisateur s'il est mis en session ici
     }
 
 }
+

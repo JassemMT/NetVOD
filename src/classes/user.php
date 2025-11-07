@@ -7,13 +7,13 @@ class User
 {
     protected string $email;
 
-    protected string $id;
+    protected int $id;
     protected array $listes = [];
 
-    public function __construct(string $email, string $id)
+    public function __construct(string $email, int $id)
     {
         $this->email = $email;
-        $this->id_user = $id;
+        $this->id = $id;
     }
 
     public function __get(string $attr)
