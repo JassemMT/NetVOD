@@ -7,7 +7,6 @@ use netvod\classes\Serie;
 use netvod\classes\Episode;
 use netvod\classes\ListeProgramme;
 use PDO;
-use Exception;
 
 /*
 findAllProgrammes() : SerieListe (avec toutes les series)
