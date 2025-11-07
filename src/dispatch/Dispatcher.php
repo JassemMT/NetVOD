@@ -45,7 +45,7 @@ class Dispatcher
                     $obj = new act\DisplayEpisodeAction();
                     break;
                 case 'add-serie':
-                    $obj = new act\AddSerieAction();
+                    $obj = new act\private\AddSerieAction();
                     break;
                 case 'notation':
                     $obj = new act\NotationAction();
