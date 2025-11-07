@@ -12,7 +12,7 @@ abstract class ProgrammeRenderer implements Renderer {
         $this->programme = $programme;
     }
 
-    public function render(array $params = []): string {
+    public function render(): string {
         $programme = $this->programme;
         return <<<FIN
         <div class="programme">

@@ -21,9 +21,10 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
         foreach ($serie->episodes as $episode) {
             $episodes .= EpisodeRenderer::render(["episode" => $episode]);
         }
+        var_dump($episodes); // pas d'episodes pour toutes les series
         return <<<FIN
         <div class="serie">
-            <a href="?action=display-serie&id={$serie->id}">
+            <a href="?action=display-serie&id={$serie->id}", style="text-decoration: none; color: inherit;">
                 <h2>{$serie->title}</h2>
                 <p>{$serie->description}</p>
                 <p>{$serie->annee}</p>

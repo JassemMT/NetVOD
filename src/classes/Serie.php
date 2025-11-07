@@ -8,17 +8,19 @@ use netvod\classes\Episode;
 
 class Serie implements Programme {
 
+    private int $id;
     private string $titre;
     private string $description;
     private int $annee;
     private string $image;
     private array $episodes = [];
 
-    public function __construct(string $titre, string $description, int $annee, string $image) {
+    public function __construct(int $id,string $titre, string $description, int $annee, string $image) {
+        $this->id = $id;
         $this->titre = $titre;
         $this->description = $description;
         $this->annee = $annee;
-        $this->image = $image;
+        $this->image = "data/image/".$image;
     }
 
     public function __get(string $attr) {

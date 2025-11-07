@@ -34,7 +34,7 @@ class SerieRepository{
     }
 
     public function findAll():ListeProgramme{
-        $sql = "SELECT titre, description, annee, image FROM serie ORDER BY titre";
+        $sql = "SELECT id_serie, titre, description, annee, image FROM serie ORDER BY titre";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
 
@@ -42,12 +42,11 @@ class SerieRepository{
         $listeProgramme = new ListeProgramme("Catalogue des séries");
         $series = $stmt->fetchAll();
 
-
         foreach ($series as $s) {
 
             // mettre la liste de serie en Session?
             // car les series ne seront accèssible que dans 
-            $serie = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+            $serie = new Serie((int)$s['id_serie'],$s['titre'], $s['description'], (int)$s['annee'], $s['image']);
             $listeProgramme->ajouterProgramme($serie);
 
 
@@ -55,17 +54,17 @@ class SerieRepository{
         return $listeProgramme;
     }
 
-    public function findById(int $id_serie):Serie {
-        $sql = " SELECT titre, description, annee, image FROM serie WHERE id_serie=:idSerie  ORDER BY titre  ";
-        $stmt = $this->pdo->prepare(['idSerie'=>$id_serie]);
-        $stmt->execute();
+    public function findById(string $id_serie):Serie {
+        $sql = " SELECT id_serie, titre, description, annee, image FROM serie WHERE id_serie=:id_serie  ORDER BY titre  ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id_serie'=>$id_serie]);
         $serie = $stmt->fetchAll();
 
         foreach ($serie as $s) {
 
             // mettre la liste de serie en Session?
             // car les series ne seront accèssible que dans
-            $seri = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+            $seri = new Serie((int)$s['id_serie'],$s['titre'], $s['description'], (int)$s['annee'], $s['image']);
         }
         return $seri;
     }

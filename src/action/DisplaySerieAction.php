@@ -6,20 +6,21 @@ use netvod\exception\MissingArgumentException;
 use netvod\renderer\SerieRenderer;
 use netvod\exception\BadRequestMethodException;
 use netvod\repository\SerieRepository;
+use netvod\exception\InvalidArgumentException;
 
 class DisplaySerieAction implements Action {
     public function execute(): string {
 
         if ($_SERVER['REQUEST_METHOD']==='GET') {
             if (isset($_GET['id'])) {
-                $idSerie = $_GET['idSerie'];
-                $rep = SerieRepository::GetInstance();
-                $pl = $rep->findById($idSerie);
-                var_dump($pl);
-                
-                $lr = new SerieRenderer();
-                $lr->render((array)$pl);
-
+                if (!empty($_GET['id'])) {
+                    $idSerie = $_GET['id'];
+                    $rep = SerieRepository::GetInstance();
+                    $listeP = $rep->findById($idSerie);
+                    var_dump($listeP); // les episodes ne sont pas mis dans la série
+                    $renderer = new SerieRenderer($listeP);
+                    return $renderer->render();
+                } else throw new InvalidArgumentException('id');
             } else throw new MissingArgumentException('id');
         } else throw new BadRequestMethodException();
 

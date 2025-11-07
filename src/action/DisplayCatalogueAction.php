@@ -11,7 +11,6 @@ class DisplayCatalogueAction implements Action {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $rep = SerieRepository::GetInstance();
             $catalogue = $rep->findAll(); //Objet de type ListeProgramme
-            var_dump($catalogue);
 
             $listeprogrammeRenderer = new ListeProgrammeRenderer($catalogue);
             return $listeprogrammeRenderer->render();
