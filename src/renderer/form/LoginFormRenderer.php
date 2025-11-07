@@ -5,10 +5,12 @@ namespace netvod\renderer\form;
 use netvod\renderer\Renderer;
 
 class LoginFormRenderer implements Renderer {
-    public static function render(array $data = []): string {
+
+    public __construct() {}
+    public function render(): string {
         return <<<FIN
                     <h1>Connexion</h1>
-                    <form action="?action=lognin" method="post" class="auth-form">
+                    <form action="?action='login'" method="post" class="auth-form">
                         <label for="mail">Adresse mail</label>
                         <input type="email" id="mail" placeholder="exemple@mail.com" name="mail" required>
 
