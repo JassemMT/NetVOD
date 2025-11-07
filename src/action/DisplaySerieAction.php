@@ -7,22 +7,25 @@ use netvod\renderer\SerieRenderer;
 use netvod\exception\BadRequestMethodException;
 use netvod\repository\SerieRepository;
 use netvod\exception\InvalidArgumentException;
+use netvod\exception\ActionUnauthorizedException;
 
 class DisplaySerieAction implements Action {
     public function execute(): string {
 
-        if ($_SERVER['REQUEST_METHOD']==='GET') {
+        if (AuthnProvider::isLoggedIn()) {
+            if ($_SERVER['REQUEST_METHOD']==='GET') {
             if (isset($_GET['id'])) {
-                if (!empty($_GET['id'])) {
-                    $idSerie = $_GET['id'];
-                    $rep = SerieRepository::GetInstance();
-                    $listeP = $rep->findById($idSerie);
-                    
-                    $renderer = new SerieRenderer($listeP);
-                    return $renderer->render();
-                } else throw new InvalidArgumentException('id');
-            } else throw new MissingArgumentException('id');
-        } else throw new BadRequestMethodException();
+                    if (!empty($_GET['id'])) {
+                        $idSerie = $_GET['id'];
+                        $listeP = SerieRepository::findById($idSerie);
+                        
+                        $renderer = new SerieRenderer($listeP);
+                        return $renderer->render();
+                    } else throw new InvalidArgumentException('id');
+                } else throw new MissingArgumentException('id');
+            } else throw new BadRequestMethodException();
+        } else throw new ActionUnauthorizedException("il faut être connecté pour voir une série");
+
 
 
         

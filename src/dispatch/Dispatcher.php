@@ -26,7 +26,7 @@ class Dispatcher
 
         // Si on essaie d'accéder à une action privée sans être connecté → redirection
         if (in_array($this->action, $privateActions) && !isset($_SESSION['user'])) {
-            $obj = new act\SignInAction();
+            $obj = new act\LogInAction();
         } else {
             switch ($this->action) {
                 case 'login':

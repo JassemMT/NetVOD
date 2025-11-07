@@ -11,8 +11,7 @@ class DisplayCatalogueAction implements Action {
     public function execute(): string {
         if (AuthnProvider::isLoggedIn()) {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $rep = SerieRepository::GetInstance();
-                $catalogue = $rep->findAll(); //Objet de type ListeProgramme
+                $catalogue = SerieRepository::findAll(); //Objet de type ListeProgramme
 
                 $listeprogrammeRenderer = new ListeProgrammeRenderer($catalogue);
                 return $listeprogrammeRenderer->render();

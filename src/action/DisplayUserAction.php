@@ -10,9 +10,11 @@ use netvod\renderer\UserRenderer;
 
 class DisplayUserAction implements Action {
     public function execute(): string {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $renderer = new UserRenderer(AuthnProvider::getSignedInUser());
-                return $renderer->render();
-        } else throw new BadRequestMethodException();
+        if (AuthnProvider::isLoggedIn()) {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                    $renderer = new UserRenderer(AuthnProvider::getSignedInUser());
+                    return $renderer->render();
+            } else throw new BadRequestMethodException();
+        }else throw new ActionUnauthorizedException("il faut être connecté pour voir un utilisateur");
     }
 }

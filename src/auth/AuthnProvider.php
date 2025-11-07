@@ -41,13 +41,15 @@ class AuthnProvider {
     }
 
     $user = $_SESSION['user'];
+    var_dump($user);
 
     // Vérifie que l'utilisateur existe encore
-    $check = UserRepository::findUserByEmail($user->email);
+    /*$check = UserRepository::findUserByEmail($user->email); //TODO: changer le User en session par son id
     if (!$check) {
         session_destroy();
         throw new AuthnException('Utilisateur introuvable');
     }
+    */
 
     return $user;
 }
