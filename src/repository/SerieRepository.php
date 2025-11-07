@@ -33,7 +33,7 @@ class SerieRepository{
 
     public function findAll():array{
         $sql = "SELECT titre, description, annee, image FROM serie ORDER BY titre";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
 
         // Récupérer toutes les lignes
