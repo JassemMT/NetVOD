@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace netvod\repository;
 
 use netvod\core\Database;
-use netvod\model\User;
+use netvod\classes\User;
 use netvod\exception\AuthnException;
 
 use netvod\action\LogInAction;
@@ -57,17 +57,13 @@ class UserRepository
   
     public function findUserByEmail(string $email): ?User
     {
-        try {
-            $stmt = $this->pdo->prepare('SELECT * FROM user WHERE mail = :mail');
-            $stmt->execute(['mail' => $email]);
-            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->pdo->prepare('SELECT * FROM user WHERE mail = :mail');
+        $stmt->execute(['mail' => $email]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$data) return null;
+        if (!$data) throw new \PDOException('Utilisateur non trouvé.');
 
-            return new User((int)$data['id_user'], $data['mail']);
-        } catch (PDOException $e) {
-            throw new Exception('Erreur lors de la recherche de l’utilisateur.');
-        }
+        return new User( $data['mail'], (int)$data['id_user']);
     }
 
     public function getHash(string $email): string
@@ -96,15 +92,11 @@ class UserRepository
 
     public function createUser(string $email, string $passwordHash): User
     {
-        try {
-            $stmt = $this->pdo->prepare('INSERT INTO user (mail, password) VALUES (:mail, :password)');
-            $stmt->execute(['mail' => $email, 'password' => $passwordHash]);
+        $stmt = $this->pdo->prepare('INSERT INTO user (mail, password) VALUES (:mail, :password)');
+        $stmt->execute(['mail' => $email, 'password' => $passwordHash]);
 
-            $id = (int)$this->pdo->lastInsertId();
-            return new User($id, $email);
-        } catch (PDOException $e) {
-            throw new Exception('Erreur lors de la création de l\'utilisateur.');
-        }
+        $id = (int)$this->pdo->lastInsertId();
+        return new User($email,$id);
     }
 
     /* 

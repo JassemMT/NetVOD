@@ -78,7 +78,7 @@ class AuthnProvider {
         }
     }
 
-    public static function register(string $email, string $password): User {
+    public static function register(string $email, string $password): void {
         $email = trim($email);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new AuthnException('Email invalide');
@@ -105,12 +105,8 @@ class AuthnProvider {
             throw new AuthnException('Erreur création utilisateur');
         }
 
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
         $_SESSION['user'] = $user;
-
-        return $user;
+        //pas besoin de retourner un utilisateur s'il est mis en session ici
     }
 
 }

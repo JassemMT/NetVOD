@@ -6,6 +6,7 @@ use netvod\exception\BadRequestMethodException;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
 use netvod\renderer\form\NotationFormRenderer;
+use netvod\repository\SerieRepository;
 
 use netvod\classes\Commentaire;
 

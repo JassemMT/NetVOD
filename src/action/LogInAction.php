@@ -19,16 +19,10 @@ class LogInAction implements Action {
             // Vérification des champs
             if (!isset($_POST['mail'])) throw new MissingArgumentException("email");
             if (!isset($_POST['password'])) throw new MissingArgumentException("password");
+            if (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException("email");
 
-            $mail = trim((string)$_POST['mail']);
+            $mail = (string)$_POST['mail'];
             $password = (string)$_POST['password'];
-
-            $mail = filter_var($mail, FILTER_SANITIZE_EMAIL);
-            $password = filter_var($password, FILTER_SANITIZE_STRING);
-
-            if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                throw new InvalidArgumentException("email");
-            }
 
             // Utilise AuthnProvider::login pour vérifier et créer la session
             try {

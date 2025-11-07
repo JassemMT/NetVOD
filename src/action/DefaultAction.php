@@ -4,11 +4,10 @@ namespace netvod\action;
 
 class DefaultAction implements Action {
     public function execute() : string {
-        $pseudo = $_SESSION['user']->email ?? 'Invité';
+        var_dump($_SESSION);
 
         return '
         <h1>Bienvenue sur NetVOD</h1>
-        '.$pseudo. '
         <p>Votre plateforme de streaming préférée !</p> ';
     }
 }
