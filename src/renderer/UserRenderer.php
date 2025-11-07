@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace netvod\renderer;
 
+use netvod\classes\User;
+
 class UserRenderer implements Renderer {
 
     protected User $user;
@@ -10,7 +12,7 @@ class UserRenderer implements Renderer {
         $this->user = $user;
     }
 
-    public static function render(array $params = []): string {
+    public function render(): string {
         $user = $this->user;
         return <<<FIN
         <div class="user">

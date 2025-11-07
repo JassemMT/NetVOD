@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace netvod\action;
 
+use netvod\auth\AuthnProvider;
 use netvod\exception\MissingArgumentException;
 use netvod\repository\UserRepository;
 use netvod\exception\BadRequestMethodException;
@@ -12,8 +13,8 @@ class DisplayUserAction implements Action {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_GET['user'])) {
                 $user = $_GET['user'];
-                $renderer = new UserRenderer(UserRepository::findById($user));
-                return UserRenderer::render(["user" => $user]);
+                $renderer = new UserRenderer(AuthnProvider::getSignedInUser());
+                return $renderer->render();
             } else throw new MissingArgumentException('user');
         } else throw new BadRequestMethodException();
     }
