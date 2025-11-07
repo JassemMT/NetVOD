@@ -5,6 +5,7 @@ namespace netvod\action;
 use netvod\exception\BadRequestMethodException;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
+use netvod\renderer\form\NotationFormRenderer;
 
 use netvod\classes\Commentaire;
 
@@ -23,22 +24,24 @@ class NotationAction implements Action {
         $Serie = $Srep->findById($_GET['id']);
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $Srender->render($Srep->findAll());
-
+            /*
             return <<<FIN
                 <h1>Noter</h1>
-                    <form action="?action=noter&id={$id}" method="post" class="note-form">
-                        <label for="titre">Titre de  la série</label>
-                        <input type="text" id="titre" placeholder="Nom Série" name="titre" required>
+                <form action="?action=noter&id={$id}" method="post" class="note-form">
+                    <label for="titre">Titre de  la série</label>
+                    <input type="text" id="titre" placeholder="Nom Série" name="titre" required>
 
-                        <label for="commentaire">commentaire</label>
-                        <input type="text" id="commentaire" placeholder="commentaire" name="commentaire" required>
+                    <label for="commentaire">commentaire</label>
+                    <input type="text" id="commentaire" placeholder="commentaire" name="commentaire" required>
 
-                        <label for="note">Note pour la série</label>
-                        <input type="int" min="1" max="5" step="1" id="note" placeholder="Note" name="note" required>
+                    <label for="note">Note pour la série</label>
+                    <input type="int" min="1" max="5" step="1" id="note" placeholder="Note" name="note" required>
 
-                        <button type="submit" class="btn-primary">Envoyer</button>
-                    </form>
+                    <button type="submit" class="btn-primary">Envoyer</button>
+                </form>
             FIN;
+            */
+            return NotationFormRenderer::render(['id' => $id]);
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['titre'])) { // check si le titre est bien défini dans la BD
                 if (isset($_POST['note'])) {

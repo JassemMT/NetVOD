@@ -4,6 +4,7 @@ namespace netvod\action;
 
 use netvod\renderer\EpisodeRenderer;
 use netvod\exception\BadRequestMethodException;
+use netvod\renderer\form\NotationFormRenderer;
 
 class DisplayEpisodeAction implements Action {
     public static function execute(): string {
@@ -15,8 +16,10 @@ class DisplayEpisodeAction implements Action {
     
             $html = "";
             $html .= EpisodeRenderer::render(["episode" => $episode]);
-            $notation = new NotationAction();
-            $html .= $notation->execute();
+            //$notation = new NotationAction();
+            //$html .= $notation->execute();
+            $html .= NotationFormRenderer::render(['id' => $episode->getId()]);
+            return $html;
         } else throw new BadRequestMethodException();
     }
 }

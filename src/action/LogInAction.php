@@ -6,6 +6,7 @@ use netvod\auth\AuthnProvider;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
 use netvod\exception\BadRequestMethodException;
+use netvod\renderer\form\LoginFormRenderer;
 use netvod\repository\UserRepository;
 use netvod\exception\AuthnException;
 
@@ -13,18 +14,7 @@ class LogInAction implements Action {
 
     public function execute() : string {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return <<<FIN
-                    <h1>Connexion</h1>
-                    <form action="?action=lognin" method="post" class="auth-form">
-                        <label for="mail">Adresse mail</label>
-                        <input type="email" id="mail" placeholder="exemple@mail.com" name="mail" required>
-
-                        <label for="password">Mot de passe</label>
-                        <input type="password" id="password" placeholder="••••••••" name="password" required>
-
-                        <button type="submit" class="btn-primary">Se connecter</button>
-                    </form>
-                    FIN;
+            return LoginFormRenderer::render();
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Vérification des champs
             if (!isset($_POST['mail'])) throw new MissingArgumentException("email");
