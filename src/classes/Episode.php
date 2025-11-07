@@ -20,8 +20,8 @@ class Episode
         $this->titre = $titre;
         $this->description = $description;
         $this->duree = $duree;
-        $this->source = $source;
-        $this->image = $image;
+        $this->source = "data/video/".$source;
+        $this->image = "data/image/".$image;
     }
 
     public function __get(string $attr)
