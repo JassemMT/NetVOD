@@ -86,20 +86,38 @@ class Dispatcher
         }
 
         echo <<<HTML
-        <!doctype html>
+        <!DOCTYPE html>
         <html lang="fr">
-        <head>
-        <meta charset="utf-8">
-        <title>{$title}</title>
-        <style>
-            body { font-family:Arial, sans-serif; margin:18px; }
-            nav a { margin-right:12px; }
-        </style>
-        </head>
-        <body>
-        <header><h1>{$title}</h1>{$menu}<hr></header>
-        <main>{$html}</main>
-        </body>
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>{$title}</title>
+                <link rel="stylesheet" href="ressources/css/variables.css">
+                <link rel="stylesheet" href="ressources/css/style.css">
+                <link rel="stylesheet" href="ressources/css/catalogue.css">
+                <!-- import css specifique a traiter -->
+            </head>
+            <body>
+                <div class="app-wrapper">
+                    <!-- HEADER -->
+                    <header class="app-header" role="banner">
+                        <div class="header-content">
+                            <div class="logo">NetVOD</div>
+                            <nav class="nav" role="navigation" aria-label="Menu principal">
+                                {$menu}
+                            </nav>
+                        </div>
+                    </header>
+
+                    <!-- MAIN CONTENT -->
+                    <main class="container">
+                        {$html}
+                    </main>
+                </div>
+
+                <!-- Script 3D parallaxe -->
+                <script src="ressources/js/app.js"></script>
+            </body>
         </html>
         HTML;
     }

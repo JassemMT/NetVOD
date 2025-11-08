@@ -40,13 +40,18 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
     public function renderShort(): string {
         $serie = $this->serie;
         return <<<FIN
-        <div class="serie-short">
-            <a href="?action=display-serie&id={$serie->id}", style="text-decoration: none; color: inherit;">
-                <h2>{$serie->title}</h2>
-                <p>{$serie->description}</p>
-                <p>{$serie->annee}</p>
-                <img src="{$serie->image}" alt="{$serie->title}"/>
-            </a>
+        <article class="card" role="article" tabindex="0" aria-label="{$serie->titre} — Série de {$serie->annee}">
+            <img class="card-image" src="{$serie->image}" alt="{$serie->titre}" />
+            <div class="card-band">
+                <div class="card-meta">
+                    <h3 class="card-title">{$serie->titre}</h3>
+                    <p class="card-genre">{$serie->annee}</p>
+                </div>
+                <a href="?action=display-serie&id={$serie->id}" class="btn" role="button">Regarder</a>
+            </div>
+        </article>
         FIN;
     }
 }
+
+

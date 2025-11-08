@@ -19,8 +19,13 @@ class ListeProgrammeRenderer implements Renderer {
             $html .= (new SerieRenderer($programme))->renderShort(); // on part du principe que la liste de programme ne contient que des séries
         }
         return <<<FIN
-        <h1>Catalogue des séries</h1>
-        <div class="liste-programme"> $html </div>
+        <section class="section-catalogue">
+                <h1>Catalogue des séries</h1>
+                <!-- GRID DE CARTES -->
+                <div class="grid" role="region" aria-label="Liste des séries">
+                    {$html}
+                </div>
+        </section>
         FIN;
 
     }
