@@ -8,6 +8,7 @@ use netvod\exception\BadRequestMethodException;
 use netvod\repository\SerieRepository;
 use netvod\exception\InvalidArgumentException;
 use netvod\exception\ActionUnauthorizedException;
+use netvod\auth\AuthnProvider;
 
 class DisplaySerieAction implements Action {
     public function execute(): string {
@@ -26,18 +27,12 @@ class DisplaySerieAction implements Action {
             } else throw new BadRequestMethodException();
         } else throw new ActionUnauthorizedException("il faut être connecté pour voir une série");
 
-
-
-        
-
-
         // pour utiliser et appeler le SerieRenderer() il faut récupérer d'une manière ou d'une autre 
         // une liste de série et plus spécifiquement la série ou la liste de série voulu par l'utilisateur 
         // choix parmis les listes enregistrés de l'utilisateur 
         // ou sinon parmis toutes les séries possibles 
         // $red = new SerieRenderer();
         // $red->render();
-
 
     }
 }

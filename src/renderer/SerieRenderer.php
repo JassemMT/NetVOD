@@ -20,7 +20,7 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
         $episodes = "";
         foreach ($serie->episodes as $episode) {
             $renderer = new EpisodeRenderer($episode);
-            $episodes .= $renderer->render();
+            $episodes .= $renderer->renderShort();
         }
 
         return <<<FIN

@@ -11,9 +11,9 @@ use netvod\repository\EpisodeRepository;
 use netvod\exception\ActionUnauthorizedException;
 
 class DisplayEpisodeAction implements Action {
-    public static function execute(): string {
+    public function execute(): string {
         if (AuthnProvider::isLoggedIn()) {
-            if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 if (isset($_GET['id'])) {
                     $episode = EpisodeRepository::findById((int)$_GET['id']);
                     if ($episode === null) {

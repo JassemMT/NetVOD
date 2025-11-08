@@ -20,7 +20,24 @@ class EpisodeRenderer implements Renderer {
             <p>numéro: {$episode->numero}</p>
             <p>Durée: {$episode->duree} secondes</p>
             <p>{$episode->description}</p>
-            <a href="?action=display-serie&id={$episode->id}"><img src="{$episode->image}" alt="{$episode->title}"/></a>
+            <video controls>
+                <source src="{$episode->source}" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+        </div>
+        FIN;
+    }
+
+    public function renderShort(): string {
+        $episode = $this->episode;
+        
+        return <<<FIN
+        <div class="episode">
+            <h3>{$episode->titre}</h3>
+            <p>numéro: {$episode->numero}</p>
+            <p>Durée: {$episode->duree} secondes</p>
+            <p>{$episode->description}</p>
+            <a href="?action=display-episode&id={$episode->id}"><img src="{$episode->image}" alt="{$episode->titre}"/></a>
         </div>
         FIN;
     }

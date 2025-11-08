@@ -47,8 +47,6 @@ class SerieRepository{
         $stmt->execute(['id'=>$id]);
         $s = $stmt->fetch();
 
-        // mettre la liste de serie en Session?
-        // car les series ne seront accèssible que dans 
         $serie = new Serie((int)$s['id_serie'], $s['titre'], $s['description'], (int)$s['annee'], $s['image']);
         $episodes = EpisodeRepository::findBySerie((int)$s['id_serie']);
         foreach ($episodes as $ep) {
