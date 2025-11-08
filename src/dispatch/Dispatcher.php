@@ -77,7 +77,7 @@ class Dispatcher
 
         if (isset($_SESSION['user'])) {
             $menu .= '<a href="?action=display-catalogue">Catalogue</a> | 
-                      <a href="?action=display-list">Mes séries</a> | 
+                      <a href="?action=display-liste">Mes séries</a> | 
                       <a href="?action=display-user">Mon profil</a> |
                       <a href="?action=logout">Déconnexion</a></nav>';
         } else {

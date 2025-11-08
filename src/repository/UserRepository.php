@@ -97,48 +97,11 @@ class UserRepository
     public static function getUserLists(int $id_user): array
     {
         return [
-            'favoris' => UserRepository::getFavoriteSeries($id_user),
-            'en_cours' => UserRepository::getInProgressSeries($id_user)
+            'favoris' => ListeProgrammeRepository::getFavoriteSeries($id_user),
+            'en_cours' => ListeProgrammeRepository::getEnCoursSeries($id_user)
         ];
     }
 
-    public static function getFavoriteSeries(int $id_user): array
-    {
-        $pdo = Database::getInstance()->pdo;
-        $stmt = $pdo->prepare('
-            SELECT s.*
-            FROM serie s
-            JOIN user2favori uf ON s.id_serie = uf.id_serie
-            WHERE uf.id_user = :id_user
-        ');
-        $stmt->execute(['id_user' => $id_user]);
-        $seriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $series = [];
-        foreach ($seriesData as $data) {
-            $series[] = SerieRepository::findById($data['id_serie']);
-        }
-        return $series;
-    }
-
-    public static function getInProgressSeries(int $id_user): array
-    {
-        $pdo = Database::getInstance()->pdo;
-        $stmt = $pdo->prepare('
-            SELECT s.*
-            FROM serie s
-            JOIN user2encours ue ON s.id_serie = ue.id_serie
-            WHERE ue.id_user = :id_user
-        ');
-        $stmt->execute(['id_user' => $id_user]);
-        $seriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $series = [];
-        foreach ($seriesData as $data) {
-            $series[] = SerieRepository::findById($data['id_serie']);
-        }
-        return $series;
-    }
 
     public static function addSerieToList(int $id_user, int $id_serie, string $listName): bool
     {
