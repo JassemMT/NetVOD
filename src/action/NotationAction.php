@@ -33,7 +33,7 @@ class NotationAction implements Action {
                             $note = $_POST['note'];
                             $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-                            $com = new Commentaire($id,AuthnProvider::getSignedInUser()->id, $note,$commentaire);
+                            $com = new Commentaire($id,AuthnProvider::getSignedInUser(), $note,$commentaire);
                             CommentaireRepository::upload($com); // TODO: créer le repository Commentaire
 
                             return "";

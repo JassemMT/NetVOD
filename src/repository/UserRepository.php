@@ -34,7 +34,7 @@ getInProgressSeries(int $id_user): array (objet Series)
 
 class UserRepository
 { 
-    public static function findUserByEmail(string $email): ?User
+    public static function Email2Id(string $email): int // TODO : trigger pour l'unicité de l'email
     {
         $pdo = Database::getInstance()->pdo;
         $stmt = $pdo->prepare('SELECT * FROM user WHERE mail = :mail');
@@ -43,7 +43,19 @@ class UserRepository
 
         if (!$data) throw new \PDOException('Utilisateur non trouvé.');
 
-        return new User( $data['mail'], (int)$data['id_user']);
+        return (int)$data['id_user'];
+    }
+
+    public static function getUserById(int $id_user): User
+    {
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('SELECT * FROM user WHERE id_user = :id_user');
+        $stmt->execute(['id_user' => $id_user]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$data) throw new \PDOException('Utilisateur non trouvé.');
+
+        return new User($data['mail'], (int)$data['id_user']);
     }
 
     public static function getHash(string $email): string
@@ -71,14 +83,14 @@ class UserRepository
     }
 */
 
-    public static function createUser(string $email, string $passwordHash): User
+    public static function createUser(string $email, string $passwordHash): int
     {
         $pdo = Database::getInstance()->pdo;
         $stmt = $pdo->prepare('INSERT INTO user (mail, password) VALUES (:mail, :password)');
         $stmt->execute(['mail' => $email, 'password' => $passwordHash]);
 
         $id = (int)$pdo->lastInsertId();
-        return new User($email,$id);
+        return $id;
     }
 
 

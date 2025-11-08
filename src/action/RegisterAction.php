@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace netvod\action;
 
+use netvod\auth\AuthnProvider;
 use netvod\exception\BadRequestMethodException;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
@@ -35,23 +36,9 @@ class RegisterAction implements Action {
             if (mb_strlen($pswd1) < 10) {
                 throw new InvalidArgumentException("password");
             }
-
-            // Utilise le UserRepository pour la création de l'utilisateur
-            $repo = UserRepository::getInstance();
-
-            // Vérifie qu'il n'existe pas déjà un utilisateur avec cet email
-            try {
-                $existing = $repo->findUserByEmail($mail);
-                throw new InvalidArgumentException("email existe déjà");
-            } catch (\PDOException $e) {
-                // si on a une exception c'est que l'utilisateur n'existe pas, on peut continuer 
-            }
-
-
-            $hash = password_hash($pswd1, PASSWORD_DEFAULT, ['cost' => 12]);
             
-            $user = $repo->createUser($mail, $hash);
-            $_SESSION['user'] = $user;
+            AuthnProvider::register($mail, $pswd1); // a ce stade pswd1 et pswd2 sont identiques
+
             return "";
         } else throw new BadRequestMethodException();
     }

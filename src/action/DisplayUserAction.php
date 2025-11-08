@@ -12,7 +12,8 @@ class DisplayUserAction implements Action {
     public function execute(): string {
         if (AuthnProvider::isLoggedIn()) {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                    $renderer = new UserRenderer(AuthnProvider::getSignedInUser());
+                    $user = UserRepository::getUserById(AuthnProvider::getSignedInUser());
+                    $renderer = new UserRenderer($user);
                     return $renderer->render();
             } else throw new BadRequestMethodException();
         }else throw new ActionUnauthorizedException("il faut être connecté pour voir un utilisateur");
