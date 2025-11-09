@@ -95,6 +95,7 @@ class Dispatcher
                 <link rel="stylesheet" href="ressources/css/variables.css">
                 <link rel="stylesheet" href="ressources/css/style.css">
                 <link rel="stylesheet" href="ressources/css/catalogue.css">
+                <link rel="stylesheet" href="ressources/css/serie.css">
                 <!-- import css specifique a traiter -->
             </head>
             <body>
@@ -115,8 +116,12 @@ class Dispatcher
                     </main>
                 </div>
 
-                <!-- Script 3D parallaxe -->
+                <!-- Script import spe TODO -->
                 <script src="ressources/js/app.js"></script>
+                <script src="ressources/js/serie.js"></script>
+                <script src="ressources/js/acceuil.js"></script>
+                <script src="ressources/js/catalogue.js"></script>
+                <script src="ressources/js/episode.js"></script>
             </body>
         </html>
         HTML;

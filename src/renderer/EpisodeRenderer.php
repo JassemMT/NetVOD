@@ -32,13 +32,28 @@ class EpisodeRenderer implements Renderer {
         $episode = $this->episode;
         
         return <<<FIN
-        <div class="episode">
-            <h3>{$episode->titre}</h3>
-            <p>numéro: {$episode->numero}</p>
-            <p>Durée: {$episode->duree} secondes</p>
-            <p>{$episode->description}</p>
-            <a href="?action=display-episode&id={$episode->id}"><img src="{$episode->image}" alt="{$episode->titre}"/></a>
-        </div>
+        <article class="episode-card" role="article">
+            <a href="?action=display-episode&id={$episode->id}" class="episode-link" aria-label="Épisode {$episode->numero} — {$episode->titre}">
+                
+                <!-- Image -->
+                <div class="episode-image-wrapper">
+                    <img class="episode-image" src="{$episode->image}" alt="<?= htmlspecialchars($episode->titre) ?>" />
+                </div>
+
+                <!-- Info band -->
+                <div class="episode-band">
+                    <div class="episode-meta">
+                        <h3 class="episode-title">Épisode {$episode->numero}</h3>
+                        <p class="episode-subtitle">{$episode->titre}</p>
+                        <p class="episode-duration">
+                            <time>{$episode->duree} secondes</time>
+                        </p>
+                    </div>
+                    <button class="btn btn-small" role="button">Regarder</button>
+                </div>
+
+            </a>
+        </article>
         FIN;
     }
 

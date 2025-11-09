@@ -24,18 +24,42 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
         }
 
         return <<<FIN
-        <div class="serie">
-            <h2>{$serie->title}</h2>
-            <p>{$serie->description}</p>
-            <p>{$serie->annee}</p>
-            <img src="{$serie->image}" alt="{$serie->title}"/>
-        </div>
-        <hr/>
-        <div class="episodes">
-            $episodes
-        </div>
+        <!-- HERO SECTION -->
+        <section class="hero-serie" role="region" aria-label="Détails de la série">
+            <div class="hero-image">
+                <img src="{$serie->image}" alt="{$serie->titre}" />
+            </div>
+            
+            <div class="hero-content">
+                <div class="hero-meta">
+                    <h1 class="hero-title">{$serie->titre}</h1>
+                    <p class="hero-year">{$serie->annee}</p>
+                </div>
+    
+                <p class="hero-description">
+                    <!-- pas de description pour l'instant -->
+                </p>
+    
+                <div class="hero-actions">
+                    <button class="btn btn-primary" aria-label="Regarder {$serie->titre} ?>">
+                        Regarder
+                    </button>
+                    <button class="btn btn-secondary" aria-label="Ajouter {$serie->titre} à mes favoris">
+                        Ajouter aux favoris
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="episodes-section" role="region" aria-label="Épisodes de la série">
+            <h2>Épisodes</h2>
+            <div class="episodes-grid">
+                {$episodes}
+            </div>
+        </section>
         FIN;
     }
+
 
     public function renderShort(): string {
         $serie = $this->serie;
