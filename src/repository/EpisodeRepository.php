@@ -72,4 +72,16 @@ class EpisodeRepository extends Database {
         }
     }
 
+    public static function findSerieByID(int $id_episode): int {
+        $pdo = Database::getInstance()->pdo;
+
+        $stmt = $pdo->prepare('SELECT id_serie FROM episode WHERE id_episode = :id_episode');
+        $stmt->execute(['id_episode' => $id_episode]);
+
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($data) return (int)$data['id_serie'];
+        else throw new \PDOException("Épisode introuvable dans la base de données.");
+    }
+
 }

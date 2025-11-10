@@ -81,7 +81,7 @@ class SerieRepository{
                 SELECT 
                     AVG(note) AS moyenne_notes
                 FROM commentaire
-                WHERE id_serie = :idSerie
+                WHERE id_serie = :id_serie
                 AND note IS NOT NULL
             ";
 

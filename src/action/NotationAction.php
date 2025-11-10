@@ -53,7 +53,7 @@ class NotationAction implements Action {
 
             // Optionnel : feedback utilisateur
             $moyenne = (new SerieRepository())->getAverageRating($idSerie);
-            return "<p>Votre avis a été enregistré ! Note moyenne actuelle : " . number_format($moyenne, 2) . "/5</p>";
+            return "<p>Votre avis a été enregistré ! Note moyenne actuelle : " . number_format($moyenne, 2) . "/5</p>"; // TODO avertir si c'est une mise à jour ou une première notation
         }
 
         throw new BadRequestMethodException();

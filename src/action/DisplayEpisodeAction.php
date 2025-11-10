@@ -15,15 +15,17 @@ class DisplayEpisodeAction implements Action {
         if (AuthnProvider::isLoggedIn()) {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 if (isset($_GET['id'])) {
-                    $episode = EpisodeRepository::findById((int)$_GET['id']);
+                    $id = (int)$_GET['id'];
+                    $episode = EpisodeRepository::findById($id);
                     if ($episode === null) {
                         throw new \PDOException("Épisode introuvable dans la base de données.");
                     }
+                    $id_serie = EpisodeRepository::findSerieByID($id);
             
                     $html = "";
                     $renderer = new EpisodeRenderer($episode);
                     $html .= $renderer->render();
-                    $renderer = new NotationFormRenderer($episode->id);
+                    $renderer = new NotationFormRenderer($id_serie);
                     $html .= $renderer->render();
                     return $html;
                 } else throw new MissingArgumentException("id");

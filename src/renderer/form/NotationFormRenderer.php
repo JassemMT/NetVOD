@@ -6,12 +6,12 @@ use netvod\renderer\Renderer;
 
 class NotationFormRenderer implements Renderer {
 
-    protected int $idEpisode;
-    public function __construct(int $idEpisode) {
-        $this->idEpisode = $idEpisode;
+    protected int $idSerie;
+    public function __construct(int $idSerie) {
+        $this->idSerie = $idSerie;
     }
     public function render(): string {
-        $id = $this->idEpisode;
+        $id = $this->idSerie;
         return <<<FIN
                 <section class="episode-note" aria-labelledby="note-title">
                     <h2 id="note-title">Noter</h2>
