@@ -59,6 +59,7 @@
   /* BOUTONS ACTIONS */
   /* ─────────────────────────────────────────────────────────────────────── */
 
+  /*
   function initHeroActions() {
     const btnPrimary = document.querySelector('.btn-primary');
     const btnSecondary = document.querySelector('.btn-secondary');
@@ -79,6 +80,7 @@
       });
     }
   }
+  */
 
   /* ─────────────────────────────────────────────────────────────────────── */
   /* INIT */
