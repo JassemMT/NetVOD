@@ -36,17 +36,13 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
                     <p class="hero-year">{$serie->annee}</p>
                 </div>
     
-                <p class="hero-description">
-                    <!-- pas de description pour l'instant -->
-                </p>
-    
                 <div class="hero-actions">
-                    <button class="btn btn-primary" aria-label="Regarder {$serie->titre} ?>">
-                        Regarder
-                    </button>
-                    <button class="btn btn-secondary" aria-label="Ajouter {$serie->titre} à mes favoris">
-                        Ajouter aux favoris
-                    </button>
+                    <form method="POST" action="?action=add-favoris">
+                        <input type="hidden" name="serie_id" value="{$serie->id}">
+                        <button class="btn btn-secondary" aria-label="Ajouter {$serie->titre} à mes favoris">
+                            Ajouter aux favoris
+                        </button>
+                    </form>
                 </div>
             </div>
         </section>

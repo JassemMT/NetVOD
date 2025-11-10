@@ -59,6 +59,9 @@ class Dispatcher
                 case 'logout':
                     $obj = new act\LogOutAction();
                     break;
+                case 'add-favoris':
+                    $obj = new act\AddFavorisAction(); // TODO: ne s'appelle qu'en post, l'argument est "serie_id"
+                    break;
                 default:
                     $obj = new act\DefaultAction();
                     break;
@@ -92,12 +95,7 @@ class Dispatcher
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>{$title}</title>
-                <link rel="stylesheet" href="ressources/css/variables.css">
-                <link rel="stylesheet" href="ressources/css/style.css">
-                <link rel="stylesheet" href="ressources/css/catalogue.css">
-                <link rel="stylesheet" href="ressources/css/serie.css">
-                <link rel="stylesheet" href="ressources/css/auth.css">
-                <link rel="stylesheet" href="ressources/css/episode.css">
+                <link rel="stylesheet" href="ressources/css/app.bundle.css">
                 <!-- import css specifique a traiter -->
             </head>
             <body>
@@ -119,12 +117,7 @@ class Dispatcher
                 </div>
 
                 <!-- Script import spe TODO -->
-                <script src="ressources/js/app.js"></script>
-                <script src="ressources/js/serie.js"></script>
-                <script src="ressources/js/acceuil.js"></script>
-                <script src="ressources/js/catalogue.js"></script>
-                <script src="ressources/js/episode.js"></script>
-                <script src="ressources/js/auth.js"></script>
+                <script src="ressources/js/app.bundle.js"></script>
             </body>
         </html>
         HTML;

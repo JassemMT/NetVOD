@@ -15,20 +15,40 @@
   margin: 0 0 var(--spacing-lg) 0;
 }
 
-/* Player */
+/* Ajouts/ajustements pour éviter que le player soit "écrasé" */
 .episode-player {
   width: 100%;
   max-width: 980px;
   margin: 0 auto var(--spacing-2xl);
+  /* réserve d'espace si l'élément video n'a pas encore de dimensions */
+  aspect-ratio: 16 / 9; /* navigateur moderne : garde le ratio 16:9 tant que metadata non chargées */
+  position: relative;
+  background: #000; /* évite flash visuel */
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
 
 .player {
+  /* s'adapte au conteneur et respecte le ratio */
   width: 100%;
-  height: auto;
-  border-radius: var(--radius-md);
+  height: 100%;
+  display: block; /* évite inline gaps */
+  object-fit: contain; /* ou cover si vous préférez recadrer */
   background: #000;
-  box-shadow: var(--shadow-soft);
-  display: block;
+}
+
+/* Fallback pour navigateurs sans aspect-ratio : padding-top hack */
+@supports not (aspect-ratio: 16/9) {
+  .episode-player {
+    height: 0;
+    padding-top: 56.25%; /* 16/9 */
+  }
+  .episode-player .player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* Description */

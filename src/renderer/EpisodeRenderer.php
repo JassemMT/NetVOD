@@ -50,7 +50,6 @@ class EpisodeRenderer implements Renderer {
                             <time>{$episode->duree} secondes</time>
                         </p>
                     </div>
-                    <button class="btn btn-small" role="button">Regarder</button>
                 </div>
 
             </a>
