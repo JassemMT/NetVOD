@@ -57,7 +57,7 @@
 
     function initCardEffects() {
       // handles .card and .episode-card hover 3D/parallax
-      const cards = qsa('.card, .episode-card');
+      const cards = qsa('.card');
       if (!cards.length) return;
 
       cards.forEach((card) => {

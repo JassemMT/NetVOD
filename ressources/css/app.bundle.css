@@ -1,13 +1,17 @@
 /* resources/css/app.bundle.css
-   Bundle CSS for NetVOD — variables + global + catalogue + serie + episode + auth
-   Updated: hero spacing & favorites button prominence; episode-card info-band slides in from the right on hover/focus.
-   Replace your existing bundle with this file. Recommended: minify & serve with gzip/brotli in production.
+   Bundle CSS for NetVOD — combination of variables + global + catalogue + serie + episode + auth
+   Includes harmonisation fixes so login and register use the same visual card and serie-specific fixes
+   (disable hero-image zoom, increase hero spacing, episode-card side-by-side layout).
+   Drop this single file in ressources/css/ and include it:
+     <link rel="stylesheet" href="/ressources/css/app.bundle.css">
+   Recommended: minify & serve with gzip/brotli in production.
 */
 
 /* =========================
    VARIABLES (root)
    ========================= */
 :root{
+  /* PALETTE */
   --bg-1:#ffffff;
   --bg-2:#f7f9fb;
   --bg-3:#f0f3f8;
@@ -26,13 +30,24 @@
   --shadow-medium: 0 20px 60px rgba(6,7,10,0.12);
   --shadow-focus: 2px solid rgba(0,0,0,0.06);
 
+  /* TYPO */
   --font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Courier New", monospace;
   --size-xs:.75rem;
   --size-sm:.875rem;
   --size-base:1rem;
   --size-lg:1.125rem;
+  --size-xl:1.25rem;
   --size-2xl:1.5rem;
+  --weight-light:300;
+  --weight-normal:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+  --line-tight:1.2;
+  --line-normal:1.5;
 
+  /* SPACING & RADIUS */
   --spacing-xs:.5rem;
   --spacing-sm:.75rem;
   --spacing-base:1rem;
@@ -41,18 +56,20 @@
   --spacing-xl:2rem;
   --spacing-2xl:2.5rem;
   --spacing-3xl:3rem;
+  --radius-sm:8px;
   --radius-base:12px;
   --radius-md:14px;
   --radius-lg:16px;
-
   --duration-fast:150ms;
   --duration-base:200ms;
+  --duration-slow:300ms;
   --easing-out:cubic-bezier(0,0,0.2,1);
+  --z-modal:2000;
 }
 
-/* reduced motion */
+/* reduce motion */
 @media (prefers-reduced-motion: reduce){
-  :root{ --duration-fast:0ms; --duration-base:0ms; }
+  :root{ --duration-fast:0ms; --duration-base:0ms; --duration-slow:0ms; }
 }
 
 /* =========================
@@ -66,276 +83,368 @@ body{
   color:var(--text);
   background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
   -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  -webkit-text-size-adjust:100%;
   padding:36px;
 }
 
-/* headings */
-h1,h2,h3{font-weight:600;line-height:1.2;color:var(--text)}
-h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:var(--spacing-xl)}
-h2{font-size:clamp(1.25rem,3vw,1.6rem);margin-bottom:var(--spacing-lg)}
-h3{font-size:var(--size-lg);margin-bottom:var(--spacing-md)}
-
-/* links */
-a{color:inherit;text-decoration:none}
+/* typography */
+h1,h2,h3,h4,h5,h6{font-weight:var(--weight-bold);line-height:var(--line-tight);color:var(--text)}
+h1{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:var(--spacing-xl)}
+h2{font-size:clamp(1.5rem,4vw,2.25rem);margin-bottom:var(--spacing-lg)}
+h3{font-size:var(--size-xl);margin-bottom:var(--spacing-md)}
+p{margin-bottom:var(--spacing-base);line-height:var(--line-normal)}
+a{color:inherit;text-decoration:none;transition:color var(--duration-base) var(--easing-out)}
+a:hover{color:var(--text-secondary)}
 a:focus{outline:var(--shadow-focus);outline-offset:3px}
 
 /* =========================
-   BUTTON / BASE UI
+   BUTTONS GLOBAL
    ========================= */
 button,[role="button"],.btn{
   appearance:none;-webkit-appearance:none;border:1px solid var(--glass-btn-border);
   background:var(--glass-btn);padding:9px 14px;border-radius:var(--radius-base);
-  color:var(--text);font-weight:600;font-size:var(--size-sm);
+  color:var(--text);font-weight:var(--weight-semibold);font-size:var(--size-sm);
   display:inline-flex;align-items:center;gap:var(--spacing-sm);cursor:pointer;
-  backdrop-filter: blur(12px);-webkit-backdrop-filter: blur(12px);
-  transition:box-shadow var(--duration-base) var(--easing-out),transform var(--duration-base) var(--easing-out);
+  backdrop-filter: blur(14px);-webkit-backdrop-filter: blur(14px);
+  transition:box-shadow var(--duration-base) var(--easing-out),background-color var(--duration-base) var(--easing-out),border-color var(--duration-base) var(--easing-out);
 }
-button:hover,.btn:hover{box-shadow:0 12px 32px rgba(6,7,10,0.08);background:rgba(255,255,255,0.34)}
+button:hover,.btn:hover{box-shadow:0 12px 32px rgba(6,7,10,0.08);background:rgba(255,255,255,0.34);border-color:rgba(255,255,255,0.5)}
 button:focus{outline:var(--shadow-focus);outline-offset:3px}
-.btn-primary{padding:12px 22px;border-radius:var(--radius-base)}
-.btn-small{padding:8px 12px;font-size:var(--size-xs)}
-
-/* secondary prominent (for hero favorites) */
-.btn-secondary{
-  background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(249,115,22,0.04));
-  border:1.5px solid rgba(249,115,22,0.24);
-  color: var(--text);
-  padding: 14px 22px;
-  font-weight: 700;
-  font-size: 1rem;
-  border-radius: calc(var(--radius-base) + 2px);
-  box-shadow: 0 8px 28px rgba(249,115,22,0.08);
+.btn-primary{ /* accent variant using glass + subtle gradient */
+  padding:12px 22px;border-radius:var(--radius-base);
 }
-.btn-secondary:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(249,115,22,0.12)}
+.btn-small{padding:7px 11px;font-size:var(--size-xs)}
 
 /* =========================
-   HEADER / LAYOUT
+   HEADER / NAV / LAYOUT
    ========================= */
-.app-header{padding:var(--spacing-lg) var(--spacing-xl);background:linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.3));border-bottom:1px solid var(--border-subtle);backdrop-filter:blur(10px);box-shadow:var(--shadow-soft);z-index:100}
+.app-header{
+  padding:var(--spacing-lg) var(--spacing-xl);
+  background:linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.3));
+  border-bottom:1px solid var(--border-subtle);backdrop-filter:blur(12px);
+  box-shadow:var(--shadow-soft);z-index:100;
+}
 .header-content{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-xl)}
-.logo{font-weight:700;font-size:var(--size-lg);padding:var(--spacing-sm) var(--spacing-md);border-radius:8px;background:linear-gradient(180deg,#fff,#fbfdff)}
-.nav{display:flex;gap:var(--spacing-lg)}
+.logo{font-weight:var(--weight-bold);font-size:var(--size-lg);padding:var(--spacing-sm) var(--spacing-md);border-radius:var(--radius-sm);background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid var(--border-subtle);box-shadow:0 6px 20px rgba(0,0,0,0.04)}
+.nav{display:flex;gap:var(--spacing-lg);flex-wrap:wrap}
+.nav a{padding:var(--spacing-sm);border-radius:var(--radius-sm);font-weight:var(--weight-medium)}
+.nav a[aria-current="page"]{background:rgba(0,0,0,0.04);font-weight:var(--weight-semibold)}
+
+/* main container */
+main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl)}
 .container{max-width:1200px;margin:0 auto;padding:0 var(--spacing-xl)}
-main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl);}
+.app-footer{padding:var(--spacing-2xl) var(--spacing-xl);text-align:center;color:var(--text-muted);font-size:var(--size-sm);border-top:1px solid var(--border-subtle)}
+
+/* focus-visible */
+:focus-visible{outline:2px solid rgba(0,0,0,0.08);outline-offset:4px}
 
 /* =========================
-   HERO (serie) adjustments
+   GRID / CARD (catalogue)
+   ========================= */
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--spacing-2xl)}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr);gap:var(--spacing-xl)}}
+@media (max-width:600px){.grid{grid-template-columns:1fr;gap:var(--spacing-lg)}}
+
+/* card core */
+.card, .episode-card{
+  position:relative;height:340px;border-radius:var(--radius-md);overflow:hidden;cursor:pointer;
+  background:linear-gradient(135deg, rgba(255,255,255,0.62), rgba(250,250,252,0.62));
+  border:1px solid var(--border-subtle);box-shadow:var(--shadow-soft);transform-style:preserve-3d;will-change:transform;
+  transition:box-shadow var(--duration-slow) var(--easing-out);
+}
+.card:hover,.episode-card:hover{box-shadow:var(--shadow-medium)}
+.card:focus,.episode-card:focus{outline:2px solid rgba(0,0,0,0.08);outline-offset:4px}
+
+/* media */
+.card-image, .episode-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transform:translate3d(0,0,0) scale(1.12);transition:transform 180ms linear;will-change:transform}
+
+/* subtle overlay */
+.card-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));pointer-events:none;z-index:2}
+
+/* band (glass) */
+.card-band, .episode-band{
+  position:absolute;left:12px;right:12px;bottom:12px;padding:12px 14px;border-radius:var(--radius-base);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-base);z-index:4;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:var(--glass-band);border:1px solid var(--glass-band-border);
+  will-change:transform;transition:transform 180ms linear;
+}
+
+/* meta */
+.card-meta,.episode-meta{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.card-title{font-size:var(--size-base);font-weight:var(--weight-bold);margin:0;color:white;line-height:var(--line-tight);text-shadow:0 2px 8px rgba(0,0,0,0.1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-genre{font-size:var(--size-xs);margin:0;color:rgba(255,255,255,0.7);font-weight:var(--weight-normal);display:flex;align-items:center;gap:6px}
+.card-description{font-size:var(--size-xs);margin:4px 0 0 0;color:rgba(255,255,255,0.6);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.card-year{font-size:var(--size-xs);margin:0;color:rgba(255,255,255,0.65);font-weight:var(--weight-medium)}
+
+/* loading skeleton */
+.card.is-loading{opacity:.6;pointer-events:none}
+.card.is-loading .card-image{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:skeleton-loading 1.5s infinite}
+@keyframes skeleton-loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* responsive */
+@media (max-width:900px){.card{height:320px}.card-title{font-size:var(--size-sm)}.card-band{padding:10px 12px;gap:8px}}
+@media (max-width:600px){.card{height:300px}.card-title{font-size:var(--size-sm)}.card-genre{font-size:var(--size-xs)}.card-band{padding:10px 12px;gap:8px;left:10px;right:10px;bottom:10px}.card .btn{padding:7px 11px}}
+
+/* =========================
+   SERIE (hero)
    ========================= */
 .hero-serie{
-  display:grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(360px, 1fr);
-  gap: calc(var(--spacing-4xl) + 0.5rem);
-  align-items:center;
-  margin-bottom:var(--spacing-4xl);
-  padding:calc(var(--spacing-3xl) + 0.5rem);
-  border-radius:var(--radius-lg);
-  background:linear-gradient(135deg,rgba(255,255,255,0.4),rgba(255,255,255,0.2));
-  border:1px solid var(--border-subtle);
-  box-shadow:var(--shadow-soft);
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-4xl);align-items:center;margin-bottom:var(--spacing-4xl);
+  padding:var(--spacing-3xl);border-radius:var(--radius-lg);background:linear-gradient(135deg,rgba(255,255,255,0.4),rgba(255,255,255,0.2));border:1px solid var(--border-subtle);box-shadow:var(--shadow-soft);
 }
-
-/* hero image: stable - disable zoom on hover */
+@media (max-width:1024px){.hero-serie{grid-template-columns:1fr;gap:var(--spacing-2xl);padding:var(--spacing-2xl)}}
 .hero-image{position:relative;overflow:hidden;border-radius:var(--radius-lg);aspect-ratio:16/9;box-shadow:0 24px 64px rgba(6,7,10,0.16)}
-.hero-image img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:none !important;transform:none !important}
-
-/* hero content: add comfortable left padding so it's not glued to the image */
-.hero-content{
-  display:flex;
-  flex-direction:column;
-  gap:var(--spacing-2xl);
-  padding-left: var(--spacing-lg); /* breathing room from the image */
-}
-
-/* hero meta spacing */
-.hero-meta{margin-bottom:var(--spacing-base)}
-.hero-title{font-size:clamp(1.6rem,4vw,2.4rem);margin:0}
-.hero-year{font-size:var(--size-lg);color:var(--text-muted);padding:var(--spacing-sm) var(--spacing-base);border-radius:8px}
-
-/* hero actions: make favorites button prominent and larger */
-.hero-actions{display:flex;gap:var(--spacing-lg);align-items:center}
-.hero-actions form{margin:0}
-.hero-actions .btn-secondary{ /* already scaled above, ensure clear contrast */
-  background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(99,102,241,0.06));
-  border:1.5px solid rgba(99,102,241,0.25);
-  color: #0b1220;
-  font-weight:700;
-  padding:14px 26px;
-  font-size:1rem;
-}
+.hero-image img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform var(--duration-slow) var(--easing-out)}
+/* Disable zoom on hero image hover (serie-specific fix integrated) */
+.hero-image img{ transition: none !important; transform: none !important; }
+.hero-image:hover img{ transform: none !important; }
+.hero-content{display:flex;flex-direction:column;gap:var(--spacing-xl)}
+/* Increase hero spacing slightly for breathing room */
+.hero-serie{ gap: calc(var(--spacing-4xl) + 0.5rem); padding: calc(var(--spacing-3xl) + 0.5rem); }
+.hero-content { gap: var(--spacing-2xl); }
+.hero-meta { margin-bottom: var(--spacing-base); }
+.hero-title{font-size:clamp(2rem,5vw,3rem);font-weight:var(--weight-bold);color:var(--text);margin:0}
+.hero-year{font-size:var(--size-lg);color:var(--text-muted);font-weight:var(--weight-medium);margin:0;padding:var(--spacing-sm) var(--spacing-base);background:rgba(0,0,0,0.02);border-radius:var(--radius-sm)}
+.hero-description{font-size:var(--size-lg);line-height:var(--line-relaxed);color:var(--text-secondary);margin:0;max-width:600px}
+.hero-actions{display:flex;gap:var(--spacing-lg);flex-wrap:wrap;margin-top:var(--spacing-lg)}
+.btn-primary{background:linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1));border:1.5px solid rgba(99,102,241,0.3)}
+.btn-primary:hover{background:linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.2));border-color:rgba(99,102,241,0.5);box-shadow:0 12px 32px rgba(99,102,241,0.12)}
 
 /* =========================
-   EPISODE CARDS — slide-in info-band overlay
+   EPISODE (player + note)
    ========================= */
-
-/* Basic card container */
-.episodes-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:var(--spacing-2xl)}
-.episode-card{
-  position:relative;
-  height:320px;
-  border-radius:var(--radius-md);
-  overflow:hidden;
-  background:#f9fbfd;
-  border:1px solid var(--border-subtle);
-  box-shadow:var(--shadow-soft);
-}
-
-/* episode link fills the card for keyboard/legal click target */
-.episode-card > .episode-link{
-  display:block;
-  position:relative;
-  width:100%;
-  height:100%;
-  color:inherit;
-  text-decoration:none;
-}
-
-/* image occupies the full card (base state) */
-.episode-image-wrapper{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-}
-.episode-image{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-  transform:none !important;
-}
-
-/* info band is an overlay positioned on the right, initially hidden (translated out)
-   it slides in on hover/focus-from-keyboard */
-.episode-band{
-  position:absolute;
-  top:0;
-  right:0;
-  height:100%;
-  width:40%;
-  min-width:180px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:var(--spacing-base);
-  padding:20px;
-  background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(255,255,255,0.02));
-  color: #fff;
-  transform: translateX(110%);
-  transition: transform 320ms var(--easing-out), box-shadow 320ms var(--easing-out), opacity 220ms var(--easing-out);
-  opacity:0;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-left: 1px solid rgba(255,255,255,0.04);
-  z-index: 6;
-}
-
-/* On hover or keyboard focus, slide the band in */
-.episode-card:hover .episode-band,
-.episode-card:focus-within .episode-band{
-  transform: translateX(0);
-  opacity:1;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
-}
-
-/* internal layout: meta on top, button at bottom (we position using flex) */
-.episode-band .episode-meta{
-  color: #fff;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  align-items:flex-start;
-  min-width:0;
-}
-.episode-band .episode-title{color:#fff;font-weight:700;margin:0}
-.episode-band .episode-subtitle{color:rgba(255,255,255,0.9);margin:0}
-
-/* button sits visually centered horizontally, slightly enlarged */
-.episode-band .btn-small{
-  align-self: center;
-  min-width:110px;
-  padding:10px 16px;
-  border-radius:10px;
-  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.06));
-  border:1px solid rgba(255,255,255,0.14);
-  color:#fff;
-  font-weight:700;
-  transition:transform 180ms var(--easing-out), box-shadow 180ms var(--easing-out);
-}
-.episode-band .btn-small:hover,
-.episode-band .btn-small:focus{
-  transform: scale(1.06);
-  box-shadow:0 12px 32px rgba(0,0,0,0.28);
-}
-
-/* Ensure text is readable on overlay */
-.episode-band p, .episode-band time { color: rgba(255,255,255,0.9); }
-
-/* Prevent the hover effect on touch devices; instead reveal band on tap via focus */
-@media (hover: none) {
-  .episode-card:hover .episode-band { transform: translateX(110%); opacity:0; }
-  .episode-card:focus-within .episode-band { transform: translateX(0); opacity:1; }
-}
-
-/* make sure the image behind still visible and not darken too much */
-.episode-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.06));
-  z-index:1;
-  pointer-events:none;
-}
-
-/* keep content inside link above the overlay stacking where needed */
-.episode-card .episode-image-wrapper,
-.episode-card .episode-link > img,
-.episode-card .episode-link > div {
-  z-index:2;
-  position:relative;
-}
-
-/* When the band is visible, slightly blur/darken the underlying image for contrast */
-.episode-card:hover .episode-image,
-.episode-card:focus-within .episode-image {
-  filter: brightness(0.66) saturate(0.95);
-  transform: none !important;
-  transition: filter 280ms var(--easing-out);
-}
-
-/* responsive: on small screens we stack (overlay becomes bottom panel) */
-@media (max-width:900px){
-  .episode-card{height:300px}
-  .episode-band{
-    width:100%;
-    height:auto;
-    bottom:0;
-    top:auto;
-    left:0;
-    right:0;
-    transform: translateY(110%);
-    transition: transform 300ms var(--easing-out), opacity 220ms var(--easing-out);
-  }
-  .episode-card:hover .episode-band,
-  .episode-card:focus-within .episode-band{
-    transform: translateY(0);
-    opacity:1;
-  }
-  .episode-band .btn-small{align-self:flex-end}
-  .hero-serie{grid-template-columns:1fr;gap:var(--spacing-2xl);padding:var(--spacing-2xl)}
-  .hero-content{padding-left:0}
-}
+.episode-header{margin-bottom:var(--spacing-md)}
+.episode-header h1{font-size:clamp(1.5rem,3.5vw,2rem);margin:0 0 var(--spacing-sm) 0;font-weight:var(--weight-bold)}
+.episode-meta{color:var(--text-muted);margin:0 0 var(--spacing-lg) 0}
+.episode-player{width:100%;max-width:980px;margin:0 auto var(--spacing-2xl);aspect-ratio:16/9;position:relative;background:#000;border-radius:var(--radius-md);overflow:hidden}
+.player{width:100%;height:100%;display:block;object-fit:contain;background:#000;border-radius:var(--radius-md);box-shadow:var(--shadow-soft)}
+@supports not (aspect-ratio:16/9){.episode-player{height:0;padding-top:56.25%}.episode-player .player{position:absolute;inset:0;width:100%;height:100%}}
+.episode-description{max-width:980px;margin:0 auto var(--spacing-2xl);color:var(--text-secondary)}
+.note-form{max-width:720px;margin:0 auto;display:grid;gap:var(--spacing-md);padding:var(--spacing-md) 0}
+.note-form label{display:block;font-size:var(--size-sm);color:var(--text-secondary);margin-bottom:6px}
+.note-form input[type="text"],.note-form input[type="number"]{width:100%;padding:10px 12px;border-radius:var(--radius-base);border:1px solid var(--border-subtle);background:rgba(255,255,255,0.6);color:var(--text)}
+.form-error{color:#b00020;font-size:var(--size-sm)}
+.form-actions{display:flex;justify-content:flex-end}
 
 /* =========================
    AUTH (login / register)
    ========================= */
 .auth-page{display:flex;align-items:center;justify-content:center;padding:var(--spacing-4xl) var(--spacing-xl);min-height:calc(100vh - 220px);box-sizing:border-box}
-.auth-container{width:100%;max-width:480px;border-radius:var(--radius-lg);padding:var(--spacing-3xl);background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.22));border:1px solid var(--border-subtle);box-shadow:var(--shadow-soft);backdrop-filter:blur(12px)}
-.auth-card{background:transparent !important;border:none !important;box-shadow:none !important;padding:0 !important;margin:0 !important}
+
+/* Ensure the container itself is styled as the visual card */
+.auth-container{
+  width:100%;
+  max-width:480px;
+  border-radius:var(--radius-lg);
+  padding:var(--spacing-3xl);
+  background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.22));
+  border:1px solid var(--border-subtle);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+/* Neutralize .auth-card if present inside .auth-container to avoid double cards */
+.auth-card{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* If you need an elevated inner card, create and use .auth-card--elevated instead (not used by default)
+.auth-card--elevated{
+  background:linear-gradient(180deg,rgba(255,255,255,0.44),rgba(255,255,255,0.22));
+  border:1px solid var(--border-subtle);
+  box-shadow:var(--shadow-soft);
+  padding:var(--spacing-lg);
+  border-radius:var(--radius-lg);
+}
+*/
+
+.auth-card{width:100%;border-radius:var(--radius-lg);padding:0}
 .auth-header{text-align:center;margin-bottom:var(--spacing-2xl)}
+.auth-header h1{margin:0 0 var(--spacing-base) 0;font-size:var(--size-2xl);font-weight:var(--weight-semibold);color:var(--text)}
+.auth-sub{color:var(--text-muted);font-size:var(--size-sm);margin:0}
 .auth-form{display:grid;gap:var(--spacing-md);margin-top:var(--spacing-lg)}
-.auth-form input{width:100%;padding:12px 14px;border-radius:var(--radius-base);border:1px solid var(--border-subtle);background:rgba(255,255,255,0.6)}
+.auth-form label{font-size:var(--size-sm);color:var(--text-secondary);display:block;margin-bottom:6px}
+.auth-form input[type="email"],.auth-form input[type="password"],.auth-form input[type="text"]{width:100%;padding:12px 14px;border-radius:var(--radius-base);border:1px solid var(--border-subtle);background:rgba(255,255,255,0.6);font-size:var(--size-base);color:var(--text);transition:box-shadow var(--duration-fast),border-color var(--duration-fast);outline:none}
+.auth-form input:focus{box-shadow:0 6px 20px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.08)}
+.input-with-toggle{position:relative;display:flex;align-items:center}
+.input-with-toggle .toggle-pw{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--text-secondary);padding:6px;cursor:pointer;font-size:var(--size-sm)}
+.auth-actions{display:flex;gap:var(--spacing-base);margin-top:var(--spacing-base);justify-content:space-between;align-items:center}
+.link-muted{color:var(--text-secondary);font-size:var(--size-sm);text-decoration:underline;background:transparent;border:none;padding:0;cursor:pointer}
+.form-error.is-visible{display:block}
+.form-error{display:none;color:#b00020;font-size:var(--size-sm);margin-top:6px}
+.auth-footer{margin-top:var(--spacing-lg);color:var(--text-muted)}
+
+/* =========================
+   SERIE-SPECIFIC: episode-card side-by-side and hero spacing overrides
+   (integrated fixes from serie-fixes.css)
+   ========================= */
+
+/* Episode card horizontal layout */
+.episode-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 320px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Make the link fill the card */
+.episode-card > .episode-link {
+  position: static;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  align-items: stretch;
+}
+
+/* Image left, ~60% */
+.episode-image-wrapper {
+  position: relative;
+  width: 60%;
+  min-width: 220px;
+  height: 100%;
+  overflow: hidden;
+  flex: 0 0 60%;
+}
+
+.episode-image {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transform: none !important;
+  transition: transform 180ms linear;
+}
+
+/* Info band on right (40%) */
+.episode-band {
+  position: relative;
+  width: 40%;
+  min-width: 180px;
+  flex: 0 0 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-base);
+  padding: 18px;
+  border-radius: 0;
+  margin: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border-left: 1px solid rgba(0,0,0,0.04);
+  box-shadow: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* internal layout: meta (50%) and button (50%) */
+.episode-band .episode-meta {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+/* Button occupies half the band, scales on hover (keeps proportions) */
+.episode-band .btn-small {
+  width: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  font-size: var(--size-sm);
+  border-radius: var(--radius-base);
+  transition: transform var(--duration-base) var(--easing-out), box-shadow var(--duration-base) var(--easing-out);
+  box-sizing: border-box;
+}
+
+.episode-band .btn-small:hover,
+.episode-band .btn-small:focus {
+  transform: scale(1.06);
+  box-shadow: 0 12px 28px rgba(6,7,10,0.08);
+}
+
+/* constrain overflow for titles */
+.episode-band .episode-subtitle,
+.episode-band .episode-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* icon sizes inside button */
+.episode-band .btn-small img,
+.episode-band .btn-small svg {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.5ch;
+}
+
+/* responsive fallback: stack on small screens */
+@media (max-width: 900px) {
+  .episode-card {
+    flex-direction: column;
+    height: 300px;
+  }
+
+  .episode-image-wrapper {
+    width: 100%;
+    flex: 0 0 auto;
+    height: 60%;
+  }
+
+  .episode-band {
+    width: 100%;
+    flex: 0 0 auto;
+    padding: 12px;
+    border-left: none;
+    border-top: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .episode-band .episode-meta,
+  .episode-band .btn-small {
+    width: auto;
+  }
+
+  .hero-serie {
+    padding: var(--spacing-2xl);
+    gap: var(--spacing-2xl);
+  }
+}
+
+/* small polish: focus & accessibility */
+.episode-card:focus-within,
+.episode-card:focus {
+  outline: 2px solid rgba(99,102,241,0.08);
+  outline-offset: 2px;
+}
+
+/* neutralize potential absolute rules leaking into episode-card children */
+.episode-card .episode-image,
+.episode-card .episode-image-wrapper,
+.episode-card .episode-band,
+.episode-card .episode-link {
+  position: relative !important;
+}
 
 /* =========================
    RESPONSIVE TWEAKS
@@ -344,14 +453,19 @@ main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl)
   .header-content{flex-direction:column;align-items:flex-start;gap:var(--spacing-base)}
   .nav{gap:var(--spacing-base)}
   main{padding:var(--spacing-2xl) var(--spacing-lg)}
+  .card{height:320px}
 }
 @media (max-width:600px){
   .app-header{padding:var(--spacing-md) var(--spacing-lg)}
-  .logo{font-size:var(--size-sm)}
+  .logo{font-size:var(--size-base);padding:var(--spacing-xs) var(--spacing-sm)}
+  .nav{gap:var(--spacing-sm);font-size:var(--size-xs)}
   main{padding:var(--spacing-xl) var(--spacing-md)}
+  .card{height:300px}
+  .hero-title{font-size:clamp(1.5rem,4vw,2rem)}
+  .btn-primary,.btn-secondary{width:100%}
 }
 
-/* reduced motion */
+/* reduced motion override */
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
