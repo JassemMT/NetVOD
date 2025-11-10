@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace netvod\action;
 
 use netvod\auth\AuthnProvider;
@@ -8,40 +9,54 @@ use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
 use netvod\renderer\form\NotationFormRenderer;
 use netvod\repository\SerieRepository;
-use netvod\repository\CommentaireRepository;
-use netvod\classes\Commentaire;
 
 class NotationAction implements Action {
 
-    public function execute(): string { // action distincte ??? notation sur une page à part ??? 
+    public function execute(): string {
 
-        // on récupère l'id de la série en session ou via le SerieRepository ??? quelle série en session ?
-        // $Sid = (int)$_SESSION['idSerie'];
+        if (!isset($_GET['id'])) {
+            throw new MissingArgumentException('id');
+        }
 
-        if (isset($_GET['id'])) $id = $_GET['id'];
-        else throw new MissingArgumentException('id');
+        $idSerie = (int)$_GET['id'];
+        $user = AuthnProvider::getSignedInUser(); // Doit retourner un objet ou un id_user
+        $idUser = $user->getId(); // assure-toi que ton objet User a bien un getId()
 
-        $Serie = SerieRepository::findById($_GET['id']);
+        // GET : affichage du formulaire
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return (new NotationFormRenderer($id))->render();
-        } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['titre'])) { // TODO: check si le titre est bien défini dans la BD
-                if (isset($_POST['note'])) {
-                    if (is_numeric($_POST['note'])) {
-                        if (isset($_POST['commentaire'])) {
-                            $titre = filter_var($_POST['titre'], FILTER_SANITIZE_SPECIAL_CHARS);
-                            $note = $_POST['note'];
-                            $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_SPECIAL_CHARS);
+            return (new NotationFormRenderer($idSerie))->render();
+        }
 
-                            $com = new Commentaire($id,AuthnProvider::getSignedInUser(), $note,$commentaire);
-                            CommentaireRepository::upload($com); // TODO: créer le repository Commentaire
+        // POST : traitement du formulaire
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-                            return "";
-                        } else throw new MissingArgumentException("commentaire");
-                    } else throw new InvalidArgumentException("note");
-                } else throw new MissingArgumentException("titre");
-            } else throw new MissingArgumentException("titre");
-        } else throw new BadRequestMethodException();
-    }   
-    
+            // Vérification des champs
+            if (!isset($_POST['note'])) {
+                throw new MissingArgumentException("note");
+            }
+            if (!isset($_POST['commentaire'])) {
+                throw new MissingArgumentException("commentaire");
+            }
+
+            $note = (int)$_POST['note'];
+            $commentaire = trim(filter_var($_POST['commentaire'], FILTER_SANITIZE_SPECIAL_CHARS));
+
+            if ($note < 0 || $note > 5) {
+                throw new InvalidArgumentException("La note doit être entre 0 et 5.");
+            }
+
+            // Vérifie si l’utilisateur a déjà noté la série
+            if (SerieRepository::hasUserCommented($idUser, $idSerie)) {
+                SerieRepository::updateComment($idUser, $idSerie, $note, $commentaire);
+            } else {
+                SerieRepository::addComment($idUser, $idSerie, $note, $commentaire);
+            }
+
+            // Optionnel : feedback utilisateur
+            $moyenne = (new SerieRepository())->getAverageRating($idSerie);
+            return "<p>Votre avis a été enregistré ! Note moyenne actuelle : " . number_format($moyenne, 2) . "/5</p>";
+        }
+
+        throw new BadRequestMethodException();
+    }
 }
