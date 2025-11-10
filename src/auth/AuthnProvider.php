@@ -69,7 +69,13 @@ class AuthnProvider {
             throw new AuthnException('Mot de passe trop court (min 10 caractères)');
         }
 
-        $existing = UserRepository::Email2Id($email);
+        $existing = true;
+        try {
+            UserRepository::Email2Id($email);
+        } catch (\PDOException $e) {
+            $existing = false;
+        }
+
         if ($existing) {
             throw new AuthnException('Un compte existe déjà pour cet email');
         }
