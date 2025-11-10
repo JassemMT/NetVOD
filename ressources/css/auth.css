@@ -1,0 +1,189 @@
+/* ressources/css/auth.css
+   PureStream Fusion — styles page de connexion (à importer après style-global.css)
+*/
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-4xl) var(--spacing-xl);
+  min-height: calc(100vh - 220px);
+  box-sizing: border-box;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--radius-lg);
+  padding: calc(var(--spacing-3xl));
+  background: linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.22));
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.auth-header {
+  margin-bottom: var(--spacing-2xl);
+  text-align: center;
+}
+
+.auth-header h1 {
+  margin: 0 0 var(--spacing-base) 0;
+  font-size: var(--size-2xl);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+}
+
+.auth-sub {
+  color: var(--text-muted);
+  font-size: var(--size-sm);
+  margin: 0;
+}
+
+/* Form */
+.auth-form {
+  display: grid;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.auth-form label {
+  font-size: var(--size-sm);
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.6);
+  /*box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);*/
+  box-shadow: var(--shadow-soft);
+  font-size: var(--size-base);
+  color: var(--text);
+  transition: box-shadow var(--duration-fast), border-color var(--duration-fast);
+  outline: none;
+}
+
+.auth-form input:focus {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.08);
+}
+
+/* row for password + toggle */
+.input-with-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-toggle .toggle-pw {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 6px;
+  cursor: pointer;
+  font-size: var(--size-sm);
+}
+
+/* actions */
+.auth-actions {
+  display: flex;
+  gap: var(--spacing-base);
+  margin-top: var(--spacing-base);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth-actions .left {
+  display:flex;
+  gap: var(--spacing-sm);
+  align-items:center;
+}
+
+.auth-actions .right {
+  margin-left: auto;
+}
+
+/* primary button uses global .btn styles (btn-primary defined in serie.css),
+   ensure consistent sizing here */
+.auth-form .btn-primary {
+  padding: 12px 18px;
+  border-radius: var(--radius-base);
+  font-weight: var(--weight-semibold);
+}
+
+.link-muted {
+  color: var(--text-secondary);
+  font-size: var(--size-sm);
+  text-decoration: underline;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.form-error {
+  color: #b00020;
+  font-size: var(--size-sm);
+  margin-top: 6px;
+  display: none;
+}
+
+/* show error */
+.form-error.is-visible {
+  display: block;
+}
+
+/* small helper */
+.form-help {
+  font-size: var(--size-xs);
+  color: var(--text-muted);
+}
+
+/* Ajout minimal pour .auth-card compatible avec PureStream Fusion */
+.auth-card {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,0.44), rgba(255,255,255,0.22));
+  /*border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  display: block;*/
+}
+
+/* Assure que .auth-page centre verticalement/horizontalement */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-4xl) var(--spacing-xl);
+  min-height: calc(100vh - 220px);
+  box-sizing: border-box;
+} 
+
+
+/* responsiveness */
+@media (max-width: 600px) {
+  .auth-container {
+    padding: var(--spacing-xl);
+    margin: 0 12px;
+  }
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .auth-form input,
+  .input-with-toggle .toggle-pw {
+    transition: none !important;
+  }
+}

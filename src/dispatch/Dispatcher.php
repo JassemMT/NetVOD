@@ -96,6 +96,7 @@ class Dispatcher
                 <link rel="stylesheet" href="ressources/css/style.css">
                 <link rel="stylesheet" href="ressources/css/catalogue.css">
                 <link rel="stylesheet" href="ressources/css/serie.css">
+                <link rel="stylesheet" href="ressources/css/auth.css">
                 <!-- import css specifique a traiter -->
             </head>
             <body>
@@ -122,6 +123,7 @@ class Dispatcher
                 <script src="ressources/js/acceuil.js"></script>
                 <script src="ressources/js/catalogue.js"></script>
                 <script src="ressources/js/episode.js"></script>
+                <script src="ressources/js/auth.js"></script>
             </body>
         </html>
         HTML;
