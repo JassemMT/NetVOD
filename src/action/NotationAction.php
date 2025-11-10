@@ -20,8 +20,7 @@ class NotationAction implements Action {
 
         $idSerie = (int)$_GET['id'];
         $user = AuthnProvider::getSignedInUser(); // Doit retourner un objet ou un id_user
-        $idUser = $user->getId(); // assure-toi que ton objet User a bien un getId()
-
+       
         // GET : affichage du formulaire
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             return (new NotationFormRenderer($idSerie))->render();
@@ -46,10 +45,10 @@ class NotationAction implements Action {
             }
 
             // Vérifie si l’utilisateur a déjà noté la série
-            if (SerieRepository::hasUserCommented($idUser, $idSerie)) {
-                SerieRepository::updateComment($idUser, $idSerie, $note, $commentaire);
+            if (SerieRepository::hasUserCommented($user, $idSerie)) {
+                SerieRepository::updateComment($user, $idSerie, $note, $commentaire);
             } else {
-                SerieRepository::addComment($idUser, $idSerie, $note, $commentaire);
+                SerieRepository::addComment($user, $idSerie, $note, $commentaire);
             }
 
             // Optionnel : feedback utilisateur
