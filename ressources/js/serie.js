@@ -88,7 +88,7 @@
 
   const init = () => {
     initHeroImage();
-    initHeroActions();
+    //initHeroActions();
     console.log('[PureStream Fusion] Serie page interactions initialized');
   };
 

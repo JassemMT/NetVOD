@@ -15,16 +15,17 @@ class EpisodeRenderer implements Renderer {
     public function render(): string {
         $episode = $this->episode;
         return <<<FIN
-        <div class="episode">
-            <h3>{$episode->titre}</h3>
-            <p>numéro: {$episode->numero}</p>
-            <p>Durée: {$episode->duree} secondes</p>
-            <p>{$episode->description}</p>
-            <video controls>
-                <source src="{$episode->source}" type="video/mp4">
-                Votre navigateur ne supporte pas la lecture de vidéos.
+        <header class="episode-header">
+            <h1 id="episode-title">{$episode->titre}</h1>
+            <p class="episode-meta">Épisode {$episode->numero} — Durée : {$episode->duree} secondes</p>
+        </header>
+
+        <section class="episode-player" aria-label="Lecteur vidéo">
+            <video id="player" class="player" controls preload="metadata" playsinline controlsList="nodownload" poster="{$episode->source}" aria-label="Vidéo — {$episode->titre}" >
+            <source src="{$episode->source}" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture de vidéo.
             </video>
-        </div>
+        </section>
         FIN;
     }
 

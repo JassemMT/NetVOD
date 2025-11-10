@@ -97,6 +97,7 @@ class Dispatcher
                 <link rel="stylesheet" href="ressources/css/catalogue.css">
                 <link rel="stylesheet" href="ressources/css/serie.css">
                 <link rel="stylesheet" href="ressources/css/auth.css">
+                <link rel="stylesheet" href="ressources/css/episode.css">
                 <!-- import css specifique a traiter -->
             </head>
             <body>
