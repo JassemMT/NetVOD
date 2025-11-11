@@ -22,26 +22,18 @@ class DisplayEpisodeAction implements Action {
                         throw new \PDOException("Épisode introuvable dans la base de données.");
                     }
                     $id_serie = EpisodeRepository::findSerieByID($id);
-            
+
+                    $id_user = AuthnProvider::getSignedInUser();
+                    if (EpisodeRepository::estPremierEpisode($episode->id)) {
+                        UserRepository::addSerieToList($id_user, $id_serie, 'en_cours');
+                    }
+                    elseif (EpisodeRepository::estDernierEpisode($episode->id)) {
+                        UserRepository::removeSerieFromList($id_user, $id_serie, 'en_cours');
+                    }
+
                     $html = "";
                     $renderer = new EpisodeRenderer($episode);
                     $html .= $renderer->render();
-                    //var_dump($episode->id);
-                    // test si l'id de l'épisode correspond à l'id du premier épisode d'une des séries 
-                    if ($episode->id == 1 || $episode->id == 6 || $episode->id == 11 || $episode->id == 14 || $episode->id == 17 ||$episode->id == 20 ){
-                        $id_user = $_SESSION['user'];
-                        $listName = 'en_cours';
-                        $r = UserRepository::addSerieToList($id_user, $id_serie, $listName);
-                        //var_dump($r);
-                    }
-                    // test si l'id de l'épisode correspond à l'id du dernier épisode d'une des séries 
-                    elseif ($episode->id == 5 || $episode->id == 10 || $episode->id == 13 || $episode->id == 16 || $episode->id == 19 ||$episode->id == 21 ) {
-                        $id_user = $_SESSION['user'];
-                        $listName = 'en_cours';
-                        $r = UserRepository::removeSerieFromList($id_user, $id_serie, $listName);
-                        //var_dump($r);   
-                    }
-
 
                     $renderer = new NotationFormRenderer($id_serie);
                     $html .= $renderer->render();
