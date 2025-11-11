@@ -32,13 +32,7 @@ class LoginFormRenderer implements Renderer {
                 <div class="form-error" role="alert" aria-live="assertive"></div>
 
                 <div class="auth-actions">
-                    <div class="left">
-                    <label class="form-help"><input type="checkbox" name="remember" /> Se souvenir</label>
-                    </div>
-                    <div class="right">
-                    <a href="?action=forgot" class="link-muted">Mot de passe oublié ?</a>
                     <button type="submit" class="btn btn-primary">Se connecter</button>
-                    </div>
                 </div>
                 </form>
             </div>
