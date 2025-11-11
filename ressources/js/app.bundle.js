@@ -290,61 +290,6 @@
     return { init };
   })();
 
-  // ---------- SERIE MODULE (detail Série) ----------
-  const Serie = (function () {
-    function initHeroImage() {
-      const container = qs('.hero-image');
-      if (!container) return;
-      const img = container.querySelector('img');
-      if (!img) return;
-      const enter = () => {
-        if (!prefersReducedMotion) {
-          img.style.transition = 'transform 0.4s ease-out';
-          img.style.transform = 'scale(1.08)';
-        }
-      };
-      const leave = () => {
-        if (!prefersReducedMotion) {
-          img.style.transition = 'transform 0.5s ease-out';
-          img.style.transform = 'scale(1)';
-        }
-      };
-      container.addEventListener('mouseenter', enter);
-      container.addEventListener('mouseleave', leave);
-      container.addEventListener('touchstart', enter, { passive: true });
-      container.addEventListener('touchend', leave, { passive: true });
-    }
-
-    function initHeroActions() {
-      const btnPrimary = qs('.btn-primary');
-      const btnSecondary = qs('.btn-secondary');
-      if (btnPrimary) {
-        btnPrimary.addEventListener('click', (e) => {
-          // Placeholder: go to player or open modal
-          safeLog('Regarder clicked');
-        });
-      }
-      if (btnSecondary) {
-        btnSecondary.addEventListener('click', (e) => {
-          e.preventDefault();
-          safeLog('Ajouter aux favoris clicked');
-        });
-      }
-    }
-
-    function init() {
-      try {
-        initHeroImage();
-        initHeroActions();
-        safeLog('Serie initialized');
-      } catch (err) {
-        console.error('[app.bundle] Serie init error', err);
-      }
-    }
-
-    return { init };
-  })();
-
   // ---------- EPISODE MODULE (player + note form) ----------
   const Episode = (function () {
     function initVideo() {
