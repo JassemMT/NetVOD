@@ -16,6 +16,10 @@ CREATE TABLE serie (
     annee YEAR,
     image VARCHAR(255)
 );
+ALTER TABLE serie
+ADD COLUMN genre VARCHAR(100) AFTER image,
+ADD COLUMN public VARCHAR(100) AFTER genre;
+
 
 -- Table des épisodes
 CREATE TABLE episode (
