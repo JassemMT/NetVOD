@@ -6,6 +6,7 @@ use netvod\auth\AuthnProvider;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
 use netvod\exception\BadRequestMethodException;
+use netvod\notification\Notification;
 use netvod\renderer\form\LoginFormRenderer;
 use netvod\repository\UserRepository;
 use netvod\exception\AuthnException;
@@ -28,13 +29,13 @@ class LogInAction implements Action {
             // Utilise AuthnProvider::login pour vérifier et créer la session
             try {
                 AuthnProvider::login($mail, $password);
-                return "connection réussie";
+                header('Location: ?action=default');
+                Notification::save('Connexion réussie',"Succès",  Notification::TYPE_SUCCESS);
+                return "";
             } catch (AuthnException $e) {
                 throw new InvalidArgumentException('credentials');
-            } catch (\Exception $e) {
-                throw new \RuntimeException('Erreur lors de l\'authentification');
             }
-
+            
         } else throw new BadRequestMethodException();
     }    
 }

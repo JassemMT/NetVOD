@@ -2,10 +2,10 @@
 declare(strict_types=1);
 namespace netvod\action;
 
+use netvod\exception\AuthException;
 use netvod\repository\SerieRepository;
 use netvod\renderer\ListeProgrammeRenderer;
 use netvod\exception\BadRequestMethodException;
-use netvod\exception\ActionUnauthorizedException;
 use netvod\auth\AuthnProvider;
 class DisplayCatalogueAction implements Action {
     public function execute(): string {
@@ -16,6 +16,6 @@ class DisplayCatalogueAction implements Action {
                 $listeprogrammeRenderer = new ListeProgrammeRenderer($catalogue);
                 return $listeprogrammeRenderer->render();
             }else throw new BadRequestMethodException();
-        }else throw new ActionUnauthorizedException("il faut être connecté pour voir le catalogue");
+        }else throw new AuthException("il faut être connecté pour voir le catalogue");
     }
 }

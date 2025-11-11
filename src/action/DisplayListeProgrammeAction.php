@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace netvod\action;
 
 use NetVOD\Classes\User;
+use netvod\exception\AuthException;
 use netvod\exception\InvalidArgumentException;
 use netvod\exception\BadRequestMethodException;
 use netvod\renderer\ListeProgrammeRenderer;
@@ -16,12 +17,6 @@ class DisplayListeProgrammeAction implements Action {
     public function execute(): string {
         if (AuthnProvider::isLoggedIn()) {
             if ($_SERVER['REQUEST_METHOD']==='GET') {
-                /*
-                $idListe = $_GET['idListe'] ?? -1;
-                if ($idListe === -1){
-                    throw new InvalidArgumentException("id");
-                }
-                */
                 
                 $programmes = UserRepository::getUserLists(AuthnProvider::getSignedInUser());
                 $html = "";
@@ -38,7 +33,7 @@ class DisplayListeProgrammeAction implements Action {
                 return $html;
             
             }else throw new BadRequestMethodException();
-        }else throw new ActionUnauthorizedException("il faut être connecté pour voir une liste de programmes");
+        }else throw new AuthException("il faut être connecté pour voir une liste de programmes");
 
     }
 }

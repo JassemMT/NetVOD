@@ -3,13 +3,13 @@ declare(strict_types=1);
 namespace netvod\action;
 
 use netvod\auth\AuthnProvider;
+use netvod\exception\AuthException;
 use netvod\exception\MissingArgumentException;
 use netvod\renderer\EpisodeRenderer;
 use netvod\exception\BadRequestMethodException;
 use netvod\renderer\form\NotationFormRenderer;
 use netvod\repository\EpisodeRepository;
 use netvod\repository\UserRepository;
-use netvod\exception\ActionUnauthorizedException;
 
 class DisplayEpisodeAction implements Action {
     public function execute(): string {
@@ -48,6 +48,6 @@ class DisplayEpisodeAction implements Action {
                     return $html;
                 } else throw new MissingArgumentException("id");
             } else throw new BadRequestMethodException();
-        } else throw new ActionUnauthorizedException("il faut être connecté pour voir un épisode");
+        } else throw new AuthException("il faut être connecté pour voir un épisode");
     }
 }

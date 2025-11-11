@@ -6,6 +6,7 @@ use netvod\auth\AuthnProvider;
 use netvod\exception\BadRequestMethodException;
 use netvod\exception\MissingArgumentException;
 use netvod\exception\InvalidArgumentException;
+use netvod\notification\Notification;
 use netvod\repository\UserRepository;
 use netvod\renderer\form\RegisterFormRenderer;
 
@@ -38,7 +39,9 @@ class RegisterAction implements Action {
             }
             
             AuthnProvider::register($mail, $pswd1); // a ce stade pswd1 et pswd2 sont identiques
-
+            
+            Notification::save('Inscription réussie, vous pouvez maintenant vous connecter.', "Succès", Notification::TYPE_SUCCESS);
+            header('Location: ?action=login');
             return "";
         } else throw new BadRequestMethodException();
     }
