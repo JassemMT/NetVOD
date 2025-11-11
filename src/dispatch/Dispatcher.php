@@ -3,6 +3,7 @@
 namespace netvod\dispatch;
 
 use netvod\action as act;
+use netvod\notification\Notification;
 
 class Dispatcher
 {
@@ -76,9 +77,10 @@ class Dispatcher
     {
         $title = 'NetVOD App';
 
-        $menu = '<nav><a href="?action=default">Accueil</a> | ';
-
+        $menu = '';
+        
         if (isset($_SESSION['user'])) {
+            $menu .= '<nav><a href="?action=default">Accueil</a> | ';
             $menu .= '<a href="?action=display-catalogue">Catalogue</a> | 
                       <a href="?action=display-liste">Mes séries</a> | 
                       <a href="?action=display-user">Mon profil</a> |
@@ -87,6 +89,8 @@ class Dispatcher
             $menu .= '<a href="?action=login">Connexion</a> |
                       <a href="?action=register">Créer un compte</a></nav>';
         }
+
+        $notification = Notification::render();
 
         echo <<<HTML
         <!DOCTYPE html>
@@ -97,6 +101,7 @@ class Dispatcher
                 <title>{$title}</title>
                 <!-- import css  -->
                 <link rel="stylesheet" href="ressources/css/app.bundle.css">
+                <link rel="stylesheet" href="ressources/css/notification.css">
             </head>
             <body>
                 <div class="app-wrapper">
@@ -116,8 +121,11 @@ class Dispatcher
                     </main>
                 </div>
 
+                {$notification}
+
                 <!-- Script -->
                 <script src="ressources/js/app.bundle.js"></script>
+                <script src="ressources/js/notification.js"></script>
             </body>
         </html>
         HTML;
