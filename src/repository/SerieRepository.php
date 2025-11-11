@@ -18,27 +18,53 @@ use Exception;
 
 class SerieRepository{
 
-    public static function findAll():ListeProgramme{
-        $pdo = Database::getInstance()->pdo;
-        $sql = "SELECT id_serie, titre, description, annee, image FROM serie ORDER BY titre";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+    public static function findAll(?string $genre = null, ?string $public = null): ListeProgramme {
+    $pdo = Database::getInstance()->pdo;
 
-        // Récupérer toutes les lignes
-        $listeProgramme = new ListeProgramme("Catalogue des séries");
-        $series = $stmt->fetchAll();
+    $sql = "SELECT id_serie, titre, description, annee, image, genre, public
+            FROM serie";
+    $params = [];
+    $conditions = [];
 
-        foreach ($series as $s) {
-
-            // mettre la liste de serie en Session?
-            // car les series ne seront accèssible que dans 
-            $serie = new Serie((int)$s['id_serie'],$s['titre'], $s['description'], (int)$s['annee'], $s['image']);
-            $listeProgramme->ajouterProgramme($serie);
-
-
-        }
-        return $listeProgramme;
+    // Ajout dynamique des filtres
+    if ($genre !== null && $genre !== '') {
+        $conditions[] = "genre = :genre";
+        $params['genre'] = $genre;
     }
+
+    if ($public !== null && $public !== '') {
+        $conditions[] = "`public` = :public";
+        $params['public'] = $public;
+    }
+
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    $sql .= " ORDER BY titre";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    $listeProgramme = new \netvod\classes\ListeProgramme("Catalogue des séries");
+    $series = $stmt->fetchAll();
+
+    foreach ($series as $s) {
+        $serie = new \netvod\classes\Serie(
+            (int)$s['id_serie'],
+            $s['titre'],
+            $s['description'],
+            (int)$s['annee'],
+            $s['image'],
+            $s['genre'] ?? '',
+            $s['public'] ?? ''
+        );
+        $listeProgramme->ajouterProgramme($serie);
+    }
+
+    return $listeProgramme;
+}
+
 
     public static function findById(string $id):Serie{
         $pdo = Database::getInstance()->pdo;
@@ -209,5 +235,17 @@ class SerieRepository{
             return $stmt->fetchColumn() !== false;
         }
     }
+    public static function findAllGenres(): array {
+    $pdo = Database::getInstance()->pdo;
+    $stmt = $pdo->query("SELECT DISTINCT genre FROM serie WHERE genre IS NOT NULL ORDER BY genre");
+    return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+}
+
+    public static function findAllPublics(): array {
+    $pdo = Database::getInstance()->pdo;
+    $stmt = $pdo->query("SELECT DISTINCT `public` FROM serie WHERE `public` IS NOT NULL ORDER BY `public`");
+    return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+}
+
 
 }
