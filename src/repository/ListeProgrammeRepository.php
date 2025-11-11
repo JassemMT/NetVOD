@@ -108,7 +108,7 @@ class ListeProgrammeRepository
         $liste = new ListeProgramme($nomListe ?: 'Liste');
 
         foreach ($seriesData as $s) {
-            $serie = new Serie($s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+            $serie = new Serie((int)['id_serie'], $s['titre'], $s['description'], (int)$s['annee'], $s['image']);
             self::chargerEpisodes($serie);
             $liste->ajouterProgramme($serie);
         }
@@ -136,8 +136,9 @@ class ListeProgrammeRepository
         foreach ($episodesData as $ep) {
             $episode = new Episode(
                 (int)$ep['id_episode'],
-                $ep['numero'],
+                (int)$ep['numero'],
                 $ep['titre'],
+                'descritpion', // Description non présente dans la table episode
                 (int)$ep['duree'],
                 $ep['source'],
                 $ep['src_image']
