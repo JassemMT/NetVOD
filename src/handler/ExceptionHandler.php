@@ -1,6 +1,6 @@
 <?php
 declare(strict_types= 1);
-namespace iutnc\deefy\handler;
+namespace netvod\handler;
 
 use netvod\exception as exc;
 

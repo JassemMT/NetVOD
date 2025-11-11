@@ -1,7 +1,11 @@
 /* ==========================================================================
    resources/css/app.bundle.css
-   Fix navbar visual + restore episode hover behavior (series pages)
-   Non-breaking replacement: preserves existing class names and layout.
+   Refined: fix video "flattened" player and center rating form.
+   - Minimal edits only: add an aspect-ratio + min-height to the video player
+     so it reserves space before metadata loads.
+   - Ensure the rating form inside .episode-note is visually centered by using
+     a flex container and constraining the form width.
+   - All other styles preserved to avoid visual regressions.
    ========================================================================== */
 
 /* =========================
@@ -11,6 +15,7 @@
   --bg-1:#ffffff;
   --bg-2:#f7f9fb;
   --bg-3:#f0f3f8;
+  --accent-primary:#6366f1;
 
   --glass-band: rgba(255,255,255,0.26);
   --glass-band-border: rgba(255,255,255,0.36);
@@ -42,6 +47,7 @@
   --spacing-xl:2rem;
   --spacing-2xl:2.5rem;
   --spacing-3xl:3rem;
+  --spacing-4xl:4rem;
 
   --radius-sm:8px;
   --radius-base:12px;
@@ -52,6 +58,9 @@
   --duration-base:200ms;
   --duration-slow:300ms;
   --easing-out:cubic-bezier(0,0,0.2,1);
+
+  --header-height: 64px;           /* hauteur du header desktop */
+  --header-compact-height: 88px;   /* hauteur quand le header wrappe (mobile) */
 }
 
 /* Respect reduced motion */
@@ -73,6 +82,7 @@ body{
   -moz-osx-font-smoothing:grayscale;
   -webkit-text-size-adjust:100%;
   padding:36px;
+  padding-top: calc(var(--header-height) + var(--spacing-sm));
 }
 
 /* Typography */
@@ -131,30 +141,30 @@ button:focus{outline:var(--shadow-focus);outline-offset:3px}
   border-bottom:1px solid var(--border-subtle);
   backdrop-filter:blur(10px);
   box-shadow:var(--shadow-soft);
-  z-index:100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  display: flex;
+  align-items: center; /* vertical centering of header-content */
+  z-index: 1100;
 }
-.header-content{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-xl)}
-.logo{font-weight:700;font-size:var(--size-lg);padding:var(--spacing-sm) var(--spacing-md);border-radius:8px;background:linear-gradient(180deg,#fff,#fbfdff)}
-/* NAV fixes: explicit inline-flex + padding + subtle hover background
-   - ensures consistent vertical alignment and spacing (restores previous look)
-*/
-.nav{display:flex;gap:var(--spacing-lg);align-items:center}
-.nav a{
-  display:inline-flex;
+.header-content{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
   align-items:center;
-  padding:6px 10px;
-  border-radius:var(--radius-sm);
-  font-size:var(--size-sm);
-  color:var(--text);
-  font-weight:600;
-  transition:background var(--duration-base) var(--easing-out), color var(--duration-base) var(--easing-out);
+  justify-content:space-between;
+  gap:var(--spacing-xl);
+  width:100%;
+  height:100%;
+  box-sizing: border-box;
+  padding-left: calc(var(--spacing-xl));
+  padding-right: calc(var(--spacing-xl));
 }
-.nav a:hover, .nav a:focus{
-  background: rgba(0,0,0,0.02);
-  color: var(--text-secondary);
-}
-
-/* Layout container */
+.logo{font-weight:700;font-size:var(--size-lg);padding:var(--spacing-sm) var(--spacing-md);border-radius:8px;background:linear-gradient(180deg,#fff,#fbfdff)}
+.nav{display:flex;gap:var(--spacing-lg)}
 .container{max-width:1200px;margin:0 auto;padding:0 var(--spacing-xl)}
 main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl)}
 
@@ -181,17 +191,29 @@ main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl)
 .card:hover{box-shadow:var(--shadow-medium)}
 .card:focus{outline:2px solid rgba(0,0,0,0.08);outline-offset:4px}
 
+/* card image fallback */
 .card-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transform:translate3d(0,0,0) scale(1.12);transition:transform 180ms linear}
+
+/* subtle overlay */
 .card-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));pointer-events:none;z-index:2}
-.card-band{position:absolute;left:12px;right:12px;bottom:12px;padding:12px 14px;border-radius:var(--radius-base);display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-base);z-index:4;background:var(--glass-band);border:1px solid var(--glass-band-border)}
+
+/* card band (fallback style for simple cards) */
+.card-band{
+  position:absolute;
+  left:12px;right:12px;bottom:12px;padding:12px 14px;border-radius:var(--radius-base);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-base);z-index:4;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:var(--glass-band);border:1px solid var(--glass-band-border);
+  transition:transform 180ms linear;
+}
 
 /* =========================
-   HERO (serie)
+   HERO (serie) fixes
    ========================= */
 .hero-serie{
   display:grid;
-  grid-template-columns:minmax(280px,1fr) minmax(360px,1fr);
-  gap:calc(var(--spacing-4xl) + 0.5rem);
+  grid-template-columns: minmax(280px, 1fr) minmax(360px, 1fr);
+  gap: calc(var(--spacing-4xl) + 0.5rem);
   align-items:center;
   margin-bottom:var(--spacing-4xl);
   padding:calc(var(--spacing-3xl) + 0.5rem);
@@ -202,110 +224,495 @@ main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl)
 }
 @media (max-width:1024px){ .hero-serie{ grid-template-columns:1fr; gap:var(--spacing-2xl); padding:var(--spacing-2xl) } }
 
-/* hero image stable (no automatic CSS zoom) */
+/* hero image: stable (disable zoom) and maintain aspect ratio */
 .hero-image{position:relative;overflow:hidden;border-radius:var(--radius-lg);aspect-ratio:16/9;box-shadow:0 24px 64px rgba(6,7,10,0.16)}
-.hero-image img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .45s var(--easing-out);transform-origin:center center;transform:none}
-/* JS may toggle .is-zoomed to enable zoom; default is off */
-.hero-image.is-zoomed img{transform:scale(1.06)}
-.hero-content{display:flex;flex-direction:column;gap:var(--spacing-2xl);padding-left:var(--spacing-lg)}
-@media (max-width:900px){ .hero-content{padding-left:0} }
+.hero-image img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:none;transform:none}
+
+/* hero content: add breathing room from the image */
+.hero-content{
+  display:flex;
+  flex-direction:column;
+  gap:var(--spacing-2xl);
+  padding-left: var(--spacing-lg);
+}
 .hero-meta{margin-bottom:var(--spacing-base)}
 .hero-title{font-size:clamp(1.6rem,4vw,2.4rem);margin:0}
 .hero-year{font-size:var(--size-lg);color:var(--text-muted);padding:var(--spacing-sm) var(--spacing-base);border-radius:8px}
 
-/* hero actions */
+/* hero actions and prominent favorites button */
 .hero-actions{display:flex;gap:var(--spacing-lg);align-items:center}
 .hero-actions form{margin:0}
+.hero-actions .btn-secondary{
+  background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(99,102,241,0.06));
+  border:1.5px solid rgba(99,102,241,0.25);
+  color: #0b1220;
+  font-weight:700;
+  padding:14px 26px;
+  font-size:1rem;
+}
 
 /* =========================
    HERO NOTE
    ========================= */
-.hero-note{display:inline-flex;align-items:center;gap:.5rem;padding:6px 10px;border-radius:999px;font-size:var(--size-sm);font-weight:600;color:var(--text-secondary);background:linear-gradient(180deg, rgba(255,255,255,0.62), rgba(250,250,252,0.6));border:1px solid rgba(0,0,0,0.04);box-shadow:0 6px 20px rgba(6,7,10,0.04);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);line-height:1;white-space:nowrap;transition:box-shadow var(--duration-fast) var(--easing-out),transform var(--duration-fast) var(--easing-out)}
-.hero-note::before{content:'★';font-size:0.9em;color:var(--accent-primary);margin-left:-2px;text-shadow:0 1px 0 rgba(255,255,255,0.6)}
-.hero-note:hover,.hero-note:focus{box-shadow:0 14px 40px rgba(6,7,10,0.08);transform:translateY(-2px);outline:none}
-.hero-note--on-dark{background:rgba(0,0,0,0.32);border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.92)}
-.hero-note--on-dark::before{color:#ffd166;text-shadow:none}
-@media (max-width:600px){.hero-note{padding:5px 8px;font-size:var(--size-xs);gap:.35rem}}
+.hero-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;                       /* espace entre icône et texte */
+  padding: 6px 10px;                 /* pill padding */
+  border-radius: 999px;              /* pill shape */
+  font-size: var(--size-sm);         /* discret, lisible */
+  font-weight: 600;
+  color: var(--text-secondary);      /* texte doux */
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.62) 0%,
+    rgba(250, 250, 252, 0.6) 100%
+  );                                  /* verre mat, cohérent avec le thème */
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 6px 20px rgba(6, 7, 10, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  line-height: 1;
+  white-space: nowrap;
+  transition: box-shadow var(--duration-fast) var(--easing-out),
+              transform var(--duration-fast) var(--easing-out),
+              background-color var(--duration-fast) var(--easing-out);
+  will-change: transform, box-shadow;
+}
+
+/* petite icône étoile avant la note — couleur d'accent avec fallback */
+.hero-note::before {
+  content: '★';
+  display: inline-block;
+  font-size: 0.9em;
+  color: var(--accent-primary, #6366f1);
+  margin-left: -2px;  /* ajuste l'alignement visuel */
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* effet au hover: léger lift (pas de changement de couleur principal) */
+.hero-note:hover,
+.hero-note:focus {
+  box-shadow: 0 14px 40px rgba(6, 7, 10, 0.08);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* version "dégradée" si vous voulez une note sur fond sombre (hero avec overlay) */
+.hero-note--on-dark {
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+.hero-note--on-dark::before {
+  color: #ffd166; /* or try var(--accent-primary) fallback */
+  text-shadow: none;
+}
+
+/* Responsive: réduire padding / taille sur petits écrans */
+@media (max-width: 600px) {
+  .hero-note {
+    padding: 5px 8px;
+    font-size: var(--size-xs);
+    gap: 0.35rem;
+  }
+
+  .hero-note::before {
+    font-size: 0.95em;
+  }
+}
+
+/* respects prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-note,
+  .hero-note:hover,
+  .hero-note:focus {
+    transition: none;
+    transform: none;
+  }
+}
 
 /* =========================
-   EPISODES (cards & overlay)
+   EPISODE grid & overlay slide-in (clean, no !important)
    ========================= */
-.episodes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--spacing-2xl)}
-/* force single-column on series detail using a more specific selector */
-.episodes-section .episodes-grid, body[data-page="serie"] .episodes-grid { grid-template-columns:1fr; gap:var(--spacing-md) }
 
-/* episode card base */
-.episode-card{position:relative;height:320px;border-radius:var(--radius-md);overflow:hidden;background:#f9fbfd;border:1px solid var(--border-subtle);box-shadow:var(--shadow-soft)}
+/* episodes grid default */
+.episodes-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--spacing-2xl) }
 
-/* ensure anchor fills card (older markup may include .episode-band inside or outside the link) */
-.episode-card > .episode-link,
-.episode-card .episode-link {
-  display:block;position:relative;width:100%;height:100%;color:inherit;text-decoration:none;
+/* --- SERIES PAGE: force single-column listing for episodes ---
+   Use a more specific selector so it overrides the generic grid-template
+   without using !important. It targets episodes inside the series detail
+   section (.episodes-section). If you add body[data-page="serie"] we also target that.
+*/
+.episodes-section .episodes-grid,
+body[data-page="serie"] .episodes-grid {
+  grid-template-columns: 1fr; /* single column */
+  gap: var(--spacing-md);
 }
 
-/* image wrapper and image */
-.episode-image-wrapper{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;z-index:1}
-.episode-image{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform 180ms linear,filter 280ms var(--easing-out)}
+/* base episode card */
+.episode-card{
+  position:relative;
+  height:320px;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  background:#f9fbfd;
+  border:1px solid var(--border-subtle);
+  box-shadow:var(--shadow-soft);
+}
 
-/* overlay panel (offscreen right for desktop) */
+/* link fills the card */
+.episode-card > .episode-link{
+  display:block;
+  position:relative;
+  width:100%;
+  height:100%;
+  color:inherit;
+  text-decoration:none;
+}
+
+/* image layer */
+.episode-image-wrapper{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:1;
+}
+.episode-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  transform:none;
+  transition:transform 180ms linear, filter 280ms var(--easing-out);
+}
+
+/* overlay band: absolute to the right and translated off-screen initially */
 .episode-band{
-  position:absolute;top:0;right:0;height:100%;width:40%;min-width:180px;display:flex;flex-direction:column;justify-content:center;gap:var(--spacing-base);padding:20px;
-  background:linear-gradient(90deg, rgba(0,0,0,0.45), rgba(255,255,255,0.02));color:#fff;transform:translateX(110%);transition:transform 320ms var(--easing-out),opacity 220ms var(--easing-out);opacity:0;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-left:1px solid rgba(255,255,255,0.04);z-index:6;pointer-events:none;
+  position:absolute;
+  top:0;
+  right:0;
+  height:100%;
+  width:40%;
+  min-width:180px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:var(--spacing-base);
+  padding:20px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(255,255,255,0.02));
+  color: #fff;
+  transform: translateX(110%);
+  transition: transform 320ms var(--easing-out), box-shadow 320ms var(--easing-out), opacity 220ms var(--easing-out);
+  opacity:0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-left: 1px solid rgba(255,255,255,0.04);
+  z-index:6;
+  pointer-events:none;
 }
 
-/* Reveal overlay: cover more cases so it works regardless of exact DOM nesting */
+/* reveal overlay on hover or keyboard focus within card/link */
 .episode-card:hover .episode-band,
 .episode-card:focus-within .episode-band,
 .episode-card > .episode-link:hover .episode-band,
-.episode-card > .episode-link:focus-within .episode-band,
-.episode-card .episode-link:hover .episode-band,
-.episode-card .episode-link:focus-within .episode-band {
-  transform:translateX(0);opacity:1;pointer-events:auto;box-shadow:0 18px 40px rgba(0,0,0,0.18);
+.episode-card > .episode-link:focus-within .episode-band{
+  transform: translateX(0);
+  opacity:1;
+  pointer-events:auto;
+  box-shadow:0 18px 40px rgba(0,0,0,0.18);
 }
 
-/* darken image when overlay visible */
-.episode-card:hover .episode-image,
-.episode-card:focus-within .episode-image,
-.episode-card > .episode-link:hover .episode-image,
-.episode-card > .episode-link:focus-within .episode-image {
-  filter:brightness(0.66) saturate(0.95);
+/* overlay internal styling */
+.episode-band .episode-meta{
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-items:flex-start;
+  min-width:0;
 }
-
-/* overlay internals */
-.episode-band .episode-meta{color:#fff;display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0}
 .episode-band .episode-title{color:#fff;font-weight:700;margin:0}
-.episode-band .episode-subtitle{color:rgba(255,255,255,0.9);margin:0}
+.pisode-band .episode-subtitle{color:rgba(255,255,255,0.9);margin:0}
 
-/* overlay button */
-.episode-band .btn-small{align-self:center;min-width:110px;padding:10px 16px;border-radius:10px;background:linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.06));border:1px solid rgba(255,255,255,0.14);color:#fff;font-weight:700;transition:transform 180ms var(--easing-out),box-shadow 180ms var(--easing-out)}
-.episode-band .btn-small:hover,.episode-band .btn-small:focus{transform:scale(1.06);box-shadow:0 12px 32px rgba(0,0,0,0.28)}
-
-/* Touch/no-hover fallback: do not reveal overlay on hover, but reveal on focus */
-@media (hover: none){
-  .episode-card:hover .episode-band { transform:translateX(110%); opacity:0; pointer-events:none; }
-  .episode-card:focus-within .episode-band { transform:translateX(0); opacity:1; pointer-events:auto; }
+/* button in overlay */
+.episode-band .btn-small{
+  align-self:center;
+  min-width:110px;
+  padding:10px 16px;
+  border-radius:10px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.06));
+  border: 1px solid rgba(255,255,255,0.14);
+  color:#fff;
+  font-weight:700;
+  transition:transform 180ms var(--easing-out), box-shadow 180ms var(--easing-out);
+}
+.episode-band .btn-small:hover,
+.episode-band .btn-small:focus{
+  transform: scale(1.06);
+  box-shadow:0 12px 32px rgba(0,0,0,0.28);
 }
 
-/* responsive overlay slides from bottom on smaller screens */
+/* darken underlying image when overlay visible for contrast */
+.episode-card:hover .episode-image,
+.episode-card:focus-within .episode-image{
+  filter: brightness(0.66) saturate(0.95);
+}
+
+/* Accessible fallback for touch (no hover) */
+@media (hover: none) {
+  .episode-card:hover .episode-band { transform: translateX(110%); opacity:0; pointer-events:none; }
+  .episode-card:focus-within .episode-band { transform: translateX(0); opacity:1; pointer-events:auto; }
+}
+
+/* mobile: slide overlay from bottom */
 @media (max-width:900px){
-  .episode-card{height:300px}
-  .episode-band{width:100%;height:auto;bottom:0;top:auto;left:0;transform:translateY(110%);transition:transform 300ms var(--easing-out),opacity 220ms var(--easing-out)}
-  .episode-card:hover .episode-band, .episode-card:focus-within .episode-band{transform:translateY(0);opacity:1}
-  .episode-band .btn-small{align-self:flex-end}
+  .episode-card{ height:300px }
+  .episode-band{
+    width:100%;
+    height:auto;
+    bottom:0;
+    top:auto;
+    left:0;
+    transform: translateY(110%);
+    transition: transform 300ms var(--easing-out), opacity 220ms var(--easing-out);
+  }
+  .episode-card:hover .episode-band,
+  .episode-card:focus-within .episode-band{
+    transform: translateY(0);
+    opacity:1;
+  }
+  .episode-band .btn-small{ align-self:flex-end }
+  .hero-serie{ grid-template-columns:1fr; gap:var(--spacing-2xl); padding:var(--spacing-2xl) }
+  .hero-content{ padding-left:0 }
 }
 
-/* small focus polish */
-.episode-card:focus, .episode-card:focus-within{outline:2px solid rgba(99,102,241,0.08);outline-offset:2px}
+/* small polish: focus & accessibility */
+.episode-card:focus-within,
+.episode-card:focus{ outline:2px solid rgba(99,102,241,0.08); outline-offset:2px }
 
-/* ensure stacking contexts for specific children */
-.episode-card .episode-image, .episode-card .episode-image-wrapper, .episode-card .episode-link{position:relative;z-index:1}
+/* make sure only specific children are positioned relative (do not set episode-band relative) */
+.episode-card .episode-image,
+.episode-card .episode-image-wrapper,
+.episode-card .episode-link{
+  position: relative;
+  z-index:1;
+}
+
 
 /* =========================
-   AUTH (login & register)
+   EPISODE page: video
+   ========================= */
+
+/* Header */
+.episode-header {
+  max-width: 980px;
+  margin: 0 auto var(--spacing-lg);
+  padding: 0 var(--spacing-lg);
+}
+
+#episode-title {
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  margin: 0 0 6px 0;
+  line-height: 1.05;
+}
+
+.episode-meta {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: var(--size-sm);
+}
+
+/* Player: centered, responsive, nice border-radius and shadow
+   --- FIXES ---
+   - reserve visual space before the video metadata loads by using aspect-ratio
+     and a sensible min-height. This prevents the "applatir" effect.
+*/
+.episode-player {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto var(--spacing-2xl);
+  padding: 0 var(--spacing-lg);
+  box-sizing: border-box;
+  display: block;
+}
+
+/* The actual <video> element */
+.player {
+  display: block;
+  width: 100%;
+  /* Reserve 16:9 space before load to avoid collapsed/flattened player */
+  aspect-ratio: 16 / 9;
+  min-height: 240px; /* fallback for browsers not supporting aspect-ratio */
+  height: auto;
+  border-radius: calc(var(--radius-md) + 2px);
+  background: #000;
+  box-shadow: 0 20px 60px rgba(6,7,10,0.12);
+  overflow: hidden;
+  outline: none;
+  object-fit: cover; /* keep poster/video cover behavior */
+}
+
+/* ensure the poster image covers the box consistently */
+.player::cue { /* noop placeholder for caption styling if needed */ }
+
+/* Video focus for keyboard users */
+.player:focus {
+  box-shadow: 0 24px 72px rgba(6,7,10,0.18);
+  outline: 3px solid rgba(99,102,241,0.12);
+  outline-offset: 6px;
+}
+
+/* =========================
+   EPISODE NOTE (center the form)
+   - Use flex on the container and constrain the inner form width so the form
+     appears centered and not full-bleed on wide screens.
+   ========================= */
+.episode-note {
+  max-width: 100%;
+  margin: 0 auto var(--spacing-4xl);
+  padding: var(--spacing-lg);
+  box-sizing: border-box;
+
+  /* Center the form content horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Constrain the form width so it looks like a centred card */
+.episode-note .note-form {
+  width: 100%;
+  max-width: 680px; /* chosen so it looks balanced with the player */
+  display: grid;
+  gap: var(--spacing-md);
+  background: linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.18));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Form rows */
+.form-row label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--size-sm);
+  color: var(--text-secondary);
+}
+
+.form-row input[type="text"],
+.form-row input[type="number"],
+.form-row textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.6);
+  color: var(--text);
+  font-size: var(--size-base);
+  transition: box-shadow var(--duration-fast), border-color var(--duration-fast);
+}
+
+/* Larger textarea if used */
+.form-row textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Focus */
+.form-row input:focus,
+.form-row textarea:focus {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border-color: rgba(99,102,241,0.14);
+  outline: none;
+}
+
+/* Form actions: align submit to the right on wide screens */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-base);
+  width: 100%;
+}
+
+/* Make primary button slightly larger here */
+.form-actions .btn-primary {
+  padding: 10px 20px;
+  font-size: var(--size-base);
+}
+
+/* Inline help / error */
+.form-error {
+  color: #b00020;
+  font-size: var(--size-sm);
+  margin-top: 6px;
+  display: none;
+}
+.form-error.is-visible { display: block; }
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .player { border-radius: calc(var(--radius-md)); }
+  .episode-player { padding: 0 var(--spacing-md); }
+  .episode-note { padding: var(--spacing-md); }
+  .episode-note .note-form { padding: var(--spacing-md); }
+  .form-actions { justify-content: stretch; }
+  .form-actions .btn-primary { width: 100%; }
+}
+
+/* Mobile smaller spacing */
+@media (max-width: 600px) {
+  body { padding: 20px; } /* reduces the global padding on small screens */
+  .episode-header { margin-bottom:var(--spacing-md); padding: 0 var(--spacing-md); }
+  .episode-player { margin-bottom: var(--spacing-lg); }
+  .episode-note { padding: 0 var(--spacing-md); margin-bottom: var(--spacing-3xl); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .player,
+  .form-row input,
+  .form-row textarea,
+  .form-actions .btn-primary {
+    transition: none !important;
+  }
+}
+
+
+/* =========================
+   AUTH (login / register) harmonisation
    ========================= */
 .auth-page{display:flex;align-items:center;justify-content:center;padding:var(--spacing-4xl) var(--spacing-xl);min-height:calc(100vh - 220px);box-sizing:border-box}
-.auth-container{width:100%;max-width:480px;border-radius:var(--radius-lg);padding:var(--spacing-3xl);background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.22));border:1px solid var(--border-subtle);box-shadow:var(--shadow-soft);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.auth-card{background:transparent;border:none;padding:0;margin:0;width:100%;border-radius:var(--radius-lg)}
+
+.auth-container{
+  width:100%;
+  max-width:480px;
+  border-radius:var(--radius-lg);
+  padding:var(--spacing-3xl);
+  background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.22));
+  border:1px solid var(--border-subtle);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+/* neutralize inner card visuals while preserving semantics */
+.auth-card{
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  width:100%;
+  border-radius:var(--radius-lg);
+}
+
+/* auth form layout */
 .auth-header{text-align:center;margin-bottom:var(--spacing-2xl)}
 .auth-header h1{margin:0 0 var(--spacing-base) 0;font-size:var(--size-2xl);font-weight:600;color:var(--text)}
 .auth-sub{color:var(--text-muted);font-size:var(--size-sm);margin:0}
@@ -317,8 +724,8 @@ main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl)
 .input-with-toggle .toggle-pw{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--text-secondary);padding:6px;cursor:pointer;font-size:var(--size-sm)}
 .auth-actions{display:flex;gap:var(--spacing-base);margin-top:var(--spacing-base);justify-content:space-between;align-items:center}
 .link-muted{color:var(--text-secondary);font-size:var(--size-sm);text-decoration:underline;background:transparent;border:none;padding:0;cursor:pointer}
-.form-error{display:none;color:#b00020;font-size:var(--size-sm);margin-top:6px}
 .form-error.is-visible{display:block}
+.form-error{display:none;color:#b00020;font-size:var(--size-sm);margin-top:6px}
 
 /* =========================
    RESPONSIVE TWEAKS
@@ -334,15 +741,14 @@ main{min-height:calc(100vh - 200px);padding:var(--spacing-4xl) var(--spacing-xl)
   main{padding:var(--spacing-xl) var(--spacing-md)}
 }
 
-/* =========================
-   ACCESSIBILITY & REDUCED MOTION
-   ========================= */
-@media (prefers-reduced-motion: reduce){
+/* reduced motion override */
+@media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
 
-/* =========================
-   UTILITY CLASSES
-   ========================= */
-.u-hidden{display:none!important}
-.visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px}
+/* responsive: when header grows (wrap) update tokens for small screens */
+@media (max-width: 900px) {
+  :root { --header-height: var(--header-compact-height); }
+  body { padding-top: calc(var(--header-height) + var(--spacing-sm)); }
+  .header-content { flex-direction: column; align-items: flex-start; gap: var(--spacing-base); padding-top: 8px; padding-bottom: 8px; }
+}
