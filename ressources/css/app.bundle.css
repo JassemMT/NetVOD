@@ -14,14 +14,14 @@
    ========================= */
 :root{
   --bg-1:#ffffff;
-  --bg-2:#e7f2ff;
+  --bg-2:#edf5ff;
   --bg-3:#f0f3f8;
   --accent-primary:#6366f1;
 
   --glass-band: rgba(255,255,255,0.26);
   --glass-band-border: rgba(255,255,255,0.36);
-  --glass-btn: rgba(255,255,255,0.28);
-  --glass-btn-border: rgba(255,255,255,0.42);
+  --glass-btn: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(99,102,241,0.06));/*rgba(255,255,255,0.28);*/
+  --glass-btn-border: rgba(99,102,241,0.25);/* rgba(255,255,255,0.42);*/
 
   --text: rgba(6,7,10,0.86);
   --text-secondary: rgba(6,7,10,0.7);
@@ -582,12 +582,13 @@ body[data-page="serie"] .episodes-grid {
 
   /* Center the form content horizontally */
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
 /* Constrain the form width so it looks like a centred card */
-.episode-note .note-form {
+.note-form {
   width: 100%;
   max-width: 680px; /* chosen so it looks balanced with the player */
   display: grid;
@@ -637,7 +638,7 @@ body[data-page="serie"] .episodes-grid {
 /* Form actions: align submit to the right on wide screens */
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: var(--spacing-base);
   width: 100%;
 }
@@ -724,7 +725,7 @@ body[data-page="serie"] .episodes-grid {
 .auth-form input:focus{box-shadow:0 6px 20px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.08)}
 .input-with-toggle{position:relative;display:flex;align-items:center}
 .input-with-toggle .toggle-pw{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--text-secondary);padding:6px;cursor:pointer;font-size:var(--size-sm)}
-.auth-actions{display:flex;gap:var(--spacing-base);margin-top:var(--spacing-base);justify-content:space-between;align-items:center}
+.auth-actions{display:flex;gap:var(--spacing-base);margin-top:var(--spacing-base);justify-content:center;align-items:center}
 .link-muted{color:var(--text-secondary);font-size:var(--size-sm);text-decoration:underline;background:transparent;border:none;padding:0;cursor:pointer}
 .form-error.is-visible{display:block}
 .form-error{display:none;color:#b00020;font-size:var(--size-sm);margin-top:6px}
