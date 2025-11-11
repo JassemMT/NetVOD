@@ -101,7 +101,6 @@ class Dispatcher
                 <title>{$title}</title>
                 <!-- import css  -->
                 <link rel="stylesheet" href="ressources/css/app.bundle.css">
-                <link rel="stylesheet" href="ressources/css/notification.css">
             </head>
             <body>
                 <div class="app-wrapper">
@@ -125,7 +124,6 @@ class Dispatcher
 
                 <!-- Script -->
                 <script src="ressources/js/app.bundle.js"></script>
-                <script src="ressources/js/notification.js"></script>
             </body>
         </html>
         HTML;
