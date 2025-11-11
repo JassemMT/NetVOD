@@ -8,9 +8,11 @@ session_start(); // après l'autoload pour éviter les erreurs de classes non tr
 
 use netvod\dispatch\Dispatcher;
 use netvod\core\Database;
+use netvod\handler\ExceptionHandler;
 
 
 Database::setConfig( __DIR__ . '/config/configdb.ini');
 
 $dispatcher = new Dispatcher($_GET['action'] ?? '');
-$dispatcher->run();
+
+ExceptionHandler::handle([$dispatcher, 'run']);
