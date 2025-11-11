@@ -5,6 +5,7 @@ namespace netvod\renderer;
 use netvod\classes\Episode;
 use netvod\renderer\EpisodeRenderer;
 use netvod\classes\Serie;
+use netvod\repository\SerieRepository;
 
 class SerieRenderer extends ProgrammeRenderer implements Renderer {
 
@@ -23,6 +24,8 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
             $episodes .= $renderer->renderShort();
         }
 
+        $note = SerieRepository::getAverageRating($serie->id);
+
         return <<<FIN
         <!-- HERO SECTION -->
         <section class="hero-serie" role="region" aria-label="Détails de la série">
@@ -34,6 +37,7 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
                 <div class="hero-meta">
                     <h1 class="hero-title">{$serie->titre}</h1>
                     <p class="hero-year">{$serie->annee}</p>
+                    <p class="hero-note">Note moyenne : {$note}/5 </p>
                 </div>
     
                 <div class="hero-actions">

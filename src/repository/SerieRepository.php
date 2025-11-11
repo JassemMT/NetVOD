@@ -75,7 +75,7 @@ class SerieRepository{
     }
     */ // /!\ titre non unique, ne peut pas être utilisé pour identifier une série
 
-    public function getAverageRating(int $id_serie):float{
+    public static function getAverageRating(int $id_serie):float{
         $pdo = Database::getInstance()->pdo;
         $sql = "
                 SELECT 

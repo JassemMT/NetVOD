@@ -95,8 +95,8 @@ class Dispatcher
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>{$title}</title>
+                <!-- import css  -->
                 <link rel="stylesheet" href="ressources/css/app.bundle.css">
-                <!-- import css specifique a traiter -->
             </head>
             <body>
                 <div class="app-wrapper">
@@ -116,7 +116,7 @@ class Dispatcher
                     </main>
                 </div>
 
-                <!-- Script import spe TODO -->
+                <!-- Script -->
                 <script src="ressources/js/app.bundle.js"></script>
             </body>
         </html>
