@@ -26,6 +26,13 @@ INSERT INTO `serie` (`id_serie`, `titre`, `description`, `annee`, `image`) VALUE
 (5, 'Champion', 'La vie trépidante de deux champions de surf, passionnés dès leur plus jeune age. Ils consacrent leur vie à ce sport.', 2022, 'champion_surf.jpg'),
 (6, 'Une ville la nuit', 'C\'est beau une ville la nuit, avec toutes ces voitures qui passent et qui repassent. La série suit un livreur, un chauffeur de taxi, et un insomniaque. Tous parcourent la grande ville une fois la nuit venue, au volant de leur véhicule.', 2017, 'ville_nuit.jpg');
 
+UPDATE serie SET genre = 'Mystère', public = 'Tout public' WHERE id_serie = 1; -- Le lac aux mystères
+UPDATE serie SET genre = 'Drame', public = 'Tout public' WHERE id_serie = 2; -- L'eau a coulé
+UPDATE serie SET genre = 'Nature / Aventure', public = 'Tout public' WHERE id_serie = 3; -- Chevaux fous
+UPDATE serie SET genre = 'Comédie', public = 'Tout public' WHERE id_serie = 4; -- A la plage
+UPDATE serie SET genre = 'Sport', public = 'Adolescent' WHERE id_serie = 5; -- Champion
+UPDATE serie SET genre = 'Drame urbain', public = 'Adulte' WHERE id_serie = 6; -- Une ville la nuit
+
 -- ========================================
 -- INSERTION DES ÉPISODES (adaptés du sujet)
 -- ========================================
