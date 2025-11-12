@@ -15,23 +15,20 @@ class Dispatcher
     }
 
     public function run(): void
-    {
-
-        // Liste des actions nécessitant d'être connecté
+    {        // Liste des actions nécessitant d'être connecté
         $privateActions = [
             'add-serie',
             'notation',
             'display-user',
-            'display-list'
+            'display-liste'
         ];
 
         // Si on essaie d'accéder à une action privée sans être connecté → redirection
         if (in_array($this->action, $privateActions) && !isset($_SESSION['user'])) {
             $obj = new act\LogInAction();
-        } else {
-            switch ($this->action) {
+        } else {            switch ($this->action) {
                 case 'login':
-                    $obj = new act\LoginAction();
+                    $obj = new act\LogInAction();
                     break;
                 case 'register':
                     $obj = new act\RegisterAction();

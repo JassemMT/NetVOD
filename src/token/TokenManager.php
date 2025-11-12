@@ -10,13 +10,13 @@ class TokenManager {
     public static function genererToken(int $life_time = 300) : void {
         if (AuthnProvider::isLoggedIn()) {
             $token = bin2hex(random_bytes(32));
-            $_SESSION['token'] = ["token" => $token, "created_at" => time(), "life_time" => $life_time];
+            $_SESSION['token'] = ["value" => $token, "created_at" => time(), "life_time" => $life_time];
         } else throw new AuthException("Utilisateur non authentifié");
     }
 
     public static function checkToken() : bool {
         if (AuthnProvider::isLoggedIn()) {
-            if (isset($_SESSION['tokens'])) {
+            if (isset($_SESSION['token'])) {
                 $token = $_SESSION['token'];
                 $created_at = $token['created_at'];
                 $current_time = time();
@@ -33,26 +33,25 @@ class TokenManager {
 
     public static function useToken(string $token) : bool {
         if (self::checkToken()) {
-            if (isset($_SESSION['tokens']['token']) && hash_equals($_SESSION['tokens']['token'], $token)) {
-                unset($_SESSION['tokens']);
+            if (isset($_SESSION['token']['value']) && hash_equals($_SESSION['token']['value'], $token)) {
+                unset($_SESSION['token']);
                 return true;
             } else {
                 return false;
             }
         } else {
-            unset($_SESSION['tokens']);
+            unset($_SESSION['token']);
             return false;
         }
     }
 
     public static function getToken() : ?string {
         if (AuthnProvider::isLoggedIn()) {
-            if (isset($_SESSION['tokens'])) {
+            if (isset($_SESSION['token'])) {
                 $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
                 $url .= $_SERVER['HTTP_HOST'];
                 $url .= explode("?", $_SERVER['REQUEST_URI'])[0]; //on ne veut pas les anciens paramètres GET
-                $url .= "?action=verify-mail&token={$_SESSION['tokens']['token']}";
-                var_dump($url);
+                $url .= "?action=verify-mail&token={$_SESSION['token']['value']}";
                 return $url;
             } else {
                 return null;

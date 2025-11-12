@@ -10,8 +10,6 @@ use netvod\dispatch\Dispatcher;
 use netvod\core\Database;
 use netvod\handler\ExceptionHandler;
 
-var_dump($_SERVER["REQUEST_URI"]);
-
 Database::setConfig( __DIR__ . '/config/configdb.ini');
 
 $dispatcher = new Dispatcher($_GET['action'] ?? '');

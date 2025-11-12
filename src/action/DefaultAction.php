@@ -12,6 +12,9 @@ class DefaultAction implements Action {
             return '
             <h1>Bienvenue sur NetVOD</h1>
             <p>Votre plateforme de streaming préférée !</p> ';
-        } else throw new AuthException('Vous devez être connecté pour accéder à cette page.');
+        } else {
+            header('Location: ?action=login');
+            return "";
+        }
     }
 }
