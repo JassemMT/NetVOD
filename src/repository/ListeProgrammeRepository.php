@@ -108,7 +108,7 @@ class ListeProgrammeRepository
         $liste = new ListeProgramme($nomListe ?: 'Liste');
 
         foreach ($seriesData as $s) {
-            $serie = new Serie((int)['id_serie'], $s['titre'], $s['description'], (int)$s['annee'], $s['image']);
+            $serie = new Serie((int)$s['id_serie'], $s['titre'], $s['description'], (int)$s['annee'], $s['image']);
             self::chargerEpisodes($serie);
             $liste->ajouterProgramme($serie);
         }

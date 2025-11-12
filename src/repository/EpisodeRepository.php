@@ -84,4 +84,47 @@ class EpisodeRepository extends Database {
         else throw new \PDOException("Épisode introuvable dans la base de données.");
     }
 
+    public static function estPremierEpisode(int $id_episode): bool {
+        $pdo = Database::getInstance()->pdo;
+
+        $stmt = $pdo->prepare('SELECT numero FROM episode WHERE id_episode = :id_episode');
+        $stmt->execute(['id_episode' => $id_episode]);
+
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return ((int)$data['numero'] === 1);
+        } else {
+            throw new \PDOException("Épisode introuvable dans la base de données.");
+        }
+    }
+
+    public static function estDernierEpisode(int $id_episode): bool {
+        $pdo = Database::getInstance()->pdo;
+
+        // Récupérer l'id_serie de l'épisode donné
+        $stmt = $pdo->prepare('SELECT id_serie, numero FROM episode WHERE id_episode = :id_episode');
+        $stmt->execute(['id_episode' => $id_episode]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($data) {
+            $id_serie = (int)$data['id_serie'];
+            $numero_episode = (int)$data['numero'];
+
+            // Récupérer le nombre total d'épisodes pour cette série
+            $stmt = $pdo->prepare('SELECT COUNT(*) as total FROM episode WHERE id_serie = :id_serie');
+            $stmt->execute(['id_serie' => $id_serie]);
+            $countData = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if ($countData) {
+                $total_episodes = (int)$countData['total'];
+                return ($numero_episode === $total_episodes);
+            } else {
+                throw new \PDOException("Impossible de récupérer le nombre total d'épisodes.");
+            }
+        } else {
+            throw new \PDOException("Épisode introuvable dans la base de données.");
+        }
+    }
+
 }

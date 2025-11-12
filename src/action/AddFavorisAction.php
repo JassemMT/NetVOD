@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace netvod\action;
 
 use Exception;
-use netvod\repository\SerieRepository;
-use netvod\renderer\ListeProgrammeRenderer;
+use netvod\exception\AuthException;
+use netvod\notification\Notification;
 use netvod\exception\BadRequestMethodException;
-use netvod\exception\ActionUnauthorizedException;
 use netvod\auth\AuthnProvider;
 use netvod\repository\UserRepository;
 use netvod\exception\MissingArgumentException;
-
+use netvod\exception\AuthProvider;
 
 class AddFavorisAction implements Action
 {
@@ -35,14 +34,9 @@ class AddFavorisAction implements Action
 
                     $result = UserRepository::addSerieToList($id_user, $id_serie, $listName);
                     if ($result) {
-
-                        try {
-                                header('Location: ?action=display-serie&id='.$id_serie);
-                                exit;
-                            } catch (Exception $e) {
-                                return "Série ajoutée aux favoris avec succès. Cependant, une erreur est survenue lors de la redirection.";
-                            }
-
+                        Notification::save("Série ajoutée aux favoris.", "Succès", Notification::TYPE_SUCCESS);
+                        header('Location: ?action=display-serie&id='.$id_serie);
+                        return "";
                     } else {
                         throw new \PDOException("Erreur lors de l'ajout de la série aux favoris.");
                     }
@@ -53,7 +47,7 @@ class AddFavorisAction implements Action
                 throw new BadRequestMethodException();
             }
         } else {
-            throw new ActionUnauthorizedException("il faut être connecté pour ajouter une série aux favoris");
+            throw new AuthException("il faut être connecté pour ajouter une série aux favoris");
         }
 
     }

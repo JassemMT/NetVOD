@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace netvod\action;
 
 use netvod\auth\AuthnProvider;
+use netvod\exception\AuthException;
 use netvod\exception\MissingArgumentException;
 use netvod\repository\UserRepository;
 use netvod\exception\BadRequestMethodException;
@@ -16,6 +17,6 @@ class DisplayUserAction implements Action {
                     $renderer = new UserRenderer($user);
                     return $renderer->render();
             } else throw new BadRequestMethodException();
-        }else throw new ActionUnauthorizedException("il faut être connecté pour voir un utilisateur");
+        }else throw new AuthException("il faut être connecté pour voir un utilisateur");
     }
 }

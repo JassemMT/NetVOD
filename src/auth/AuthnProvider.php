@@ -6,6 +6,7 @@ namespace netvod\auth;
 use netvod\exception\AuthnException;
 use Exception;
 
+use netvod\exception\InvalidArgumentException;
 use netvod\repository\UserRepository;
 
 class AuthnProvider {
@@ -62,11 +63,11 @@ class AuthnProvider {
     public static function register(string $email, string $password): void {
         $email = trim($email);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new AuthnException('Email invalide');
+            throw new InvalidArgumentException('Email');
         }
 
         if (mb_strlen($password) < 10) {
-            throw new AuthnException('Mot de passe trop court (min 10 caractères)');
+            throw new InvalidArgumentException('Mot de passe trop court (min 10 caractères)');
         }
 
         $existing = true;
@@ -77,7 +78,7 @@ class AuthnProvider {
         }
 
         if ($existing) {
-            throw new AuthnException('Un compte existe déjà pour cet email');
+            throw new InvalidArgumentException('Un compte existe déjà pour cet email');
         }
 
         $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);

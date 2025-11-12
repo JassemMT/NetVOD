@@ -23,27 +23,27 @@ class ExceptionHandler {
         } catch (exc\InvalidArgumentException $e) {
             echo "argument invalide: " . $e->getMessage();
             Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
-            header("location: .");
+            header("location: {$_SERVER["REQUEST_URI"]}");
             return;
         } catch (exc\MissingArgumentException $e) {
             echo "argument manquant: " . $e->getMessage();
             Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
-            header("location: .");
+            header("location: {$_SERVER["REQUEST_URI"]}");
             return;
         } catch (exc\BadRequestMethodException $e) {
             echo "methode de requete invalide: " . $e->getMessage();
             Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
-            header("location: .");
+            header("location: {$_SERVER["REQUEST_URI"]}");
             return;
         } catch (exc\ActionUnauthorizedException $e) {
             echo "permission refusée: " . $e->getMessage();
             Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
-            header("location: .");
+            header("location: {$_SERVER["REQUEST_URI"]}");
             return;
         } catch (\PDOException $e) {
             echo "erreur de la base de données: " . $e->getMessage();
             Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
-            header("location: .");
+            header("location: {$_SERVER["REQUEST_URI"]}");
             return;
         }
     }

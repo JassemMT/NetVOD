@@ -9,7 +9,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 -- INSERTION DES UTILISATEURS
 -- ========================================
 INSERT INTO `user` (`id_user`, `mail`, `password`) VALUES
-(1, 'jack.surfer@netvod.com', '$2y$10$abcdefghijklmnopqrstuvwxyz123456789'), -- password: Jack2024!
+(1, 'jack2.surfer@netvod.com', '$2y$10$yga9G2j2PDGV3MukwL54u.dP0PL1HE89Hxsb/bITbSvVqTvxugH.e'), -- password: Jack2024!
 (2, 'jim.taxi@netvod.com', '$2y$10$bcdefghijklmnopqrstuvwxyz1234567890'), -- password: Jim2024!
 (3, 'marie.plage@netvod.com', '$2y$10$cdefghijklmnopqrstuvwxyz12345678901'), -- password: Marie2024!
 (4, 'lucas.mystere@netvod.com', '$2y$10$defghijklmnopqrstuvwxyz123456789012'), -- password: Lucas2024!

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace netvod\action;
 
+use netvod\exception\AuthException;
 use netvod\exception\MissingArgumentException;
 use netvod\renderer\SerieRenderer;
 use netvod\exception\BadRequestMethodException;
@@ -25,7 +26,7 @@ class DisplaySerieAction implements Action {
                     } else throw new InvalidArgumentException('id');
                 } else throw new MissingArgumentException('id');
             } else throw new BadRequestMethodException();
-        } else throw new ActionUnauthorizedException("il faut être connecté pour voir une série");
+        } else throw new AuthException("il faut être connecté pour voir une série");
 
         // pour utiliser et appeler le SerieRenderer() il faut récupérer d'une manière ou d'une autre 
         // une liste de série et plus spécifiquement la série ou la liste de série voulu par l'utilisateur 
