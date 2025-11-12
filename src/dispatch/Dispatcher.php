@@ -63,6 +63,9 @@ class Dispatcher
                 case 'add-favoris':
                     $obj = new act\AddFavorisAction(); // TODO: ne s'appelle qu'en post, l'argument est "serie_id"
                     break;
+                case 'verify-mail':
+                    $obj = new act\VerifierMailAction();
+                    break;
                 default:
                     $obj = new act\DefaultAction();
                     break;

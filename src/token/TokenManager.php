@@ -45,5 +45,20 @@ class TokenManager {
         }
     }
 
+    public static function getToken() : ?string {
+        if (AuthnProvider::isLoggedIn()) {
+            if (isset($_SESSION['tokens'])) {
+                $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
+                $url .= $_SERVER['HTTP_HOST'];
+                $url .= explode("?", $_SERVER['REQUEST_URI'])[0]; //on ne veut pas les anciens paramètres GET
+                $url .= "?action=verify-mail&token={$_SESSION['tokens']['token']}";
+                var_dump($url);
+                return $url;
+            } else {
+                return null;
+            }
+        } else throw new AuthException("Utilisateur non authentifié");
+    }
+
 
 }
