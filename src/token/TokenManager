@@ -1,0 +1,49 @@
+<?php
+declare(strict_types= 1);
+namespace netvod\token;
+
+use netvod\auth\AuthnProvider;
+use netvod\exception\AuthException;
+
+class TokenManager {
+    
+    public static function genererToken(int $life_time = 300) : void {
+        if (AuthnProvider::isLoggedIn()) {
+            $token = bin2hex(random_bytes(32));
+            $_SESSION['token'] = ["token" => $token, "created_at" => time(), "life_time" => $life_time];
+        } else throw new AuthException("Utilisateur non authentifié");
+    }
+
+    public static function checkToken() : bool {
+        if (AuthnProvider::isLoggedIn()) {
+            if (isset($_SESSION['tokens'])) {
+                $token = $_SESSION['token'];
+                $created_at = $token['created_at'];
+                $current_time = time();
+                if (($current_time - $created_at) <= $token['life_time']) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else throw new AuthException("Utilisateur non authentifié");
+    }
+
+    public static function useToken(string $token) : bool {
+        if (self::checkToken()) {
+            if (isset($_SESSION['tokens']['token']) && hash_equals($_SESSION['tokens']['token'], $token)) {
+                unset($_SESSION['tokens']);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            unset($_SESSION['tokens']);
+            return false;
+        }
+    }
+
+
+}
