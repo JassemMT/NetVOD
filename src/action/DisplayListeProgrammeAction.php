@@ -9,6 +9,7 @@ use netvod\exception\BadRequestMethodException;
 use netvod\renderer\ListeProgrammeRenderer;
 use netvod\auth\AuthnProvider;
 use netvod\repository\UserRepository;
+use netvod\exception\AuthzException;
 
 
 class DisplayListeProgrammeAction implements Action {
@@ -32,7 +33,7 @@ class DisplayListeProgrammeAction implements Action {
                     return $html;
                 
                 }else throw new BadRequestMethodException();
-            } else throw new AuthnException("Il faut avoir vérifié son compte pour voir ses listes de programmes");
+            } else throw new AuthzException("Il faut avoir vérifié son compte pour voir ses listes de programmes");
         }else throw new AuthnException("il faut être connecté pour voir une liste de programmes");
 
     }
