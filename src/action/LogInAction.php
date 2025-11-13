@@ -24,11 +24,13 @@ class LogInAction implements Action {
             if (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException("email");
 
             $mail = (string)$_POST['mail'];
-            $password = (string)$_POST['password'];            // Utilise AuthnProvider::login pour vérifier et créer la session
+            $password = (string)$_POST['password'];
+
+            // Utilise AuthnProvider::login pour vérifier et créer la session
             try {
                 AuthnProvider::login($mail, $password);
-                Notification::save('Connexion réussie',"Succès",  Notification::TYPE_SUCCESS);
                 header('Location: ?action=default');
+                Notification::save('Connexion réussie',"Succès",  Notification::TYPE_SUCCESS);
                 return "";
             } catch (AuthnException $e) {
                 throw new InvalidArgumentException('credentials');

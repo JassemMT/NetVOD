@@ -10,15 +10,15 @@ class ExceptionHandler {
     public static function handle(array $callback): void {
         try {
             call_user_func($callback);
-        } catch (exc\AuthException $e) {
-            echo "exception d'authentification: " . $e->getMessage();
-            Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
-            header("location: ?action=login"); //redirection vers la page de connexion
-            return;
         } catch (exc\AuthnException $e) {
             echo "exception d'authentification: " . $e->getMessage();
             Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
             header("location: ?action=login"); //redirection vers la page de connexion
+            return;
+        } catch (exc\AuthzException $e) {
+            echo "exception d'autorization: " . $e->getMessage();
+            Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
+            header("location: ?action=display-user");
             return;
         } catch (exc\InvalidArgumentException $e) {
             echo "argument invalide: " . $e->getMessage();
@@ -32,11 +32,6 @@ class ExceptionHandler {
             return;
         } catch (exc\BadRequestMethodException $e) {
             echo "methode de requete invalide: " . $e->getMessage();
-            Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
-            header("location: {$_SERVER["REQUEST_URI"]}");
-            return;
-        } catch (exc\ActionUnauthorizedException $e) {
-            echo "permission refusée: " . $e->getMessage();
             Notification::save($e->getMessage(), "Erreur", Notification::TYPE_ERROR);
             header("location: {$_SERVER["REQUEST_URI"]}");
             return;

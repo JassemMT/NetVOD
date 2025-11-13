@@ -4,7 +4,7 @@ namespace netvod\token;
 
 use netvod\auth\AuthnProvider;
 use netvod\auth\AuthzProvider;
-use netvod\exception\AuthException;
+use netvod\exception\AuthnException;
 
 class TokenManager {
     
@@ -12,7 +12,7 @@ class TokenManager {
         if (AuthnProvider::isLoggedIn()) {
             $token = bin2hex(random_bytes(32));
             $_SESSION['token'] = ["value" => $token, "created_at" => time(), "life_time" => $life_time];
-        } else throw new AuthException("Utilisateur non authentifié");
+        } else throw new AuthnException("Utilisateur non authentifié");
     }
 
     public static function checkToken() : bool {
@@ -29,7 +29,7 @@ class TokenManager {
             } else {
                 return false;
             }
-        } else throw new AuthException("Utilisateur non authentifié");
+        } else throw new AuthnException("Utilisateur non authentifié");
     }
 
     public static function useToken(string $token) : bool {
@@ -58,7 +58,7 @@ class TokenManager {
             } else {
                 return null;
             }
-        } else throw new AuthException("Utilisateur non authentifié");
+        } else throw new AuthnException("Utilisateur non authentifié");
     }
 
 

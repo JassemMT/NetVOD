@@ -2,31 +2,33 @@
 declare(strict_types=1);
 namespace netvod\action;
 
-use netvod\exception\AuthException;
+use netvod\auth\AuthzProvider;
+use netvod\exception\AuthnException;
 use netvod\exception\MissingArgumentException;
 use netvod\renderer\SerieRenderer;
 use netvod\exception\BadRequestMethodException;
 use netvod\repository\SerieRepository;
 use netvod\exception\InvalidArgumentException;
-use netvod\exception\ActionUnauthorizedException;
 use netvod\auth\AuthnProvider;
 
 class DisplaySerieAction implements Action {
     public function execute(): string {
 
         if (AuthnProvider::isLoggedIn()) {
-            if ($_SERVER['REQUEST_METHOD']==='GET') {
-            if (isset($_GET['id'])) {
-                    if (!empty($_GET['id'])) {
-                        $idSerie = $_GET['id'];
-                        $listeP = SerieRepository::findById($idSerie);
-                        
-                        $renderer = new SerieRenderer($listeP);
-                        return $renderer->render();
-                    } else throw new InvalidArgumentException('id');
-                } else throw new MissingArgumentException('id');
-            } else throw new BadRequestMethodException();
-        } else throw new AuthException("il faut être connecté pour voir une série");
+            if (AuthzProvider::isVerified()) {
+                if ($_SERVER['REQUEST_METHOD']==='GET') {
+                    if (isset($_GET['id'])) {
+                        if (!empty($_GET['id'])) {
+                            $idSerie = $_GET['id'];
+                            $listeP = SerieRepository::findById($idSerie);
+                            
+                            $renderer = new SerieRenderer($listeP);
+                            return $renderer->render();
+                        } else throw new InvalidArgumentException('id');
+                    } else throw new MissingArgumentException('id');
+                } else throw new BadRequestMethodException();
+            } else throw new AuthnException("Il faut avoir vérifié son compte pour voir une série");
+        } else throw new AuthnException("il faut être connecté pour voir une série");
 
         // pour utiliser et appeler le SerieRenderer() il faut récupérer d'une manière ou d'une autre 
         // une liste de série et plus spécifiquement la série ou la liste de série voulu par l'utilisateur 

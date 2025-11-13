@@ -3,8 +3,7 @@ declare(strict_types=1);
 namespace netvod\action;
 
 use netvod\auth\AuthnProvider;
-use netvod\exception\ActionUnauthorizedException;
-use netvod\exception\AuthException;
+use netvod\exception\AuthnException;
 
 class DefaultAction implements Action {
     public function execute() : string {
@@ -12,9 +11,6 @@ class DefaultAction implements Action {
             return '
             <h1>Bienvenue sur NetVOD</h1>
             <p>Votre plateforme de streaming préférée !</p> ';
-        } else {
-            header('Location: ?action=login');
-            return "";
-        }
+        } else throw new AuthnException('Vous devez être connecté pour accéder à cette page.');
     }
 }

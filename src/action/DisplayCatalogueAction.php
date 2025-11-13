@@ -2,18 +2,20 @@
 declare(strict_types=1);
 namespace netvod\action;
 
+use InvalidArgumentException;
+use netvod\exception\AuthnException;
+use netvod\exception\AuthzException;
 use netvod\repository\SerieRepository;
 use netvod\renderer\ListeProgrammeRenderer;
 use netvod\exception\BadRequestMethodException;
-use netvod\exception\ActionUnauthorizedException;
 use netvod\auth\AuthnProvider;
+use netvod\auth\AuthzProvider;
 
 class DisplayCatalogueAction implements Action {
 
     public function execute(): string {
-        if (!AuthnProvider::isLoggedIn()) {
-            throw new ActionUnauthorizedException("Il faut être connecté pour voir le catalogue");
-        }
+        if (!AuthnProvider::isLoggedIn()) throw new AuthnException("Il faut être connecté pour voir le catalogue");
+        if (!AuthzProvider::isVerified()) throw new AuthzException("Il faut avoir vérifié son compte pour voir le catalogue");
 
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
             throw new BadRequestMethodException();
@@ -76,6 +78,6 @@ class DisplayCatalogueAction implements Action {
         }
 
         // Si le filtre est invalide
-        throw new BadRequestMethodException();
+        throw new InvalidArgumentException("filtre");
     }
 }
