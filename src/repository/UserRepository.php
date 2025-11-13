@@ -128,6 +128,27 @@ class UserRepository
     }
 
 
+    public static function getVerifier(int $id_user): bool  //TODO : ajouter le champ verified dans la table user
+    {
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('SELECT verified FROM user WHERE id_user = :id_user');
+        $stmt->execute(['id_user' => $id_user]);
+        $verified = $stmt->fetchColumn();
+
+        if ($verified === false) {
+            throw new \PDOException('Utilisateur introuvable.');
+        }
+
+        return (bool)$verified;
+    }
+
+    public static function setVerifier(int $id_user, bool $status): void
+    {
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('UPDATE user SET verified = :verified WHERE id_user = :id_user');
+        $stmt->execute(['verified' => $status, 'id_user' => $id_user]);
+    }
+
 
 
 

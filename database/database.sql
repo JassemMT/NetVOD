@@ -7,6 +7,7 @@ CREATE TABLE user (
     mail VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
+ALTER TABLE user ADD COLUMN verified BOOLEAN DEFAULT FALSE;
 
 -- Table des séries
 CREATE TABLE serie (

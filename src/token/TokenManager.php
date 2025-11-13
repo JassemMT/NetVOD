@@ -3,6 +3,7 @@ declare(strict_types= 1);
 namespace netvod\token;
 
 use netvod\auth\AuthnProvider;
+use netvod\auth\AuthzProvider;
 use netvod\exception\AuthException;
 
 class TokenManager {
@@ -35,6 +36,7 @@ class TokenManager {
         if (self::checkToken()) {
             if (isset($_SESSION['token']['value']) && hash_equals($_SESSION['token']['value'], $token)) {
                 unset($_SESSION['token']);
+                AuthzProvider::validationVerifier();
                 return true;
             } else {
                 return false;
