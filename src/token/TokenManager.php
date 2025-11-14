@@ -38,7 +38,7 @@ class TokenManager {
         $id = AuthnProvider::getSignedInUser();
         if (self::checkToken()) {
             $token_db = TokenRepository::getToken($id);
-            if (isset($token_dn['token']) && hash_equals($token_db['token'], $token)) {
+            if (isset($token_db['token']) && hash_equals($token_db['token'], $token)) {
                 TokenRepository::deleteToken($id);
                 AuthzProvider::validationVerifier();
                 return true;

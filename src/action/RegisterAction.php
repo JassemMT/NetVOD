@@ -40,14 +40,14 @@ class RegisterAction implements Action {
             }
             
             AuthnProvider::register($mail, $pswd1); // a ce stade pswd1 et pswd2 sont identiques
-            
-            TokenManager::genererToken(86400); // token valable 24h pour vérification mail
-            $verificationUrl = TokenManager::getToken();
-            var_dump($verificationUrl);
 
             Notification::save('Inscription réussie, vous pouvez maintenant vous connecter.', "Succès", Notification::TYPE_SUCCESS);
             //header('Location: ?action=login');
-            return "";
+            return <<<FIN
+            <form method="post" action="?action=verify-mail" class="profile-verify-form" aria-label="Vérification de l'email">
+                <button type="submit" class="btn btn-primary">vérifier son compte</button>
+            </form>
+            FIN;
         } else throw new BadRequestMethodException();
     }
 }

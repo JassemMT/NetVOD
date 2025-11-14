@@ -18,7 +18,7 @@ class VerifierMailAction implements Action {
             } else throw new MissingArgumentException("token");
         } else if ($_SERVER["REQUEST_METHOD"] === "POST") {
             TokenManager::genererToken();
-            return TokenManager::getToken();
+            return "<a href=\"".TokenManager::getToken()."\">".TokenManager::getToken()."</a>";
         }else throw new BadRequestMethodException();
     }
 }
