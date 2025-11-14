@@ -38,7 +38,7 @@ Fonctionnalités de base
 | 7 | Page d’accueil utilisateur affichant ses séries préférées | Permettre à l'utilisateur de voir sa liste de préférence sur la page d'acceuil du site | FAIT |
 | 8 | Lors du visionnage d’un épisode, ajout automatique de la série à la liste « en cours » | L'épisode de la série en cours est directement inséré dans la liste 'en_cours' |FAIT|
 | 9 | Lors du visionnage, possibilité de noter et commenter la série| Permettre à l'utilisateur de noter la série (1-5) ainsi que de commenter la série (1 note + 1 commentaire par utilisateur par série) |FAIT|
-| 10 | Ajout d’une série aux préférences d’un utilisateur | Permettre à l'utilisateur d'ajouter une série dans sa liste de préférence |NON|
+| 10 | Lors de l’affichage d’une série, indiquer sa note moyenne + ses commentaires | Permettre à l'utilisateur de voir la note moyenne ainsi que les commentaires sur la série choisie | FAIT |
 
 
 Fonctionnalités étendues
@@ -47,8 +47,8 @@ Fonctionnalités étendues
 | ------------- | ------------- |  -----|-----|
 | 11 | Activation de compte via token éphémère | Permettre à l'utilisateur d'activer son compte via un token éphémère | FAIT |
 | 12 | Recherche par mots-clés | Permettre à l'utilisateur de rechercher une série spécifique via des mots-clés | FAIT |
-| 13 | Tri du catalogue (titre, date d’ajout, nombre d’épisodes) | Permettre à l'utilisateur d'afficher le contenu du catalogue en triant celui-ci via le titre, la date d'ajout, nombre d'épisodes) | FAIT |
-| 14 | Filtrage du catalogue par genre / public ciblé | Permettre à l'utilisateur d'afficher le contenu du catalogue filtrer par un genre ou par public cible | Fait |
+| 13 | Tri du catalogue (titre, date d’ajout, nombre d’épisodes) | Permettre à l'utilisateur d'afficher le contenu du catalogue en triant celui-ci via le titre, la date d'ajout, nombre d'épisodes) | NON |
+| 14 | Filtrage du catalogue par genre / public ciblé | Permettre à l'utilisateur d'afficher le contenu du catalogue filtrer par un genre ou par public cible | FAIT |
 | 15 | Retrait d’une série de la liste de préférences | L'utilisateur a la possibilité de supprimer une série de sa liste de préférence | non |
 | 16 | Gestion de la liste « déjà visionnées » | Permettre à l'utilisateur de gérer sa liste de série déjà visionnées | NON |
 | 17 | Gestion du profil utilisateur | Permettre à l'utilisateur de gérer son profil et ses informations | FAIT |
