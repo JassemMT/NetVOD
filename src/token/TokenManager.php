@@ -38,7 +38,7 @@ class TokenManager {
         $id = AuthnProvider::getSignedInUser();
         if (self::checkToken()) {
             $token_db = TokenRepository::getToken($id);
-            if (isset($token_dn['value']) && hash_equals($token_db['value'], $token)) {
+            if (isset($token_dn['token']) && hash_equals($token_db['token'], $token)) {
                 TokenRepository::deleteToken($id);
                 AuthzProvider::validationVerifier();
                 return true;
@@ -57,7 +57,7 @@ class TokenManager {
                 $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
                 $url .= $_SERVER['HTTP_HOST'];
                 $url .= explode("?", $_SERVER['REQUEST_URI'])[0]; //on ne veut pas les anciens paramètres GET
-                $value = TokenRepository::getToken(AuthnProvider::getSignedInUser())['value'];
+                $value = TokenRepository::getToken(AuthnProvider::getSignedInUser())['token'];
                 $url .= "?action=verify-mail&token={$value}";
                 return $url;
             } else {
