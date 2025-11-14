@@ -24,7 +24,7 @@ class DisplaySerieAction implements Action {
                             
                             $renderer = new SerieRenderer($listeP);
                             return $renderer->render();
-                        } else throw new InvalidArgumentException('id');
+                        } else throw new InvalidArgumentException("l'argument 'id' est invalide");
                     } else throw new MissingArgumentException('id');
                 } else throw new BadRequestMethodException();
             } else throw new AuthnException("Il faut avoir vérifié son compte pour voir une série");
