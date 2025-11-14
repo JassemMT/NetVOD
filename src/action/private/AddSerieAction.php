@@ -47,7 +47,7 @@ class AddSerieAction implements Action {
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Champs obligatoires
             if (!isset($_POST['titre']) || !isset($_POST['description']) || !isset($_POST['annee']) || !isset($_POST['image'])) {
-                throw new MissingArgumentException('Tous les champs sont requis pour ajouter une série.');
+                throw new MissingArgumentException('au moins un champ');
             }
 
             $titre = trim((string)($_POST['titre'] ?? ''));

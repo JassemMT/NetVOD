@@ -4,7 +4,6 @@ namespace netvod\action;
 
 use netvod\auth\AuthnProvider;
 use netvod\exception\AuthnException;
-use netvod\exception\MissingArgumentException;
 use netvod\repository\UserRepository;
 use netvod\exception\BadRequestMethodException;
 use netvod\renderer\UserRenderer;
