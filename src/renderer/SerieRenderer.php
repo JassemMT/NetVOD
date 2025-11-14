@@ -2,6 +2,7 @@
 declare(strict_types= 1);
 namespace netvod\renderer;
 
+use netvod\auth\AuthnProvider;
 use netvod\classes\Episode;
 use netvod\renderer\EpisodeRenderer;
 use netvod\classes\Serie;
@@ -26,6 +27,27 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
 
         $note = SerieRepository::getAverageRating($serie->id);
 
+        if (SerieRepository::isFavoris(AuthnProvider::getSignedInUser(), $serie->id)) {
+            $fav = <<<FIN
+            <form method="POST" action="?action=remove-favoris">
+                <input type="hidden" name="id" value="{$serie->id}">
+                <button class="btn btn-secondary" aria-label="Retirer {$serie->titre} de mes favoris">
+                    Retirer des favoris
+                </button>
+            </form>
+            FIN;
+        } else {
+            $fav = <<<FIN
+            <form method="POST" action="?action=add-favoris">
+                <input type="hidden" name="id" value="{$serie->id}">
+                <button class="btn btn-secondary" aria-label="Ajouter {$serie->titre} à mes favoris">
+                    Ajouter aux favoris
+                </button>
+            </form>
+            FIN;
+        }
+
+
         return <<<FIN
         <!-- HERO SECTION -->
         <section class="hero-serie" role="region" aria-label="Détails de la série">
@@ -40,12 +62,7 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
                     <p class="hero-note">Note moyenne : {$note}/5 </p>
                 </div>
                 <div class="hero-actions">
-                    <form method="POST" action="?action=add-favoris">
-                        <input type="hidden" name="id" value="{$serie->id}">
-                        <button class="btn btn-secondary" aria-label="Ajouter {$serie->titre} à mes favoris">
-                            Ajouter aux favoris
-                        </button>
-                    </form>
+                    {$fav}
                 </div>
             </div>
         </section>

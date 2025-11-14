@@ -69,6 +69,9 @@ class Dispatcher
                 case 'profil-info':
                     $obj = new act\ChangerProfilInfoAction();
                     break;
+                case 'remove-favoris':
+                    $obj = new act\RemoveFavorisAction();
+                    break;
                 default:
                     $obj = new act\DefaultAction();
                     break;

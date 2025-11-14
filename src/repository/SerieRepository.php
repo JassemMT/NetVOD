@@ -236,16 +236,28 @@ class SerieRepository{
         }
     }
     public static function findAllGenres(): array {
-    $pdo = Database::getInstance()->pdo;
-    $stmt = $pdo->query("SELECT DISTINCT genre FROM serie WHERE genre IS NOT NULL ORDER BY genre");
-    return $stmt->fetchAll(\PDO::FETCH_COLUMN);
-}
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->query("SELECT DISTINCT genre FROM serie WHERE genre IS NOT NULL ORDER BY genre");
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
 
     public static function findAllPublics(): array {
-    $pdo = Database::getInstance()->pdo;
-    $stmt = $pdo->query("SELECT DISTINCT `public` FROM serie WHERE `public` IS NOT NULL ORDER BY `public`");
-    return $stmt->fetchAll(\PDO::FETCH_COLUMN);
-}
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->query("SELECT DISTINCT `public` FROM serie WHERE `public` IS NOT NULL ORDER BY `public`");
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    public static function isFavoris(int $id_user, int $id_serie): bool {
+        $pdo = Database::getInstance()->pdo;
+        $sql = "SELECT 1 FROM user2favori WHERE id_user = :id_user AND id_serie = :id_serie LIMIT 1";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':id_user' => $id_user,
+            ':id_serie' => $id_serie
+        ]);
+
+        return $stmt->fetch() !== false;
+    }
 
 
 }
