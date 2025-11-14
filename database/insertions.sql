@@ -8,12 +8,12 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 -- ========================================
 -- INSERTION DES UTILISATEURS
 -- ========================================
-INSERT INTO `user` (`id_user`, `mail`, `password`) VALUES
-(1, 'jack2.surfer@netvod.com', '$2y$10$yga9G2j2PDGV3MukwL54u.dP0PL1HE89Hxsb/bITbSvVqTvxugH.e'), -- password: Jack2024!
-(2, 'jim.taxi@netvod.com', '$2y$10$bcdefghijklmnopqrstuvwxyz1234567890'), -- password: Jim2024!
-(3, 'marie.plage@netvod.com', '$2y$10$cdefghijklmnopqrstuvwxyz12345678901'), -- password: Marie2024!
-(4, 'lucas.mystere@netvod.com', '$2y$10$defghijklmnopqrstuvwxyz123456789012'), -- password: Lucas2024!
-(5, 'emma.chevaux@netvod.com', '$2y$10$efghijklmnopqrstuvwxyz1234567890123'); -- password: Emma2024!
+INSERT INTO `user` (`id_user`, `mail`, `password`,`prenom`,`nom`,`verified`) VALUES
+(1, 'jack.surfer@netvod.com', '$2y$12$7JwLKwsnygoznLNzwPTIneluWAJLieq0ze4bIa71ZACzs85AYVxVi','Jack','Surfer',1), -- password: Jack2024!
+(2, 'jim.taxi@netvod.com', '$2y$12$9cAxiRN/QckerOu/kNt73u4Wrxx0pxjdrHExqlFVmStoPaunwPCKa','Jim','Taxi',1), -- password: Jim2024!
+(3, 'marie.plage@netvod.com', '$2y$12$J1RtJJCmiUO0HFhfjQKjROxL2cpblolJNIxFP1Kaug.LADoMDUuk2','Marie','Plage',1), -- password: Marie2024!
+(4, 'lucas.mystere@netvod.com', '$2y$12$.J2nMXsBTRclf2OCgBQMhejtmxMTjxUK6POxB8MAoMnmfZMPSotvG','Lucas','Mystere',1), -- password: Lucas2024!
+(5, 'emma.chevaux@netvod.com', '$2y$12$VkyypXY577QeBsGcRouMDODUFAhbYQsL9aT5r3v8otKDB6Ei8Qxse','Emma','Chevaux',1); -- password: Emma2024!
 
 -- ========================================
 -- INSERTION DES SÉRIES (adaptées du sujet)
@@ -142,6 +142,19 @@ INSERT INTO `User2encours` (`id_user`, `id_serie`) VALUES
 -- FIN DU SCRIPT
 -- ========================================
 SET foreign_key_checks = 1;
+
+
+-- -- Update prenom, nom,verified + mis a jour du hash avec les bons mdp
+-- UPDATE user SET prenom = 'Jack', nom = 'Surfer',verified=1 WHERE id_user = 1;
+-- UPDATE user SET prenom = 'Jim', nom = 'Taxi',verified=1 WHERE id_user = 2;
+-- UPDATE user SET prenom = 'Marie', nom = 'Plage',verified=1 WHERE id_user = 3;
+-- UPDATE user SET prenom = 'Lucas', nom = 'Mystere',verified=1 WHERE id_user = 4;
+-- UPDATE user SET prenom = 'Emma', nom = 'Chevaux',verified=1 WHERE id_user = 5;
+-- UPDATE user SET password = "$2y$12$9cAxiRN/QckerOu/kNt73u4Wrxx0pxjdrHExqlFVmStoPaunwPCKa" WHERE id_user = 2;
+-- UPDATE user SET password = "2y$12$J1RtJJCmiUO0HFhfjQKjROxL2cpblolJNIxFP1Kaug.LADoMDUuk2" WHERE id_user = 3;
+-- UPDATE user SET password = "$2y$12$.J2nMXsBTRclf2OCgBQMhejtmxMTjxUK6POxB8MAoMnmfZMPSotvG" WHERE id_user = 4;
+-- UPDATE user SET password = "$2y$12$VkyypXY577QeBsGcRouMDODUFAhbYQsL9aT5r3v8otKDB6Ei8Qxse" WHERE id_user = 5;
+
 
 -- Vérification des données insérées
 SELECT 'Utilisateurs insérés:' AS Info, COUNT(*) AS Nombre FROM user
