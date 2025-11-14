@@ -67,3 +67,12 @@ CREATE TABLE User2encours (
     FOREIGN KEY (id_serie) REFERENCES serie(id_serie) ON DELETE CASCADE
 );
 
+
+CREATE TABLE tokens (
+    id_user INT PRIMARY KEY,
+    token VARCHAR(64) NOT NULL,
+    created_at INT NOT NULL,
+    life_time INT NOT NULL,
+    CONSTRAINT fk_tokens_user FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
