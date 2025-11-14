@@ -10,70 +10,61 @@ SAE : Développement Web — Sujet : NetVOD
 -TAMOURGH Jassem
 -GILBERT Ambroise
 
+## URL Git & Webetu
+
+- lien Git : https://github.com/JassemMT/NetVOD/
+- lien Webetu : https://webetu.iutnc.univ-lorraine.fr/www/e52526u/NetVOD
+
+
+
 ## Contexte
 NetVOD est une application de vidéo à la demande. Cette SAE vise à développer une version réduite de la plateforme en appliquant les bonnes pratiques de développement web et de sécurité vues en cours (programmation web, bases de données, cryptographie, contrôles d'accès, protection contre les injections, etc.).
 
-Le rendu attendu comprend :
-- Un dépôt Git public contenant tout le code (dernier commit autorisé : vendredi 14 novembre à 20h).
-- Une application installée et opérationnelle sur le serveur webetu (disponible au plus tard lundi 17 novembre à 20h).
-- Un document déposé sur l’espace Arche (avant lundi 17 novembre à 20h) listant membres, URL git/webetu, fonctionnalités réalisées, répartition du travail et comptes de test.
 
-## Objectifs pédagogiques
-- Mettre en œuvre une application web complète (frontend, backend, base de données).
-- Appliquer les bonnes pratiques d’architecture (OO, namespaces, autoload, Dispatcher/Action).
-- Assurer la sécurité : gestion sécurisée des mots de passe, authentification, contrôles d’accès, prévention des injections SQL/XSS.
-- Utiliser la cryptographie et produire un travail en anglais technique si nécessaire.
+## Périmètre du projet
+Fonctionnalités Réalisés (prioritaires — fonctionnalités de base) :
 
-## Périmètre du projet (version à réaliser)
-Version restreinte — uniquement les séries (pas de saisons distinctes, pas de films ni documentaires).  
-Fonctionnalités à implémenter (prioritaires — fonctionnalités de base) :
 
 Fonctionnalités de base
-1. Identification / Authentification (login par email + mot de passe).
-2. Inscription (double saisie du mot de passe, contrôle de qualité).
-3. Affichage du catalogue des séries (liste avec titre et image).
-4. Page détaillée d’une série + liste de ses épisodes (numéro, titre, durée, image).
-5. Affichage/visionnage d’un épisode (détail : image, titre, résumé, durée).
-6. Ajout d’une série aux préférences d’un utilisateur (bouton « ajouter à mes préférences »).
-7. Page d’accueil utilisateur affichant ses séries préférées.
-8. Lors du visionnage d’un épisode, ajout automatique de la série à la liste « en cours ».
-9. Lors du visionnage, possibilité de noter (1–5) et commenter la série (1 note + 1 commentaire par utilisateur par série).
-10. Affichage de la note moyenne d’une série et accès aux commentaires.
 
-Fonctionnalités étendues (si le temps le permet, donnent un bonus)
-11. Activation de compte via token éphémère (URL affichée après inscription pour simplifier).
-12. Recherche par mots-clés (titre / descriptif).
-13. Tri du catalogue (titre, date d’ajout, nombre d’épisodes).
-14. Filtrage du catalogue par genre / public ciblé.
-15. Retrait d’une série de la liste de préférences.
-16. Gestion de la liste « déjà visionnées » (quand tous les épisodes d’une série ont été vus).
-17. Gestion du profil utilisateur (nom, prénom, genre préféré...).
-18. Accès direct à l’épisode à visionner depuis une série « en cours ».
-19. Tri du catalogue par note moyenne.
-20. Mot de passe oublié ← génération d’un token éphémère (URL pour réinitialisation).
-
-## Architecture & conventions recommandées
-- Classes en PHP (ou langage choisi) avec namespaces et autoload (PSR-4 si PHP).
-- Dispatcher / Action pour le routage et la gestion des requêtes.
-- Accès aux données via Data Access Object / Repository.
-- Stockage sécurisé des mots de passe : password_hash (bcrypt/argon2) ou équivalent.
-- Protection contre les injections SQL : requêtes préparées.
-- Protection contre XSS : échapper toute sortie (HTML encode).
-
-## Tech stack 
-- Backend : PHP 
-- Base de données : MySQL 
-- Frontend : HTML5, CSS3
-- Déploiement : serveur webetu (instructions de déploiement à fournir dans la documentation)
+| Numéro Fonctionnalité   | Fonctionnalité    | Description |  Statut|
+| ------------- | ------------- |  -----|-----|
+| 1| Identification / Authentification | Permettre à l'utilisateur de se connecter à son compte via son email et son mot de passe |FAIT|
+| 2 | Inscription | Permettre à l'utilisateur de créer un nouveau compte en insérant son email et son mot de passe deux fois | FAIT|
+| 3 | Affichage du catalogue des séries | Permettre à l'utilisateur d'afficher le contenu du catalogue |FAIT|
+| 4 | Page détaillée d’une série + liste de ses épisodes | Permettre à l'utilisateur d'afficher le contenu de chaque série ainsi que les épisodes qui la composent |FAIT|
+| 5 | Affichage/visionnage d’un épisode | L'utilisateur a la possibilité de visionner un épisode choisis |FAIT|
+| 6 | Ajout d’une série aux préférences d’un utilisateur | Permettre à l'utilisateur d'ajouter une série dans sa liste de préférence |FAIT|
+| 7 | Page d’accueil utilisateur affichant ses séries préférées | Permettre à l'utilisateur de voir sa liste de préférence sur la page d'acceuil du site |NON|
+| 8 | Lors du visionnage d’un épisode, ajout automatique de la série à la liste « en cours » | L'épisode de la série en cours est directement inséré dans la liste 'en_cours' |FAIT|
+| 9 | Lors du visionnage, possibilité de noter et commenter la série| Permettre à l'utilisateur de noter la série (1-5) ainsi que de commenter la série (1 note + 1 commentaire par utilisateur par série) |FAIT|
+| 10 | Ajout d’une série aux préférences d’un utilisateur | Permettre à l'utilisateur d'ajouter une série dans sa liste de préférence |NON|
 
 
-## Sécurité — points obligatoires à traiter
-- Hashage et vérification sécurisés des mots de passe.
-- Contrôle d’accès : pages et APIs accessibles uniquement aux utilisateurs authentifiés quand nécessaire.
-- Requêtes SQL sécurisées (utilisation de requêtes préparées).
-- Échappement systématique des sorties pour éviter les XSS.
-- Mise en place d’un contrôle de la qualité des mots de passe à l’inscription.
-- Protection CSRF (tokens sur formulaires critiques).
-- Journalisation des accès et erreurs (sans divulguer d’informations sensibles).
+Fonctionnalités étendues
+
+| Numéro Fonctionnalité   | Fonctionnalité    | Description |  Statut|
+| ------------- | ------------- |  -----|-----|
+| 11 | Activation de compte via token éphémère | Permettre à l'utilisateur d'activer son compte via un token éphémère | FAIT |
+| 12 | Recherche par mots-clés | Permettre à l'utilisateur de rechercher une série spécifique via des mots-clés | FAIT |
+| 13 | Tri du catalogue (titre, date d’ajout, nombre d’épisodes) | Permettre à l'utilisateur d'afficher le contenu du catalogue en triant celui-ci via le titre, la date d'ajout, nombre d'épisodes) | FAIT |
+| 14 | Filtrage du catalogue par genre / public ciblé | Permettre à l'utilisateur d'afficher le contenu du catalogue filtrer par un genre ou par public cible | Fait |
+| 15 | Retrait d’une série de la liste de préférences | L'utilisateur a la possibilité de supprimer une série de sa liste de préférence | non |
+| 16 | Gestion de la liste « déjà visionnées » | Permettre à l'utilisateur de gérer sa liste de série déjà visionnées | NON |
+| 17 | Gestion du profil utilisateur | Permettre à l'utilisateur de gérer son profil et ses informations | FAIT |
+| 18 | Accès direct à l’épisode à visionner depuis une série « en cours » | L'épisode de la série en cours est directement inséré dans la liste 'en_cours' |NON|
+| 19 | Tri du catalogue par note moyenne | Permettre à l'utilisateur de trier le catalogue la moyenne des notes |NON|
+| 20 | Mot de passe oublié | Permettre à l'utilisateur de changer son mot de passe si celui-ci a été oublié via génération d'un token | NON |
 
 
+## Répartition du travail 
+Conception : Jasse & Ambroise
+Base de donnée : Thomas
+Structure du projet : Yanis & Louis
+
+Une fois la conception terminée, nous avons travaillé sur les bases en répartissant mutuellement les tâches via les 'issues' sur github.
+
+Chaque fonctionnalitée de base/étendue a été traitée par chaque membre du groupe (travail collaboratif)
+
+### Les données 
+les données utilisées se trouvent dans les fichiers : database/database.sql  ainsi  que  insertions.sql
