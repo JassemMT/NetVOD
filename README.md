@@ -49,7 +49,7 @@ Fonctionnalités étendues
 | 12 | Recherche par mots-clés | Permettre à l'utilisateur de rechercher une série spécifique via des mots-clés | FAIT |
 | 13 | Tri du catalogue (titre, date d’ajout, nombre d’épisodes) | Permettre à l'utilisateur d'afficher le contenu du catalogue en triant celui-ci via le titre, la date d'ajout, nombre d'épisodes) | NON |
 | 14 | Filtrage du catalogue par genre / public ciblé | Permettre à l'utilisateur d'afficher le contenu du catalogue filtrer par un genre ou par public cible | FAIT |
-| 15 | Retrait d’une série de la liste de préférences | L'utilisateur a la possibilité de supprimer une série de sa liste de préférence | non |
+| 15 | Retrait d’une série de la liste de préférences | L'utilisateur a la possibilité de supprimer une série de sa liste de préférence | FAIT |
 | 16 | Gestion de la liste « déjà visionnées » | Permettre à l'utilisateur de gérer sa liste de série déjà visionnées | NON |
 | 17 | Gestion du profil utilisateur | Permettre à l'utilisateur de gérer son profil et ses informations | FAIT |
 | 18 | Accès direct à l’épisode à visionner depuis une série « en cours » | L'épisode de la série en cours est directement inséré dans la liste 'en_cours' |NON|
