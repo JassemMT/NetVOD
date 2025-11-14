@@ -53,7 +53,7 @@ Fonctionnalités étendues
 | 16 | Gestion de la liste « déjà visionnées » | Permettre à l'utilisateur de gérer sa liste de série déjà visionnées | NON |
 | 17 | Gestion du profil utilisateur | Permettre à l'utilisateur de gérer son profil et ses informations | FAIT |
 | 18 | Accès direct à l’épisode à visionner depuis une série « en cours » | L'épisode de la série en cours est directement inséré dans la liste 'en_cours' |NON|
-| 19 | Tri du catalogue par note moyenne | Permettre à l'utilisateur de trier le catalogue la moyenne des notes |NON|
+| 19 | Tri du catalogue par note moyenne | Permettre à l'utilisateur de trier le catalogue la moyenne des notes |FAIT|
 | 20 | Mot de passe oublié | Permettre à l'utilisateur de changer son mot de passe si celui-ci a été oublié via génération d'un token | NON |
 
 
