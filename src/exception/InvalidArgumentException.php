@@ -4,8 +4,8 @@ namespace netvod\exception;
 
 class InvalidArgumentException extends \Exception
 {
-    public function __construct($argument)
+    public function __construct($msg)
     {
-        parent::__construct("L'argument '$argument' est invalide");
+        parent::__construct($msg);
     }
 }

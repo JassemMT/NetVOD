@@ -21,7 +21,7 @@ class LogInAction implements Action {
             // Vérification des champs
             if (!isset($_POST['mail'])) throw new MissingArgumentException("email");
             if (!isset($_POST['password'])) throw new MissingArgumentException("password");
-            if (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException("email");
+            if (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException("l'argument 'email' est invalide");
 
             $mail = (string)$_POST['mail'];
             $password = (string)$_POST['password'];
@@ -33,7 +33,7 @@ class LogInAction implements Action {
                 Notification::save('Connexion réussie',"Succès",  Notification::TYPE_SUCCESS);
                 return "";
             } catch (AuthnException $e) {
-                throw new InvalidArgumentException('credentials');
+                throw new InvalidArgumentException('mauvais email et/ou mot de passe');
             }
             
         } else throw new BadRequestMethodException();

@@ -63,7 +63,7 @@ class AuthnProvider {
     public static function register(string $email, string $password): void {
         $email = trim($email);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('Email');
+            throw new InvalidArgumentException("l'argument 'email' est invalide");
         }
 
         if (mb_strlen($password) < 10) {

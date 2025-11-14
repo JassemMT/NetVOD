@@ -52,10 +52,9 @@ class NotationAction implements Action {
                 $etat = "Note ajoutée";
             }
 
-            $moyenne = SerieRepository::getAverageRating($idSerie);
             Notification::save("Votre avis a été enregistré. {$etat}", "Succès", Notification::TYPE_SUCCESS);
-            header('Location: .');
-            return "";
+            header('Location: ?action=display-serie&id=' . $idSerie);
+            exit();// pour éviter d'exécuter du code après la redirection (important pour les notifications)
             //return "<p>Votre avis a été enregistré ! Note moyenne actuelle : " . number_format($moyenne, 2) . "/5</p>"; // TODO avertir si c'est une mise à jour ou une première notation
         } else throw new BadRequestMethodException();
     }
