@@ -1021,3 +1021,171 @@ body[data-page="serie"] .episodes-grid {
   .profile-actions { flex-direction: column; align-items: stretch; }
   .profile-actions .btn { width: 100%; }
 }
+
+
+
+/*
+   Styles for profile edit page / form
+   Load after app.bundle.css so variables and base components are available.
+*/
+
+.profile-edit {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+  box-sizing: border-box;
+  color: var(--text);
+}
+
+.profile-edit header {
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.profile-edit h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3.6vw, 1.9rem);
+}
+.profile-email {
+  color: var(--text-muted);
+  font-size: .95rem;
+  margin: 0;
+}
+
+/* Card around form to match site glass style */
+.profile-edit .profile-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,252,0.55));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: calc(var(--spacing-lg) - 4px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Form layout */
+.profile-edit-form {
+  display: grid;
+  gap: var(--spacing-md);
+  align-items: start;
+}
+
+/* Single form row */
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Labels */
+.form-row label {
+  font-size: var(--size-sm);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Inputs */
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="tel"],
+.form-row input[type="url"],
+.form-row textarea,
+.form-row select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.6);
+  color: var(--text);
+  font-size: var(--size-base);
+  transition: box-shadow var(--duration-fast), border-color var(--duration-fast);
+  box-sizing: border-box;
+}
+
+/* Placeholder color */
+.form-row input::placeholder,
+.form-row textarea::placeholder {
+  color: rgba(6,7,10,0.4);
+}
+
+/* Focus */
+.form-row input:focus,
+.form-row textarea:focus,
+.form-row select:focus {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border-color: rgba(99,102,241,0.14);
+  outline: none;
+}
+
+/* Form actions */
+.form-actions {
+  display: flex;
+  gap: var(--spacing-base);
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: calc(var(--spacing-sm) / 2);
+}
+
+/* Buttons: reuse existing .btn classes but add small spacing */
+.form-actions .btn {
+  min-height: 40px;
+  padding: 10px 16px;
+  font-weight: 700;
+}
+
+/* Secondary link-style button */
+.form-actions .btn.secondary {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  padding: 8px 12px;
+}
+
+/* Inline small helper text */
+.form-help {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Inline error messages */
+.form-error {
+  color: #b00020;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+/* Small responsive tweaks */
+@media (max-width: 720px) {
+  .profile-edit {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .form-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Accessibility: visible focus for keyboard users on inputs and buttons */
+.form-row input:focus,
+.form-row textarea:focus,
+.form-row select:focus,
+.form-actions .btn:focus,
+.profile-edit a:focus {
+  outline: 3px solid rgba(99,102,241,0.08);
+  outline-offset: 3px;
+}
+
+/* Small utility: inline-form used for logout link in profile */
+.inline-form { display: inline-block; margin: 0; padding: 0; }
+
+/* Minimal spacing for the top-level container inside the page */
+.profile-card + .profile-actions { margin-top: var(--spacing-base); }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .profile-edit * { transition: none !important; animation: none !important; }
+}
