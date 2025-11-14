@@ -24,15 +24,36 @@ class DisplayCatalogueAction implements Action {
         // Récupère le filtre éventuel
         $filtre = $_GET['filtre'] ?? null;
 
+        $keyword = $_GET['q'] ?? null;
+
+
         // HTML des boutons
         $action_param = 'action=display-catalogue'; 
 
         $html = '
+        <form method="get" action="">
+            <input type="hidden" name="action" value="display-catalogue">
+            <input type="text" name="q" placeholder="Rechercher..." />
+            <button type="submit">Rechercher</button>
+        </form>
+
         <div style="margin-bottom: 15px;">
             <a href="?'.$action_param.'" class="btn">Vue normale</a>
             <a href="?'.$action_param.'&filtre=genre" class="btn">Filtrer par genre</a>
             <a href="?'.$action_param.'&filtre=public" class="btn">Filtrer par public</a>
         </div><hr>';
+        // ======================================================
+        // CAS 0 — Recherche par mots-clés (PRIORITAIRE)
+        // ======================================================
+        if (!empty($keyword)) {
+            $catalogue = SerieRepository::search($keyword);
+            $html .= "<h2>Résultats pour : ".htmlspecialchars($keyword)."</h2>";
+
+            $renderer = new ListeProgrammeRenderer($catalogue);
+            return $html . $renderer->render();
+        }
+        
+
 
         // ========================
         // CAS 1 — Vue classique
@@ -76,6 +97,7 @@ class DisplayCatalogueAction implements Action {
             }
             return $html;
         }
+        
 
         // Si le filtre est invalide
         throw new InvalidArgumentException("filtre");

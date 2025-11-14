@@ -81,6 +81,39 @@ class SerieRepository{
 
         return $serie;
     }
+    public static function search(string $keywords): ListeProgramme {
+    $pdo = Database::getInstance()->pdo;
+
+    $sql = "SELECT * FROM serie 
+            WHERE titre LIKE :kw ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':kw' => '%' . $keywords . '%'
+    ]);
+
+    $rows = $stmt->fetchAll();
+
+    // On crée un objet ListeProgramme
+    $liste = new ListeProgramme("Résultats de recherche");
+
+    foreach ($rows as $s) {
+        $serie = new Serie(
+            (int)$s['id_serie'],
+            $s['titre'],
+            $s['description'],
+            (int)$s['annee'],
+            $s['image']
+        );
+
+        // On ajoute la série dans la ListeProgramme
+        $liste->ajouterProgramme($serie);
+    }
+
+    return $liste;
+}
+
+
 
     /*
     public function findByTitle(string $titre):Serie{
