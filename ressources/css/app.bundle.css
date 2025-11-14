@@ -866,7 +866,6 @@ body[data-page="serie"] .episodes-grid {
 }
 
 /* Close button - visible and keyboard accessible */
-.toast-close,
 .nv-toast-close {
   background: transparent;
   border: none;
