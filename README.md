@@ -35,7 +35,7 @@ Fonctionnalités de base
 | 4 | Page détaillée d’une série + liste de ses épisodes | Permettre à l'utilisateur d'afficher le contenu de chaque série ainsi que les épisodes qui la composent |FAIT|
 | 5 | Affichage/visionnage d’un épisode | L'utilisateur a la possibilité de visionner un épisode choisis |FAIT|
 | 6 | Ajout d’une série aux préférences d’un utilisateur | Permettre à l'utilisateur d'ajouter une série dans sa liste de préférence |FAIT|
-| 7 | Page d’accueil utilisateur affichant ses séries préférées | Permettre à l'utilisateur de voir sa liste de préférence sur la page d'acceuil du site |NON|
+| 7 | Page d’accueil utilisateur affichant ses séries préférées | Permettre à l'utilisateur de voir sa liste de préférence sur la page d'acceuil du site | FAIT |
 | 8 | Lors du visionnage d’un épisode, ajout automatique de la série à la liste « en cours » | L'épisode de la série en cours est directement inséré dans la liste 'en_cours' |FAIT|
 | 9 | Lors du visionnage, possibilité de noter et commenter la série| Permettre à l'utilisateur de noter la série (1-5) ainsi que de commenter la série (1 note + 1 commentaire par utilisateur par série) |FAIT|
 | 10 | Ajout d’une série aux préférences d’un utilisateur | Permettre à l'utilisateur d'ajouter une série dans sa liste de préférence |NON|
