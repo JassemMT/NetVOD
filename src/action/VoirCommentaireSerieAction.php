@@ -3,6 +3,7 @@ declare(strict_types= 1);
 namespace netvod\action;
 
 use netvod\exception\BadRequestMethodException;
+use netvod\exception\MissingArgumentException;
 use netvod\renderer\CommentaireRenderer;
 
 class VoirCommentaireSerieAction implements Action {
@@ -12,7 +13,7 @@ class VoirCommentaireSerieAction implements Action {
                 $idSerie = (int)$_GET["serie"];
                 $commentaireRenderer = new CommentaireRenderer($idSerie);
                 return $commentaireRenderer->render();
-            } else throw new \InvalidArgumentException("id_serie");
+            } else throw new MissingArgumentException("serie");
         } else throw new BadRequestMethodException();
     }
 }

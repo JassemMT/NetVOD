@@ -19,11 +19,16 @@ class CommentaireRenderer implements Renderer {
 
         foreach ($comments as $comment) {
             $html .= <<<FIN
-            <div class="commentaire">
-                <p>{$comment['note']}</p>
-                <p>{$comment['contenu']}</p>
-                <p>{$comment['date']}</p>
-            </div>
+            <article class="commentaire" role="article" aria-label="Commentaire">
+                <header class="comment-meta">
+                    <span class="comment-note">{$comment['note']}</span>
+                    <time class="comment-date" datetime="{$comment['date']}">{$comment['date']}</time>
+                </header>
+
+                <div class="comment-body">
+                    {$comment['contenu']}
+                </div>
+            </article>
             FIN;
         }
 

@@ -15,14 +15,13 @@ class Dispatcher
     }
 
     public function run(): void
-    {
-
-        // Liste des actions nécessitant d'être connecté
+    {        // Liste des actions nécessitant d'être connecté
         $privateActions = [
             'add-serie',
             'notation',
             'display-user',
-            'display-list'
+            'display-liste',
+            'voir-commentaires'
         ];
 
         // Si on essaie d'accéder à une action privée sans être connecté → redirection

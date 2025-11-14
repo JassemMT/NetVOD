@@ -1188,3 +1188,166 @@ body[data-page="serie"] .episodes-grid {
 @media (prefers-reduced-motion: reduce) {
   .profile-edit * { transition: none !important; animation: none !important; }
 }
+
+
+
+
+/* resources/css/comment.css
+   Styles applicatifs pour les blocs de commentaire (.commentaire)
+   - Conçu pour s'intégrer avec les variables de app.bundle.css
+   - Fournit badge note, meta (date), corps, variants et responsive
+*/
+
+/* Base du composant */
+.commentaire {
+  --pad: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--pad);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.62), rgba(250,250,252,0.58));
+  border: 1px solid var(--glass-band-border, rgba(255,255,255,0.36));
+  box-shadow: 0 10px 30px rgba(6,7,10,0.06);
+  color: var(--text, #0b1220);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 180ms var(--easing-out), box-shadow 220ms var(--easing-out), opacity 200ms var(--easing-out);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Small lift on hover for pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  .commentaire:hover,
+  .commentaire:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 48px rgba(6,7,10,0.10);
+  }
+}
+
+/* Meta row: left = note badge, right = date */
+.comment-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Note badge */
+.comment-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(250,250,252,0.9));
+  color: var(--text, #0b1220);
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 6px 18px rgba(6,7,10,0.04);
+  white-space: nowrap;
+}
+
+/* Petite étoile avant la note */
+.comment-note::before {
+  content: '★';
+  color: var(--accent-primary, #6366f1);
+  margin-right: 4px;
+  font-size: 0.95em;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Date / méta */
+.comment-date {
+  font-size: 0.85rem;
+  color: var(--text-muted, rgba(6,7,10,0.45));
+  white-space: nowrap;
+}
+
+/* Corps du commentaire */
+.comment-body {
+  margin: 0;
+  color: var(--text, #0b1220);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  word-break: break-word;
+  white-space: pre-wrap; /* conserve retours à la ligne */
+}
+
+/* Option : aligner la date en bas à droite si vous préférez */
+.comment-meta--stacked {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+/* Variantes visuelles selon la note
+   Back-end : ajouter data-note="5" sur .commentaire ou des classes .is-good/.is-bad */
+.commentaire[data-note="5"] .comment-note,
+.commentaire[data-note="4"] .comment-note {
+  border-left: 4px solid #16a34a; /* green */
+}
+.commentaire[data-note="3"] .comment-note {
+  border-left: 4px solid #f59e0b; /* amber */
+}
+.commentaire[data-note="2"] .comment-note,
+.commentaire[data-note="1"] .comment-note {
+  border-left: 4px solid #dc2626; /* red */
+}
+
+/* Alternative classes */
+.commentaire.is-positive .comment-note { border-left: 4px solid #16a34a; }
+.commentaire.is-neutral  .comment-note { border-left: 4px solid #f59e0b; }
+.commentaire.is-negative .comment-note { border-left: 4px solid #dc2626; }
+
+/* Compact variant for lists */
+.commentaire--compact {
+  padding: 10px;
+  gap: 8px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+/* Layout when shown in a list of comments */
+.comment-list {
+  display: grid;
+  gap: 14px;
+}
+
+/* Small screens: meta stacks vertically for more room */
+@media (max-width: 600px) {
+  .comment-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .comment-date { align-self: flex-start; font-size: 0.82rem; }
+  .comment-note { font-size: 0.9rem; padding: 6px 10px; }
+}
+
+/* Print-friendly: simplify background */
+@media print {
+  .commentaire {
+    background: #fff;
+    color: #000;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+  .comment-note::before { content: '*'; } /* simple marker for print */
+}
+
+/* Accessibility: visible focus */
+.commentaire:focus-within {
+  outline: 3px solid rgba(99,102,241,0.08);
+  outline-offset: 4px;
+}
+
+/* Respect user reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .commentaire { transition: none !important; transform: none !important; }
+}

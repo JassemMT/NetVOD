@@ -155,14 +155,13 @@ class SerieRepository{
     }
 
     public static function getComments(int $id_serie):array{
-        $pdo = Database::getInstance()->pdo;
-        $sql = "
+        $pdo = Database::getInstance()->pdo;        $sql = "
                 SELECT 
                     c.id_commentaire,
                     c.id_user,
                     c.note,
                     c.contenu,
-                    c.date,
+                    c.date
                 FROM commentaire c
                 WHERE c.id_serie = :idSerie
                 ORDER BY c.date DESC
