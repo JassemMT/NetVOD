@@ -58,7 +58,7 @@ Fonctionnalités étendues
 
 
 ## Répartition du travail 
-#### Conception : Jasse & Ambroise
+#### Conception : Jassem & Ambroise
 #### Base de donnée : Thomas
 #### Structure du projet : Yanis & Louis
 
