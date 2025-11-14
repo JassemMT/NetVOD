@@ -58,9 +58,9 @@ Fonctionnalités étendues
 
 
 ## Répartition du travail 
-Conception : Jasse & Ambroise
-Base de donnée : Thomas
-Structure du projet : Yanis & Louis
+#### Conception : Jasse & Ambroise
+#### Base de donnée : Thomas
+#### Structure du projet : Yanis & Louis
 
 Une fois la conception terminée, nous avons travaillé sur les bases en répartissant mutuellement les tâches via les 'issues' sur github.
 
