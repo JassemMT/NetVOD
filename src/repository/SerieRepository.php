@@ -121,7 +121,7 @@ class SerieRepository{
 
     }
 
-    public function getComments(int $id_serie):array{
+    public static function getComments(int $id_serie):array{
         $pdo = Database::getInstance()->pdo;
         $sql = "
                 SELECT 

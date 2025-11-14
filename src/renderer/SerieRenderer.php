@@ -63,6 +63,11 @@ class SerieRenderer extends ProgrammeRenderer implements Renderer {
                 </div>
                 <div class="hero-actions">
                     {$fav}
+                    <a href="?action=voir-commentaires&serie={$serie->id}">
+                        <button type="input" class="btn btn-secondary" aria-label="Voir les commentaires de {$serie->titre}">
+                            Voir les commentaires
+                        </button>
+                    </a>
                 </div>
             </div>
         </section>

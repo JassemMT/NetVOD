@@ -20,7 +20,6 @@ class ListeProgrammeRenderer implements Renderer {
         }
         return <<<FIN
         <section class="section-catalogue">
-                <h1>Catalogue des séries</h1>
                 <!-- GRID DE CARTES -->
                 <div class="grid" role="region" aria-label="Liste des séries">
                     {$html}

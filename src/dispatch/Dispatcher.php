@@ -72,6 +72,9 @@ class Dispatcher
                 case 'remove-favoris':
                     $obj = new act\RemoveFavorisAction();
                     break;
+                case 'voir-commentaires':
+                    $obj = new act\VoirCommentaireSerieAction();
+                    break;
                 default:
                     $obj = new act\DefaultAction();
                     break;
