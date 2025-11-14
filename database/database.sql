@@ -66,3 +66,4 @@ CREATE TABLE User2encours (
     FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_serie) REFERENCES serie(id_serie) ON DELETE CASCADE
 );
+
