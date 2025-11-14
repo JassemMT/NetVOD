@@ -30,18 +30,26 @@ class DisplayCatalogueAction implements Action {
         // HTML des boutons
         $action_param = 'action=display-catalogue'; 
 
-        $html = '
-        <form method="get" action="">
-            <input type="hidden" name="action" value="display-catalogue">
-            <input type="text" name="q" placeholder="Rechercher..." />
-            <button type="submit">Rechercher</button>
-        </form>
+        $html = <<<FIN
+        <br>
+        <div class="catalog-toolbar container" role="toolbar" aria-label="Contrôles du catalogue">
+            <div class="toolbar-actions" role="group" aria-label="Filtres">
+                <a href="?{$action_param}" class="btn">Vue normale</a>
+                <a href="?{$action_param}&filtre=genre" class="btn">Filtrer par genre</a>
+                <a href="?{$action_param}&filtre=public" class="btn">Filtrer par public</a>
+            </div>
 
-        <div style="margin-bottom: 15px;">
-            <a href="?'.$action_param.'" class="btn">Vue normale</a>
-            <a href="?'.$action_param.'&filtre=genre" class="btn">Filtrer par genre</a>
-            <a href="?'.$action_param.'&filtre=public" class="btn">Filtrer par public</a>
-        </div><hr>';
+            <form method="get" action="" class="search-form" role="search" aria-label="Recherche dans le catalogue">
+                <input type="hidden" name="action" value="display-catalogue">
+                <div class="form-row search-row">
+                    <label for="catalog-search" class="visually-hidden">Rechercher</label>
+                    <input id="catalog-search" name="q" type="search" class="form-input" placeholder="Rechercher..." aria-label="Rechercher le catalogue" required>
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+            </form>
+        </div>
+        <br><hr/><br><br>
+        FIN;
         // ======================================================
         // CAS 0 — Recherche par mots-clés (PRIORITAIRE)
         // ======================================================
