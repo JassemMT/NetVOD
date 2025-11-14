@@ -6,14 +6,17 @@ namespace NetVOD\Classes;
 class User
 {
     protected string $email;
-
     protected int $id;
+    protected string $nom;
+    protected string $prenom;
     protected array $listes = [];
 
-    public function __construct(string $email, int $id)
+    public function __construct(string $email, int $id, string $nom = "", string $prenom = "")
     {
         $this->email = $email;
         $this->id = $id;
+        $this->nom = $nom;
+        $this->prenom = $prenom;
     }
 
     public function __get(string $attr)

@@ -55,7 +55,7 @@ class UserRepository
 
         if (!$data) throw new \PDOException('Utilisateur non trouvé.');
 
-        return new User($data['mail'], (int)$data['id_user']);
+        return new User($data['mail'], (int)$data['id_user'], $data['nom'], $data['prenom']);
     }
 
     public static function getHash(string $email): string

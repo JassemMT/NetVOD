@@ -4,7 +4,6 @@ namespace netvod\renderer;
 
 use netvod\auth\AuthzProvider;
 use netvod\classes\User;
-use netvod\token\TokenManager;
 
 class UserRenderer implements Renderer {
 
@@ -17,6 +16,9 @@ class UserRenderer implements Renderer {
     public function render(): string {
         $user = $this->user;
         $verif = AuthzProvider::isVerified()? "Vérifié" : "Non vérifié";
+        $info = "";
+        $info .= $user->nom ? "<p>Nom : {$user->nom}</p>" : "";
+        $info .= $user->prenom ? "<p>Prénom : {$user->prenom}</p>" : "";
         return <<<FIN
         <div class="user">
             <p>{$user->email}</p>
@@ -24,6 +26,9 @@ class UserRenderer implements Renderer {
             <form method="post" action="?action=verify-mail">
                 <button type="submit">Générer un nouveau token de vérification</button>
             </form>
+            <div>
+                {$info}
+            </div>
         </div>
         FIN;
     }
