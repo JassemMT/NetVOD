@@ -929,3 +929,95 @@ body[data-page="serie"] .episodes-grid {
   background: transparent !important;
   min-height: 100vh;
 }
+
+
+
+/* Minimal profile page styles. Load after app.bundle.css (or merge into it). */
+
+.profile-page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+  box-sizing: border-box;
+}
+
+.profile-header {
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.profile-header h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3.6vw, 1.9rem);
+}
+.profile-email {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.profile-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,252,0.55));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.profile-main {
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-verified {
+  color: #065f46; /* green */
+  font-weight: 700;
+}
+
+.profile-not-verified {
+  color: #b45309; /* amber/dark */
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.profile-verify-form .btn {
+  margin-top: 0.25rem;
+}
+
+/* Info list */
+.profile-info {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 6px 12px;
+  align-items: start;
+}
+.profile-info dt {
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+.profile-info dd {
+  margin: 0;
+  color: var(--text);
+}
+
+/* Empty state */
+.profile-empty {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Actions */
+.profile-actions {
+  display:flex;
+  gap: 0.75rem;
+  align-items:center;
+  margin-top: 0.5rem;
+}
+
+/* Small, responsive tweaks */
+@media (max-width: 720px) {
+  .profile-info { grid-template-columns: 1fr; }
+  .profile-actions { flex-direction: column; align-items: stretch; }
+  .profile-actions .btn { width: 100%; }
+}

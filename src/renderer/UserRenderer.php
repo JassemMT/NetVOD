@@ -13,23 +13,53 @@ class UserRenderer implements Renderer {
         $this->user = $user;
     }
 
-    public function render(): string {
+public function render(): string
+    {
         $user = $this->user;
-        $verif = AuthzProvider::isVerified()? "<p>Vérifié</p>" : "<p>Non vérifié</p>\n <form method='post' action='?action=verify-mail'>\n    <button type='submit'>Générer un nouveau token de vérification</button>\n   </form>";
-        $info = "";
-        $info .= $user->nom ? "<p>Nom : {$user->nom}</p>" : "";
-        $info .= $user->prenom ? "<p>Prénom : {$user->prenom}</p>" : "";
+
+        // Sanitize fields
+        $email = htmlspecialchars((string)($user->email ?? ''), ENT_QUOTES | ENT_SUBSTITUTE);
+        $nom = htmlspecialchars((string)($user->nom ?? ''), ENT_QUOTES | ENT_SUBSTITUTE);
+        $prenom = htmlspecialchars((string)($user->prenom ?? ''), ENT_QUOTES | ENT_SUBSTITUTE);
+
+        // Verification block (if verified, show label, otherwise show a form to request a new token)
+        if (AuthzProvider::isVerified()) {
+            $verifBlock = '<p class="profile-verified" aria-live="polite">Vérifié</p>';
+        } else {
+            $verifBlock = <<<FIN
+            <form method="post" action="?action=verify-mail" class="profile-verify-form" aria-label="Vérification de l'email">
+                <p class="profile-not-verified" aria-live="polite">Non vérifié</p>
+                <button type="submit" class="btn btn-primary">Générer un nouveau token de vérification</button>
+            </form>
+            FIN;
+        }
+
+        $infoItems = [];
+        if ($nom !== '') $infoItems[] = "<dt>Nom</dt><dd>{$nom}</dd>";
+        if ($prenom !== '') $infoItems[] = "<dt>Prénom</dt><dd>{$prenom}</dd>";
+        $infoHtml = $infoItems ? '<dl class="profile-info">' . implode("\n", $infoItems) . '</dl>' : '<p class="profile-empty">Aucune information personnelle renseignée.</p>';
+
         return <<<FIN
-        <div class="user">
-            <p>{$user->email}</p>
-            {$verif}
-            <div>
-                {$info}
+        <section class="profile-page container">
+            <header class="profile-header">
+                <h1>Mon profil</h1>
+                <p class="profile-email">{$email}</p>
+            </header>
+
+            <div class="profile-card">
+                <div class="profile-main">
+                {$verifBlock}
+
+                <div class="profile-details">
+                    {$infoHtml}
+                </div>
+
+                <div class="profile-actions">
+                    <a class="btn btn-secondary" href="?action=profil-info">Modifier les informations</a>
+                </div>
+                </div>
             </div>
-
-            <a href="?action=profil-info">Modifier les informations de profil</a>
-
-        </div>
+        </section>
         FIN;
     }
 
