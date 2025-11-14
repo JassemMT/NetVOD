@@ -25,7 +25,8 @@ class ChangerProfilInfoAction implements Action {
 
                     Notification::save("Les informations de profil ont été mises à jour.","Succès", Notification::TYPE_SUCCESS);
                     header("Location: ?action=display-user");
-                    return "";
+                    exit(); //pour notif succès (sinon s'affiche sur la page courante juste avant la redirection --> n'apparait jamais à l'écran)
+                    //return "";
                 } else throw new MissingArgumentException("prenom");
             } else throw new MissingArgumentException("nom");
         } else throw new BadRequestMethodException();

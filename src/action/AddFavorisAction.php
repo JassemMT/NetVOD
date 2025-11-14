@@ -39,8 +39,8 @@ class AddFavorisAction implements Action
                         if ($result) {
                             Notification::save("Série ajoutée aux favoris.", "Succès", Notification::TYPE_SUCCESS);
                             header('Location: ?action=display-serie&id='.$id_serie);
-                            return "";
-                            
+                            exit(); // la notif de succès s'affiche sur la page de la série
+                            //return ""; --> continue le code et va jusqu'au dispatcher qui affiche la notif sur la page courante puis redirige avec le header donc l'utilisateur ne voit jamais la notif
                         } else throw new \PDOException("Erreur lors de l'ajout de la série aux favoris.");
                     } else throw new MissingArgumentException("id");
                 } else throw new BadRequestMethodException();

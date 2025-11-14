@@ -37,9 +37,10 @@ class RemoveFavorisAction implements Action
     
                         $result = UserRepository::removeSerieFromList($id_user, $id_serie, $listName);
                         if ($result) {
-                            Notification::save("Série ajoutée aux favoris.", "Succès", Notification::TYPE_SUCCESS);
+                            Notification::save("Série supprimée des favoris.", "Succès", Notification::TYPE_SUCCESS);
                             header('Location: ?action=display-serie&id='.$id_serie);
-                            return "";
+                            exit(); // la notif de succès s'affiche sur la page de la série
+                            //return "";
                             
                         } else throw new \PDOException("Erreur lors de l'ajout de la série aux favoris.");
                     } else throw new MissingArgumentException("id");
