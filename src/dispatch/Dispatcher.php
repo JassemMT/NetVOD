@@ -66,6 +66,9 @@ class Dispatcher
                 case 'verify-mail':
                     $obj = new act\VerifierMailAction();
                     break;
+                case 'profil-info':
+                    $obj = new act\ChangerProfilInfoAction();
+                    break;
                 default:
                     $obj = new act\DefaultAction();
                     break;

@@ -15,20 +15,20 @@ class UserRenderer implements Renderer {
 
     public function render(): string {
         $user = $this->user;
-        $verif = AuthzProvider::isVerified()? "Vérifié" : "Non vérifié";
+        $verif = AuthzProvider::isVerified()? "<p>Vérifié</p>" : "<p>Non vérifié</p>\n <form method='post' action='?action=verify-mail'>\n    <button type='submit'>Générer un nouveau token de vérification</button>\n   </form>";
         $info = "";
         $info .= $user->nom ? "<p>Nom : {$user->nom}</p>" : "";
         $info .= $user->prenom ? "<p>Prénom : {$user->prenom}</p>" : "";
         return <<<FIN
         <div class="user">
             <p>{$user->email}</p>
-            <p>{$verif}</p>
-            <form method="post" action="?action=verify-mail">
-                <button type="submit">Générer un nouveau token de vérification</button>
-            </form>
+            {$verif}
             <div>
                 {$info}
             </div>
+
+            <a href="?action=profil-info">Modifier les informations de profil</a>
+
         </div>
         FIN;
     }

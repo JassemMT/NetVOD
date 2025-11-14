@@ -149,6 +149,13 @@ class UserRepository
         $stmt->execute(['verified' => $status, 'id_user' => $id_user]);
     }
 
+    public static function updateProfilInfo(int $id_user, string $nom, string $prenom): void
+    {
+        $pdo = Database::getInstance()->pdo;
+        $stmt = $pdo->prepare('UPDATE user SET nom = :nom, prenom = :prenom WHERE id_user = :id_user');
+        $stmt->execute(['nom' => $nom, 'prenom' => $prenom, 'id_user' => $id_user]);
+    }
+
 
 
 
