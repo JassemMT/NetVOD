@@ -291,5 +291,35 @@ class SerieRepository{
         return $stmt->fetch() !== false;
     }
 
+    // méthode qui renvoie si la moyenne de la série A est plus grand que la moyenne de la série B
+    private static function compareSeriesByRating(Serie $a, Serie $b): int {
+        $noteA = self::getAverageRating($a->id);
+        $noteB = self::getAverageRating($b->id);
+
+        // Tri décroissant : meilleure note en premier
+        if ($noteA === $noteB) {
+            return 0;
+        }
+        return ($noteA > $noteB) ? -1 : 1;
+    }
+    /**
+     * Retourne un tableau de séries triées par note moyenne
+     */
+    public static function getSeriesSortedByRating(): ListeProgramme {
+        $liste = self::findAll(); // Récupère toutes les séries
+        $series = $liste->getProgrammes(); // Tableau d'objets Serie
+
+        // Tri avec closure qui appelle la méthode statique
+        usort($series, [self::class, 'compareSeriesByRating']);
+
+        // Retourne une nouvelle ListeProgramme triée
+        $sortedListe = new ListeProgramme("Séries triées par note");
+        foreach ($series as $serie) {
+            $sortedListe->ajouterProgramme($serie);
+        }
+
+        return $sortedListe;
+    }
+
 
 }

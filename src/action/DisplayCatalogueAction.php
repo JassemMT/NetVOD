@@ -26,6 +26,8 @@ class DisplayCatalogueAction implements Action {
 
         $keyword = $_GET['q'] ?? null;
 
+        $noteMoy = $_GET["noteMoy"] ?? null;
+
 
         // HTML des boutons
         $action_param = 'action=display-catalogue'; 
@@ -37,6 +39,7 @@ class DisplayCatalogueAction implements Action {
                 <a href="?{$action_param}" class="btn">Vue normale</a>
                 <a href="?{$action_param}&filtre=genre" class="btn">Filtrer par genre</a>
                 <a href="?{$action_param}&filtre=public" class="btn">Filtrer par public</a>
+                <a href="?{$action_param}&filtre=noteMoy" class="btn">Trier par note moyenne</a>
             </div>
 
             <form method="get" action="" class="search-form" role="search" aria-label="Recherche dans le catalogue">
@@ -103,6 +106,22 @@ class DisplayCatalogueAction implements Action {
                     $html .= $renderer->render();
                 }
             }
+            return $html;
+        }
+
+        if ($filtre === 'noteMoy') {
+            $html .= '<h2>Catalogue trié par note moyenne</h2>';
+            
+            // Récupère les séries triées par note moyenne décroissante
+            $catalogue = SerieRepository::getSeriesSortedByRating();
+
+            if ($catalogue->getProgrammes()) {
+                $renderer = new ListeProgrammeRenderer($catalogue);
+                $html .= $renderer->render();
+            } else {
+                $html .= "<p>Aucune série disponible.</p>";
+            }
+            
             return $html;
         }
         
