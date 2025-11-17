@@ -10,10 +10,10 @@ SAE : Développement Web — Sujet : NetVOD
 -TAMOURGH Jassem
 -GILBERT Ambroise
 
-## URL Git & Webetu
+## URL Github & Webetu
 
-- lien Git : https://github.com/JassemMT/NetVOD/
-- lien Webetu : https://webetu.iutnc.univ-lorraine.fr/www/e52526u/NetVOD
+- lien Github : https://github.com/JassemMT/NetVOD/
+- lien Webetu : https://webetu.iutnc.univ-lorraine.fr/www/e52526u/NetVOD/
 
 
 
